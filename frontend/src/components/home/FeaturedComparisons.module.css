@@ -1,0 +1,172 @@
+.section {
+  padding: 80px 32px;
+  background: #f8fafc;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  max-width: 650px;
+  margin-bottom: 40px;
+}
+
+.header span {
+  display: block;
+  margin-bottom: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  color: #2563eb;
+}
+
+.header h2 {
+  margin: 0;
+
+  font-size: 38px;
+  color: #071126;
+}
+
+.header p {
+  margin-top: 14px;
+
+  font-size: 17px;
+  line-height: 1.6;
+  color: #667085;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+}
+
+.imagePlaceholder {
+  height: 190px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eef6ff;
+
+  font-size: 72px;
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+.brand {
+  margin: 0 0 6px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #667085;
+}
+
+.card h3 {
+  margin: 0;
+
+  font-size: 21px;
+  color: #071126;
+}
+
+.compatibility {
+  margin-top: 22px;
+  padding: 12px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #eff6ff;
+  border-radius: 10px;
+
+  color: #1e3a8a;
+}
+
+.compatibility strong {
+  font-size: 20px;
+}
+
+.details {
+  margin-top: 20px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.details div {
+  padding: 12px;
+
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.details span,
+.footer span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 12px;
+  color: #667085;
+}
+
+.details strong,
+.footer strong {
+  color: #111827;
+}
+
+.footer {
+  margin-top: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer button {
+  height: 42px;
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #0b2a6f;
+  color: #ffffff;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 950px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

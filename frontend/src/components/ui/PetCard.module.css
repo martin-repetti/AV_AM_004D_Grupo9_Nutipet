@@ -1,0 +1,118 @@
+.card {
+  display: flex;
+  gap: 22px;
+
+  padding: 24px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.icon {
+  width: 86px;
+  height: 86px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: #eef6ff;
+
+  font-size: 46px;
+}
+
+.content {
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.species {
+  margin: 0 0 4px;
+
+  font-size: 13px;
+  color: #667085;
+}
+
+.header h3 {
+  margin: 0;
+
+  font-size: 22px;
+  color: #071126;
+}
+
+.editButton {
+  border: none;
+  background: transparent;
+
+  color: #2563eb;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.infoGrid {
+  margin-top: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.infoGrid div {
+  padding: 12px;
+
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.infoGrid span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 12px;
+  color: #667085;
+}
+
+.infoGrid strong {
+  font-size: 14px;
+  color: #111827;
+}
+
+.profileButton {
+  margin-top: 20px;
+
+  height: 42px;
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #0b2a6f;
+  color: #ffffff;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 650px) {
+  .card {
+    flex-direction: column;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}

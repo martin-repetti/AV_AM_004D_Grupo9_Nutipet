@@ -1,0 +1,217 @@
+.page {
+  min-height: 70vh;
+  padding: 56px 32px 80px;
+  background: #f8fafc;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.back {
+  color: #667085;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.editButton {
+  padding: 11px 18px;
+  border: 1px solid #dbe1ea;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0b2a6f;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding: 30px;
+  margin-bottom: 22px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.petIcon {
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+  background: #eef6ff;
+
+  font-size: 55px;
+}
+
+.species {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #2563eb;
+}
+
+.profileHeader h1 {
+  margin: 4px 0 3px;
+  font-size: 34px;
+  color: #071126;
+}
+
+.profileHeader p {
+  margin: 0;
+  color: #667085;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 22px;
+}
+
+.card {
+  padding: 26px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.card h2 {
+  margin: 0 0 22px;
+  font-size: 20px;
+  color: #071126;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.infoGrid div {
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.infoGrid span,
+.specialItem span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #667085;
+}
+
+.infoGrid strong,
+.specialItem strong {
+  color: #111827;
+  font-size: 14px;
+}
+
+.specialItem {
+  padding: 14px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.specialItem:last-child {
+  border-bottom: none;
+}
+
+.recommendation {
+  margin-top: 22px;
+  padding: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  border-radius: 18px;
+  background: #0b2a6f;
+  color: #ffffff;
+}
+
+.recommendationLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #a8c7ff;
+}
+
+.recommendation h2 {
+  margin: 7px 0 8px;
+  font-size: 24px;
+}
+
+.recommendation p {
+  max-width: 620px;
+  margin: 0;
+  color: #c7d4ea;
+  line-height: 1.6;
+}
+
+.primaryButton {
+  flex-shrink: 0;
+
+  min-height: 48px;
+  padding: 0 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+  background: #ffffff;
+
+  color: #0b2a6f;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .recommendation {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 40px 20px 60px;
+  }
+
+  .profileHeader {
+    align-items: flex-start;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .primaryButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,121 @@
+.navbar {
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+  color: #071126;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.brandIcon {
+  font-size: 26px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.links a {
+  text-decoration: none;
+  color: #1f2937;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  transition: color 0.2s ease;
+}
+
+.links a:hover {
+  color: #1d4ed8;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.search {
+  width: 230px;
+  height: 42px;
+
+  border: 1px solid #dbe1ea;
+  border-radius: 10px;
+
+  padding: 0 14px;
+
+  font-size: 14px;
+  color: #111827;
+
+  outline: none;
+}
+
+.search:focus {
+  border-color: #2563eb;
+}
+
+.profileButton {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dbe1ea;
+  border-radius: 50%;
+
+  text-decoration: none;
+  color: #071126;
+
+  font-size: 20px;
+}
+
+.profileButton:hover {
+  background: #f8fafc;
+}
+
+@media (max-width: 1050px) {
+  .links {
+    gap: 18px;
+  }
+
+  .search {
+    width: 180px;
+  }
+}
+
+@media (max-width: 900px) {
+  .links {
+    display: none;
+  }
+
+  .search {
+    display: none;
+  }
+}
