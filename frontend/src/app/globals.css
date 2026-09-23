@@ -1,3 +1,39 @@
+:root {
+  /* Colores */
+  --np-bg: #FBF6EE; /* fondo de página (crema) */
+  --np-surface: #FFFFFF; /* cards, header */
+  --np-primary: #C9562C; /* terracota: botones, links, nav activo */
+  --np-primary-hover: #A9441F;
+  --np-primary-soft: #FCEBDD; /* fondos suaves, avatar mascota, foto producto */
+  --np-secondary: #3E5B45; /* verde salvia: banners, chips activos */
+  --np-secondary-text: #D6E6D9; /* texto secundario sobre verde */
+  --np-ink: #2B211A; /* texto principal */
+  --np-muted: #7A6858; /* texto secundario */
+  --np-border: #EADFD2;
+  --np-border-strong: #DCCBB8;
+  --np-subtle: #F3EBE0; /* separadores, fondo de barras */
+  --np-footer: #2B211A; /* footer */
+  --np-footer-text: #F3EBE0;
+  --np-footer-muted: rgba(243, 235, 224, 0.68);
+
+  /* Compatibilidad */
+  --np-good: #2F7A4A; /* >= 90% */
+  --np-good-soft: #E6F2E8;
+  --np-mid: #B7791F; /* 80–89% */
+  --np-low: #B4462C; /* < 80% */
+  --np-low-soft: #FBE6DC;
+
+  /* Forma */
+  --np-radius-card: 18px;
+  --np-radius-sm: 12px;
+  --np-radius-pill: 999px;
+  --np-shadow: 0 12px 32px rgba(43, 33, 26, 0.12);
+
+  /* Tipografía */
+  --np-font-head: var(--font-baloo), "Baloo 2", sans-serif;
+  --np-font-body: var(--font-nunito), "Nunito Sans", sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -6,10 +42,26 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background: #ffffff;
-  color: #071126;
+  background: var(--np-bg);
+  color: var(--np-ink);
+  font-family: var(--np-font-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--np-font-head);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+a {
+  color: var(--np-primary);
+}
+
+a:hover {
+  color: var(--np-primary-hover);
 }

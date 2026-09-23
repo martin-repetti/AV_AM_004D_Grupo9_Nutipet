@@ -1,0 +1,155 @@
+.card {
+  padding: 24px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  margin: 0 0 4px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--np-muted);
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--np-ink);
+}
+
+.score {
+  flex-shrink: 0;
+  padding: 10px 14px;
+
+  text-align: right;
+  background: var(--np-primary-soft);
+  border-radius: var(--np-radius-sm);
+  color: var(--np-primary);
+}
+
+.score span {
+  display: block;
+  font-size: 12px;
+}
+
+.score strong {
+  font-size: 20px;
+}
+
+.compatGood strong {
+  color: var(--np-good);
+}
+
+.compatMid strong {
+  color: var(--np-mid);
+}
+
+.compatLow strong {
+  color: var(--np-low);
+}
+
+.infoGrid {
+  margin-top: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.infoItem {
+  padding: 12px;
+
+  background: var(--np-bg);
+  border-radius: var(--np-radius-sm);
+}
+
+.infoItem span {
+  display: block;
+  margin-bottom: 4px;
+
+  font-size: 12px;
+  color: var(--np-muted);
+}
+
+.infoItem strong {
+  font-size: 14px;
+  color: var(--np-ink);
+}
+
+.actions {
+  margin-top: 22px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.removeButton {
+  margin-right: auto;
+
+  border: none;
+  background: transparent;
+
+  color: var(--np-muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  color: var(--np-low);
+}
+
+.secondaryButton,
+.primaryButton {
+  min-height: 42px;
+  padding: 0 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--np-radius-pill);
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondaryButton {
+  border: 1px solid var(--np-border-strong);
+  background: var(--np-surface);
+  color: var(--np-primary);
+}
+
+.primaryButton {
+  border: none;
+  background: var(--np-primary);
+  color: #ffffff;
+}
+
+.primaryButton:hover {
+  background: var(--np-primary-hover);
+}
+
+@media (max-width: 650px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

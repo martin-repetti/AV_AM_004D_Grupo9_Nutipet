@@ -1,0 +1,144 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: var(--np-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid var(--np-border-strong);
+  border-radius: var(--np-radius-sm);
+  background: var(--np-surface);
+
+  color: var(--np-ink);
+  font-size: 14px;
+
+  outline: none;
+}
+
+.field input:focus {
+  outline: 2px solid var(--np-primary);
+  outline-offset: 1px;
+  border-color: var(--np-primary);
+}
+
+.passwordField {
+  position: relative;
+}
+
+.passwordField input {
+  padding-right: 68px;
+}
+
+.toggleButton {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  height: 34px;
+  padding: 0 12px;
+
+  border: none;
+  background: transparent;
+  border-radius: var(--np-radius-sm);
+
+  color: var(--np-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.toggleButton:hover {
+  color: var(--np-primary);
+}
+
+.optionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  font-size: 14px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--np-ink);
+}
+
+.checkboxRow input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--np-primary);
+}
+
+.forgotLink {
+  color: var(--np-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  color: var(--np-primary-hover);
+}
+
+.submitButton {
+  margin-top: 6px;
+
+  min-height: 48px;
+
+  border: none;
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: var(--np-primary-hover);
+}
+
+.formNote {
+  margin: 4px 0 0;
+
+  text-align: center;
+  color: var(--np-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.footerText {
+  margin: 22px 0 0;
+
+  text-align: center;
+  color: var(--np-muted);
+  font-size: 14px;
+}
+
+.footerText a {
+  font-weight: 700;
+}

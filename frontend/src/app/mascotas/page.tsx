@@ -4,7 +4,7 @@ export default function MascotasPage() {
   return (
     <main
       style={{
-        background: "#f8fafc",
+        background: "var(--np-bg)",
         minHeight: "70vh",
         padding: "60px 32px",
       }}
@@ -18,8 +18,10 @@ export default function MascotasPage() {
         <div
           style={{
             display: "flex",
+            flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
+            gap: "16px",
             marginBottom: "32px",
           }}
         >
@@ -28,7 +30,7 @@ export default function MascotasPage() {
               style={{
                 margin: 0,
                 fontSize: "38px",
-                color: "#071126",
+                color: "var(--np-ink)",
               }}
             >
               Mis mascotas
@@ -37,7 +39,7 @@ export default function MascotasPage() {
             <p
               style={{
                 marginTop: "10px",
-                color: "#667085",
+                color: "var(--np-muted)",
               }}
             >
               Administra los perfiles y características de tus mascotas.
@@ -49,11 +51,12 @@ export default function MascotasPage() {
             style={{
                 height: "46px",
                 padding: "0 20px",
-                borderRadius: "10px",
-                background: "#0b2a6f",
+                borderRadius: "999px",
+                background: "var(--np-primary)",
                 color: "#ffffff",
-                fontWeight: 600,
+                fontWeight: 700,
                 textDecoration: "none",
+                whiteSpace: "nowrap",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -66,7 +69,7 @@ export default function MascotasPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
             gap: "22px",
           }}
         >

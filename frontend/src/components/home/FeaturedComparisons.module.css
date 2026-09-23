@@ -1,6 +1,6 @@
 .section {
   padding: 80px 32px;
-  background: #f8fafc;
+  background: var(--np-bg);
 }
 
 .container {
@@ -21,14 +21,14 @@
   font-weight: 700;
   letter-spacing: 0.08em;
 
-  color: #2563eb;
+  color: var(--np-primary);
 }
 
 .header h2 {
   margin: 0;
 
   font-size: 38px;
-  color: #071126;
+  color: var(--np-ink);
 }
 
 .header p {
@@ -36,7 +36,7 @@
 
   font-size: 17px;
   line-height: 1.6;
-  color: #667085;
+  color: var(--np-muted);
 }
 
 .grid {
@@ -48,9 +48,9 @@
 .card {
   overflow: hidden;
 
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
 
   transition:
     transform 0.2s ease,
@@ -59,7 +59,7 @@
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--np-shadow);
 }
 
 .imagePlaceholder {
@@ -69,7 +69,7 @@
   align-items: center;
   justify-content: center;
 
-  background: #eef6ff;
+  background: var(--np-primary-soft);
 
   font-size: 72px;
 }
@@ -84,14 +84,14 @@
   font-size: 13px;
   font-weight: 600;
 
-  color: #667085;
+  color: var(--np-muted);
 }
 
 .card h3 {
   margin: 0;
 
   font-size: 21px;
-  color: #071126;
+  color: var(--np-ink);
 }
 
 .compatibility {
@@ -102,14 +102,26 @@
   align-items: center;
   justify-content: space-between;
 
-  background: #eff6ff;
-  border-radius: 10px;
+  background: var(--np-primary-soft);
+  border-radius: var(--np-radius-sm);
 
-  color: #1e3a8a;
+  color: var(--np-primary);
 }
 
 .compatibility strong {
   font-size: 20px;
+}
+
+.compatGood strong {
+  color: var(--np-good);
+}
+
+.compatMid strong {
+  color: var(--np-mid);
+}
+
+.compatLow strong {
+  color: var(--np-low);
 }
 
 .details {
@@ -123,8 +135,8 @@
 .details div {
   padding: 12px;
 
-  background: #f8fafc;
-  border-radius: 10px;
+  background: var(--np-bg);
+  border-radius: var(--np-radius-sm);
 }
 
 .details span,
@@ -134,12 +146,12 @@
   margin-bottom: 4px;
 
   font-size: 12px;
-  color: #667085;
+  color: var(--np-muted);
 }
 
 .details strong,
 .footer strong {
-  color: #111827;
+  color: var(--np-ink);
 }
 
 .footer {
@@ -151,18 +163,28 @@
   gap: 16px;
 }
 
-.footer button {
+.compareButton {
   height: 42px;
   padding: 0 18px;
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
-  border-radius: 9px;
+  border-radius: var(--np-radius-pill);
 
-  background: #0b2a6f;
+  background: var(--np-primary);
   color: #ffffff;
+  text-decoration: none;
 
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+}
+
+.compareButton:hover {
+  background: var(--np-primary-hover);
+  color: #ffffff;
 }
 
 @media (max-width: 950px) {

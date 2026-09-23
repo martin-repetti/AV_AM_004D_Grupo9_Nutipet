@@ -1,0 +1,105 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: var(--np-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid var(--np-border-strong);
+  border-radius: var(--np-radius-sm);
+  background: var(--np-surface);
+
+  color: var(--np-ink);
+  font-size: 14px;
+
+  outline: none;
+}
+
+.field input:focus {
+  outline: 2px solid var(--np-primary);
+  outline-offset: 1px;
+  border-color: var(--np-primary);
+}
+
+.fieldError input {
+  border-color: var(--np-low);
+}
+
+.errorText {
+  margin: 0;
+  color: var(--np-low);
+  font-size: 13px;
+}
+
+.submitButton {
+  margin-top: 6px;
+
+  min-height: 48px;
+
+  border: none;
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: var(--np-primary-hover);
+}
+
+.successNote {
+  margin: 4px 0 0;
+  padding: 12px 14px;
+
+  border-radius: var(--np-radius-sm);
+  background: var(--np-good-soft);
+
+  text-align: center;
+  color: var(--np-good);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.footerText {
+  margin: 22px 0 0;
+
+  text-align: center;
+  color: var(--np-muted);
+  font-size: 14px;
+}
+
+.footerText a {
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

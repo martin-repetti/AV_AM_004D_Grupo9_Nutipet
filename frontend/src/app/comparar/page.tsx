@@ -1,40 +1,11 @@
 "use client";
-import {useState} from "react"; 
+import {useState} from "react";
 import FoodResultCard from "@/components/compare/FoodResultCard";
+import { MOCK_FOODS } from "@/services/mockFoods";
 import styles from "./Comparar.module.css";
-const foods = [
-  {
-    id: 1,
-    name: "Royal Canin Adult",
-    brand: "Royal Canin",
-    compatibility: 92,
-    price: 48990,
-    protein: 26,
-    fat: 15,
-    hasColorants: true,
-  },
-  {
-    id: 2,
-    name: "Pro Plan Adult",
-    brand: "Purina",
-    compatibility: 88,
-    price: 44990,
-    protein: 27,
-    fat: 14,
-    hasColorants: false,
-  },
-  {
-    id: 3,
-    name: "Brit Care Adult",
-    brand: "Brit Care",
-    compatibility: 84,
-    price: 39990,
-    protein: 25,
-    fat: 13,
-    hasColorants: false,
-  },
-];
 
+// MOCK: mascotas de ejemplo. Reemplazar por las mascotas reales del usuario
+// (ver /mascotas) cuando exista backend.
 const pets = [
   { 
     id: "max",
@@ -84,7 +55,7 @@ export default function CompararPage() {
           <p>Ordenados según porcentaje de compatibilidad</p>
         </section>
 
-        {foods.map((food) => (
+        {MOCK_FOODS.map((food) => (
           <FoodResultCard
             key={food.id}
             name={food.name}

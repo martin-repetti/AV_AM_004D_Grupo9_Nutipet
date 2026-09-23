@@ -1,4 +1,5 @@
 import styles from "./FoodResultCard.module.css";
+import { compatClass } from "@/utils/compat";
 type FoodResultCardProps = {
     name: string;
     brand: string;
@@ -7,6 +8,8 @@ type FoodResultCardProps = {
     protein: number;
     fat: number;
     hasColorants: boolean;
+    /** Si se entrega, muestra un botón para quitar el alimento de favoritos. */
+    onRemoveFavorite?: () => void;
 };
 
 export default function FoodResultCard( {
@@ -17,7 +20,8 @@ export default function FoodResultCard( {
     protein,
     fat,
     hasColorants,
-    
+    onRemoveFavorite,
+
 }: FoodResultCardProps){
     return(
         <article className={styles.card}>
@@ -27,7 +31,11 @@ export default function FoodResultCard( {
                 <h2>{name}</h2>
             </div>
 
-            <div className={styles.score}>
+            <div
+                className={`${styles.score} ${
+                    styles[compatClass(compatibility)]
+                }`}
+            >
                 <span>Compatibilidad: </span>
                 <strong>{compatibility}%</strong>
             </div>
@@ -55,6 +63,16 @@ export default function FoodResultCard( {
             </div>
             </div>
             <div className={styles.actions}>
+            {onRemoveFavorite && (
+                <button
+                    type="button"
+                    className={styles.removeButton}
+                    onClick={onRemoveFavorite}
+                >
+                    Quitar de favoritos
+                </button>
+            )}
+
             <button className={styles.secondaryButton}>
                 Ver detalles
             </button>

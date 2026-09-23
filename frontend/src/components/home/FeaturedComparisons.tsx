@@ -1,4 +1,6 @@
+import Link from "next/link";
 import styles from "./FeaturedComparisons.module.css";
+import { compatClass } from "@/utils/compat";
 
 const foods = [
   {
@@ -54,7 +56,11 @@ export default function FeaturedComparisons() {
 
                 <h3>{food.name}</h3>
 
-                <div className={styles.compatibility}>
+                <div
+                  className={`${styles.compatibility} ${
+                    styles[compatClass(food.compatibility)]
+                  }`}
+                >
                   <span>Compatibilidad</span>
                   <strong>{food.compatibility}%</strong>
                 </div>
@@ -77,7 +83,9 @@ export default function FeaturedComparisons() {
                     <strong>{food.price}</strong>
                   </div>
 
-                  <button type="button">Comparar</button>
+                  <Link href="/comparar" className={styles.compareButton}>
+                    Comparar
+                  </Link>
                 </div>
               </div>
             </article>

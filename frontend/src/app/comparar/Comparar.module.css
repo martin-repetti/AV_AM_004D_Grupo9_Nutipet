@@ -1,18 +1,55 @@
-.page{
+.page {
     min-height: 70vh;
     padding: 60px 32px 80px;
-    background-color: #f8fafc;
-    text-align: center;
-    justify-content: center;
-
+    background-color: var(--np-bg);
 }
 
-.container{
+.container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    gap: 24px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.container h1 {
+    margin: 0;
+    font-size: 38px;
+    color: var(--np-ink);
+}
+
+.container h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--np-ink);
+}
+
+.container > section > p {
+    margin-top: 8px;
+    color: var(--np-muted);
+    font-size: 16px;
+}
+
+.container label {
+    color: var(--np-ink);
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.container select {
+    height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid var(--np-border-strong);
+    border-radius: var(--np-radius-sm);
+    background: var(--np-surface);
+
+    color: var(--np-ink);
+    font-size: 14px;
+}
+
+.container select:focus {
+    outline: 2px solid var(--np-primary);
+    outline-offset: 1px;
+    border-color: var(--np-primary);
 }

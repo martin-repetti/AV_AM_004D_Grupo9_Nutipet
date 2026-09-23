@@ -1,7 +1,7 @@
 .navbar {
   width: 100%;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--np-surface);
+  border-bottom: 1px solid var(--np-border);
 }
 
 .container {
@@ -22,8 +22,9 @@
   gap: 10px;
 
   text-decoration: none;
-  color: #071126;
+  color: var(--np-primary);
 
+  font-family: var(--np-font-head);
   font-size: 24px;
   font-weight: 700;
 
@@ -42,7 +43,7 @@
 
 .links a {
   text-decoration: none;
-  color: #1f2937;
+  color: var(--np-ink);
 
   font-size: 15px;
   font-weight: 500;
@@ -51,7 +52,8 @@
 }
 
 .links a:hover {
-  color: #1d4ed8;
+  color: var(--np-primary);
+  font-weight: 700;
 }
 
 .actions {
@@ -64,19 +66,22 @@
   width: 230px;
   height: 42px;
 
-  border: 1px solid #dbe1ea;
-  border-radius: 10px;
+  border: 1px solid var(--np-border-strong);
+  border-radius: var(--np-radius-pill);
+  background: var(--np-surface);
 
   padding: 0 14px;
 
   font-size: 14px;
-  color: #111827;
+  color: var(--np-ink);
 
   outline: none;
 }
 
 .search:focus {
-  border-color: #2563eb;
+  outline: 2px solid var(--np-primary);
+  outline-offset: 1px;
+  border-color: var(--np-primary);
 }
 
 .profileButton {
@@ -87,17 +92,17 @@
   align-items: center;
   justify-content: center;
 
-  border: 1px solid #dbe1ea;
+  border: 1px solid var(--np-border-strong);
   border-radius: 50%;
 
   text-decoration: none;
-  color: #071126;
+  color: var(--np-ink);
 
   font-size: 20px;
 }
 
 .profileButton:hover {
-  background: #f8fafc;
+  background: var(--np-bg);
 }
 
 @media (max-width: 1050px) {

@@ -1,6 +1,6 @@
 .section {
   padding: 90px 32px;
-  background: #ffffff;
+  background: var(--np-surface);
 }
 
 .container {
@@ -21,7 +21,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
 
-  color: #2563eb;
+  color: var(--np-primary);
 }
 
 .header h2 {
@@ -30,7 +30,7 @@
   font-size: 38px;
   line-height: 1.15;
 
-  color: #071126;
+  color: var(--np-ink);
 }
 
 .header p {
@@ -39,7 +39,7 @@
   font-size: 17px;
   line-height: 1.65;
 
-  color: #667085;
+  color: var(--np-muted);
 }
 
 .grid {
@@ -51,10 +51,10 @@
 .card {
   padding: 28px;
 
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
 
-  background: #ffffff;
+  background: var(--np-surface);
 
   transition:
     transform 0.2s ease,
@@ -63,7 +63,7 @@
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--np-shadow);
 }
 
 .icon {
@@ -78,7 +78,7 @@
 
   border-radius: 14px;
 
-  background: #eef6ff;
+  background: var(--np-primary-soft);
 
   font-size: 26px;
 }
@@ -87,7 +87,7 @@
   margin: 0 0 10px;
 
   font-size: 19px;
-  color: #071126;
+  color: var(--np-ink);
 }
 
 .card p {
@@ -96,7 +96,7 @@
   font-size: 15px;
   line-height: 1.6;
 
-  color: #667085;
+  color: var(--np-muted);
 }
 
 @media (max-width: 1000px) {
