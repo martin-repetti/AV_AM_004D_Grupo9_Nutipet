@@ -16,6 +16,7 @@ export default function Navbar() {
           <Link href="/mascotas">Mascotas</Link>
           <Link href="/historial-precios">Historial de precios</Link>
           <Link href="/favoritos">Favoritos</Link>
+          <Link href="/contacto">Contacto</Link>
         </nav>
 
         <div className={styles.actions}>

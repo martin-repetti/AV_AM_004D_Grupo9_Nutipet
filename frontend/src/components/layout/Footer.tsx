@@ -40,6 +40,7 @@ export default function Footer() {
             <Link href="/sobre-nutripet">Sobre NutriPet</Link>
             <Link href="/terminos">Términos y condiciones</Link>
             <Link href="/privacidad">Privacidad</Link>
+            <Link href="/contacto">Contacto</Link>
           </div>
         </div>
 
