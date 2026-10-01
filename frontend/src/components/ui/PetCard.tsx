@@ -1,8 +1,11 @@
+import Link from "next/link";
 import styles from "./PetCard.module.css";
 
 type PetCardProps = {
+  id: number;
   name: string;
   species: string;
+  breed: string;
   age: string;
   weight: string;
   activity: string;
@@ -10,8 +13,10 @@ type PetCardProps = {
 };
 
 export default function PetCard({
+  id,
   name,
   species,
+  breed,
   age,
   weight,
   activity,
@@ -24,11 +29,16 @@ export default function PetCard({
       <div className={styles.content}>
         <div className={styles.header}>
           <div>
-            <p className={styles.species}>{species}</p>
+            <p className={styles.species}>
+              {species} · {breed}
+            </p>
+
             <h3>{name}</h3>
           </div>
 
-          <button className={styles.editButton}>Editar</button>
+          <Link href={`/mascotas/${id}/editar`} className={styles.editButton}>
+            Editar
+          </Link>
         </div>
 
         <div className={styles.infoGrid}>
@@ -48,7 +58,9 @@ export default function PetCard({
           </div>
         </div>
 
-        <button className={styles.profileButton}>Ver perfil</button>
+        <Link href={`/mascotas/${id}`} className={styles.profileButton}>
+          Ver perfil
+        </Link>
       </div>
     </article>
   );

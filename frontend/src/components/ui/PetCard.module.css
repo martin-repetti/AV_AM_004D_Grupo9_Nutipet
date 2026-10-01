@@ -57,6 +57,7 @@
   background: transparent;
 
   color: var(--np-primary);
+  text-decoration: none;
 
   font-weight: 700;
   cursor: pointer;
@@ -101,11 +102,17 @@
   height: 42px;
   padding: 0 18px;
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+
   border: none;
   border-radius: var(--np-radius-pill);
 
   background: var(--np-primary);
   color: #ffffff;
+  text-decoration: none;
 
   font-weight: 700;
   cursor: pointer;

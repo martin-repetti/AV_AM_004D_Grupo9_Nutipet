@@ -1,7 +1,30 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import styles from "./Navbar.module.css";
+import ProfileMenu, { type SessionUser } from "./ProfileMenu";
+import { verifySessionToken } from "@/lib/auth";
 
-export default function Navbar() {
+async function getSessionUser(): Promise<SessionUser | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("nutripet_session")?.value;
+
+  if (!token) return null;
+
+  try {
+    const session = await verifySessionToken(token);
+    return {
+      name: session.name as string,
+      email: session.email as string,
+    };
+  } catch {
+    // Token ausente, inválido o expirado: se trata como sesión no iniciada.
+    return null;
+  }
+}
+
+export default async function Navbar() {
+  const user = await getSessionUser();
+
   return (
     <header className={styles.navbar}>
       <div className={styles.container}>
@@ -26,9 +49,7 @@ export default function Navbar() {
             className={styles.search}
           />
 
-          <Link href="/login" className={styles.profileButton}>
-            👤
-          </Link>
+          <ProfileMenu user={user} />
         </div>
       </div>
     </header>

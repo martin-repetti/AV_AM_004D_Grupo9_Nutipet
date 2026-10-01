@@ -1,0 +1,78 @@
+.wrapper {
+  position: relative;
+}
+
+.trigger {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--np-border-strong);
+  border-radius: 50%;
+  background: var(--np-surface);
+
+  color: var(--np-ink);
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.trigger:hover {
+  background: var(--np-bg);
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 20;
+
+  min-width: 220px;
+  padding: 16px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+  box-shadow: var(--np-shadow);
+}
+
+.greeting {
+  margin: 0 0 2px;
+  color: var(--np-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.email {
+  margin: 0 0 14px;
+  color: var(--np-muted);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.logoutButton {
+  width: 100%;
+  height: 40px;
+
+  border: none;
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background: var(--np-primary-hover);
+}
+
+.logoutButton:disabled {
+  opacity: 0.65;
+  cursor: default;
+}

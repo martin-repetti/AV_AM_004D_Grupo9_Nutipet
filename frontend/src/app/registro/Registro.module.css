@@ -48,6 +48,41 @@
   border-color: var(--np-low);
 }
 
+.passwordField {
+  position: relative;
+}
+
+.passwordField input {
+  padding-right: 48px;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background: transparent;
+  border-radius: var(--np-radius-sm);
+
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.eyeButton:hover {
+  background: var(--np-bg);
+}
+
 .errorText {
   margin: 0;
   color: var(--np-low);
@@ -71,19 +106,6 @@
 
 .submitButton:hover {
   background: var(--np-primary-hover);
-}
-
-.successNote {
-  margin: 4px 0 0;
-  padding: 12px 14px;
-
-  border-radius: var(--np-radius-sm);
-  background: var(--np-good-soft);
-
-  text-align: center;
-  color: var(--np-good);
-  font-size: 14px;
-  font-weight: 600;
 }
 
 .footerText {

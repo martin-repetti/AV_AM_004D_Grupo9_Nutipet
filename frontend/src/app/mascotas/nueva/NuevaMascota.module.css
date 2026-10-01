@@ -234,6 +234,63 @@
   background: var(--np-primary-hover);
 }
 
+.dangerZone {
+  margin-top: 28px;
+  padding: 20px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  background: var(--np-low-soft);
+  border: 1px solid var(--np-low);
+  border-radius: var(--np-radius-card);
+}
+
+.dangerZone h2 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--np-ink);
+}
+
+.dangerZone p {
+  margin: 4px 0 0;
+  color: var(--np-muted);
+  font-size: 13px;
+}
+
+.deleteButton {
+  flex-shrink: 0;
+
+  min-height: 44px;
+  padding: 0 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--np-low);
+  border-radius: var(--np-radius-pill);
+  background: var(--np-surface);
+
+  color: var(--np-low);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background: var(--np-low);
+  color: #ffffff;
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 @media (max-width: 700px) {
   .page {
     padding: 40px 20px 60px;

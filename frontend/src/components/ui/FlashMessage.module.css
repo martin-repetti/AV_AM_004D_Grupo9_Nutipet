@@ -1,0 +1,40 @@
+.toast {
+  position: fixed;
+  top: 92px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  padding: 14px 24px;
+
+  background: var(--np-good-soft);
+  border: 1px solid var(--np-good);
+  border-radius: var(--np-radius-pill);
+  box-shadow: var(--np-shadow);
+
+  color: var(--np-good);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+
+  animation: flash-in 0.2s ease-out;
+}
+
+@keyframes flash-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .toast {
+    left: 16px;
+    right: 16px;
+    top: 86px;
+    transform: none;
+    width: auto;
+  }
+}

@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import styles from "./NuevaMascota.module.css";
+import { setFlashMessage } from "@/components/ui/FlashMessage";
+// Reutiliza los mismos estilos que el formulario de "Agregar mascota":
+// es visualmente el mismo formulario, solo que precargado y con PATCH.
+import styles from "../../nueva/NuevaMascota.module.css";
 
 type Breed = {
   id: number;
@@ -12,32 +15,63 @@ type Breed = {
 
 const OTHER_BREED = "Otra raza / No aparece en la lista";
 
-export default function NuevaMascotaPage() {
+type PetData = {
+  id: number;
+  name: string;
+  species: string;
+  breed: string | null;
+  custom_breed: string | null;
+  sex: string | null;
+  birth_date: string | null;
+  weight_kg: string | number | null;
+  activity_level: string | null;
+  body_condition: string | null;
+  sterilized: boolean | null;
+  food_preference: string | null;
+  allergies: string | null;
+  special_condition: string | null;
+};
+
+type EditarMascotaFormProps = {
+  pet: PetData;
+};
+
+export default function EditarMascotaForm({ pet }: EditarMascotaFormProps) {
   const router = useRouter();
 
-  const [species, setSpecies] = useState("");
-  const [breed, setBreed] = useState("");
+  const [species, setSpecies] = useState(pet.species);
+  const [breed, setBreed] = useState(pet.breed || "");
   const [breeds, setBreeds] = useState<Breed[]>([]);
 
   const [loadingBreeds, setLoadingBreeds] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
-  // Cargar razas cuando cambia la especie
+  // En la primera carga no queremos perder la raza que ya tenía la
+  // mascota mientras se cargan las opciones; solo se reinicia cuando el
+  // usuario cambia la especie manualmente.
+  const isFirstRun = useRef(true);
+
   useEffect(() => {
     if (!species) {
-      // Reinicio de estado derivado al cambiar la especie, no una
-      // sincronización en cascada.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setBreeds([]);
       setBreed("");
       return;
     }
 
+    const keepCurrentBreed = isFirstRun.current;
+    isFirstRun.current = false;
+
     const loadBreeds = async () => {
       try {
         setLoadingBreeds(true);
-        setBreed("");
+
+        if (!keepCurrentBreed) {
+          setBreed("");
+        }
+
         setError("");
 
         const response = await fetch(
@@ -79,9 +113,7 @@ export default function NuevaMascotaPage() {
       species,
       breed,
       customBreed:
-        breed === OTHER_BREED
-          ? formData.get("customBreed")
-          : null,
+        breed === OTHER_BREED ? formData.get("customBreed") : null,
       sex: formData.get("sex"),
       birthDate: formData.get("birthdate"),
       weightKg: weightValue ? Number(weightValue) : null,
@@ -101,8 +133,8 @@ export default function NuevaMascotaPage() {
     };
 
     try {
-      const response = await fetch("/api/pets", {
-        method: "POST",
+      const response = await fetch(`/api/pets/${pet.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -112,20 +144,56 @@ export default function NuevaMascotaPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "No se pudo registrar la mascota.");
+        setError(data.message || "No se pudo actualizar la mascota.");
         return;
       }
 
-      router.push("/mascotas");
+      router.push(`/mascotas/${pet.id}`);
       router.refresh();
     } catch (error) {
-      console.error("Error registrando mascota:", error);
+      console.error("Error actualizando mascota:", error);
 
       setError(
         "No fue posible conectar con el servidor. Inténtalo nuevamente."
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      `¿Seguro que quieres eliminar a ${pet.name}? Esta acción no se puede deshacer.`
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/pets/${pet.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "No se pudo eliminar la mascota.");
+        return;
+      }
+
+      setFlashMessage(`${pet.name} fue eliminada correctamente.`);
+      router.push("/mascotas");
+      router.refresh();
+    } catch (error) {
+      console.error("Error eliminando mascota:", error);
+
+      setError(
+        "No fue posible conectar con el servidor. Inténtalo nuevamente."
+      );
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -136,15 +204,12 @@ export default function NuevaMascotaPage() {
           <div>
             <span className={styles.eyebrow}>MASCOTAS</span>
 
-            <h1>Agregar mascota</h1>
+            <h1>Editar mascota</h1>
 
-            <p>
-              Registra sus características para obtener recomendaciones más
-              precisas.
-            </p>
+            <p>Actualiza las características de {pet.name}.</p>
           </div>
 
-          <Link href="/mascotas" className={styles.backButton}>
+          <Link href={`/mascotas/${pet.id}`} className={styles.backButton}>
             ← Volver
           </Link>
         </div>
@@ -171,6 +236,7 @@ export default function NuevaMascotaPage() {
                   name="name"
                   type="text"
                   placeholder="Ej: Max"
+                  defaultValue={pet.name}
                   required
                 />
               </div>
@@ -227,9 +293,7 @@ export default function NuevaMascotaPage() {
 
               {breed === OTHER_BREED && (
                 <div className={styles.field}>
-                  <label htmlFor="customBreed">
-                    ¿Cuál es la raza?
-                  </label>
+                  <label htmlFor="customBreed">¿Cuál es la raza?</label>
 
                   <input
                     id="customBreed"
@@ -237,6 +301,7 @@ export default function NuevaMascotaPage() {
                     type="text"
                     maxLength={100}
                     placeholder="Ej: Toyger"
+                    defaultValue={pet.custom_breed || ""}
                     required
                   />
                 </div>
@@ -245,7 +310,7 @@ export default function NuevaMascotaPage() {
               <div className={styles.field}>
                 <label htmlFor="sex">Sexo</label>
 
-                <select id="sex" name="sex" defaultValue="">
+                <select id="sex" name="sex" defaultValue={pet.sex || ""}>
                   <option value="" disabled>
                     Selecciona
                   </option>
@@ -257,14 +322,13 @@ export default function NuevaMascotaPage() {
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="birthdate">
-                  Fecha de nacimiento
-                </label>
+                <label htmlFor="birthdate">Fecha de nacimiento</label>
 
                 <input
                   id="birthdate"
                   name="birthdate"
                   type="date"
+                  defaultValue={pet.birth_date || ""}
                 />
               </div>
 
@@ -279,6 +343,7 @@ export default function NuevaMascotaPage() {
                     min="0.1"
                     step="0.1"
                     placeholder="Ej: 22"
+                    defaultValue={pet.weight_kg ?? ""}
                   />
 
                   <span>kg</span>
@@ -304,14 +369,12 @@ export default function NuevaMascotaPage() {
 
             <div className={styles.grid}>
               <div className={styles.field}>
-                <label htmlFor="activity">
-                  Nivel de actividad
-                </label>
+                <label htmlFor="activity">Nivel de actividad</label>
 
                 <select
                   id="activity"
                   name="activity"
-                  defaultValue=""
+                  defaultValue={pet.activity_level || ""}
                 >
                   <option value="" disabled>
                     Selecciona
@@ -324,14 +387,12 @@ export default function NuevaMascotaPage() {
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="bodyCondition">
-                  Condición corporal
-                </label>
+                <label htmlFor="bodyCondition">Condición corporal</label>
 
                 <select
                   id="bodyCondition"
                   name="bodyCondition"
-                  defaultValue=""
+                  defaultValue={pet.body_condition || ""}
                 >
                   <option value="" disabled>
                     Selecciona
@@ -344,14 +405,18 @@ export default function NuevaMascotaPage() {
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="sterilized">
-                  Esterilización
-                </label>
+                <label htmlFor="sterilized">Esterilización</label>
 
                 <select
                   id="sterilized"
                   name="sterilized"
-                  defaultValue=""
+                  defaultValue={
+                    pet.sterilized === true
+                      ? "yes"
+                      : pet.sterilized === false
+                      ? "no"
+                      : ""
+                  }
                 >
                   <option value="" disabled>
                     Selecciona
@@ -363,18 +428,14 @@ export default function NuevaMascotaPage() {
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="foodType">
-                  Preferencia de alimento
-                </label>
+                <label htmlFor="foodType">Preferencia de alimento</label>
 
                 <select
                   id="foodType"
                   name="foodType"
-                  defaultValue=""
+                  defaultValue={pet.food_preference || ""}
                 >
-                  <option value="">
-                    Sin preferencia
-                  </option>
+                  <option value="">Sin preferencia</option>
 
                   <option value="Seco">Seco</option>
                   <option value="Húmedo">Húmedo</option>
@@ -411,6 +472,7 @@ export default function NuevaMascotaPage() {
                   name="allergies"
                   type="text"
                   placeholder="Ej: pollo, trigo"
+                  defaultValue={pet.allergies || ""}
                 />
               </div>
 
@@ -422,7 +484,7 @@ export default function NuevaMascotaPage() {
                 <select
                   id="condition"
                   name="condition"
-                  defaultValue=""
+                  defaultValue={pet.special_condition || ""}
                 >
                   <option value="">Ninguna</option>
 
@@ -430,21 +492,13 @@ export default function NuevaMascotaPage() {
                     Sensibilidad digestiva
                   </option>
 
-                  <option value="Control de peso">
-                    Control de peso
-                  </option>
+                  <option value="Control de peso">Control de peso</option>
 
-                  <option value="Piel y pelaje">
-                    Piel y pelaje
-                  </option>
+                  <option value="Piel y pelaje">Piel y pelaje</option>
 
-                  <option value="Articulaciones">
-                    Articulaciones
-                  </option>
+                  <option value="Articulaciones">Articulaciones</option>
 
-                  <option value="Cuidado urinario">
-                    Cuidado urinario
-                  </option>
+                  <option value="Cuidado urinario">Cuidado urinario</option>
                 </select>
               </div>
             </div>
@@ -469,10 +523,7 @@ export default function NuevaMascotaPage() {
           )}
 
           <div className={styles.actions}>
-            <Link
-              href="/mascotas"
-              className={styles.cancelButton}
-            >
+            <Link href={`/mascotas/${pet.id}`} className={styles.cancelButton}>
               Cancelar
             </Link>
 
@@ -481,10 +532,28 @@ export default function NuevaMascotaPage() {
               className={styles.saveButton}
               disabled={loading || loadingBreeds}
             >
-              {loading ? "Guardando..." : "Guardar mascota"}
+              {loading ? "Guardando..." : "Guardar cambios"}
             </button>
           </div>
         </form>
+
+        <div className={styles.dangerZone}>
+          <div>
+            <h2>Eliminar mascota</h2>
+            <p>
+              Esta acción es permanente y no se puede deshacer.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className={styles.deleteButton}
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            {deleting ? "Eliminando..." : "Eliminar mascota"}
+          </button>
+        </div>
       </div>
     </main>
   );

@@ -3,6 +3,7 @@ import { Baloo_2, Nunito_Sans } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
+import FlashMessage from "@/components/ui/FlashMessage";
 
 const balooTwo = Baloo_2({
   variable: "--font-baloo",
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${balooTwo.variable} ${nunitoSans.variable}`}>
       <body>
+        <FlashMessage />
         <Navbar />
 
         {children}
