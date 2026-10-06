@@ -35,21 +35,57 @@ Mejora la experiencia de compra y entrega opciones de mejor calidad en lo que a 
 
 ### Requisitos previos
 
-- Descargar el proyecto.
-- Contar con una versión reciente de [Node.js](https://nodejs.org/es/download).
+- [Node.js](https://nodejs.org/es/download) (versión LTS reciente).
+- [PostgreSQL](https://www.postgresql.org/download/) (incluye `psql`). Recuerda la contraseña del usuario `postgres`.
+- Git para clonar el repositorio.
 
-### Pasos
+Los comandos son para PowerShell en Windows, ejecutados desde la raíz del proyecto.
 
-```bash
-# 1. Ubicarse en la carpeta del proyecto
-cd ./ruta/del/proyecto
+### 1. Clonar el repositorio
 
-# 2. Instalar dependencias
+```powershell
+git clone https://github.com/martin-repetti/AV_AM_004D_Grupo9_Nutipet.git
+cd AV_AM_004D_Grupo9_Nutipet
+```
+
+### 2. Crear la base de datos
+
+```powershell
+psql -U postgres -c "CREATE DATABASE nutripet_db;"
+```
+
+### 3. Cargar el esquema y las razas
+
+```powershell
+psql -U postgres -d nutripet_db -f database\schema.sql
+psql -U postgres -d nutripet_db -f database\seed_breeds.sql
+```
+
+Si necesitas volver a empezar, elimina la base con `psql -U postgres -c "DROP DATABASE nutripet_db;"` y repite los pasos 2 y 3.
+
+### 4. Configurar las variables de entorno
+
+```powershell
+copy frontend\.env.example frontend\.env.local
+```
+
+Abre `frontend\.env.local` y completa:
+
+- `DB_USER` y `DB_PASSWORD`: tu usuario y contraseña de PostgreSQL (por ejemplo `postgres`).
+- `DB_NAME`: `nutripet_db`.
+- `JWT_SECRET`: una cadena larga y aleatoria, propia de tu equipo.
+
+No subas `frontend\.env.local` al repositorio: ya está ignorado por Git.
+
+### 5. Instalar dependencias y ejecutar
+
+```powershell
+cd frontend
 npm install
-
-# 3. Ejecutar en modo desarrollo
 npm run dev
 ```
+
+Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
 ## Equipo
 
