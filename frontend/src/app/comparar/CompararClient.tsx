@@ -6,6 +6,7 @@ import { petStage } from "@/lib/compatibility/petStage";
 import { normalize } from "@/lib/compatibility/normalize";
 import type { NutritionRange, RuleSetWeights } from "@/lib/compatibility/types";
 import { ALLERGEN_LABELS, type FoodRow } from "@/types/catalogFood";
+import { formatDisplayName } from "@/utils/productName";
 import CatalogFoodCard from "@/components/compare/CatalogFoodCard";
 import ComparisonTable from "@/components/compare/ComparisonTable";
 import styles from "./Comparar.module.css";
@@ -184,7 +185,7 @@ export default function CompararClient({
               .filter((item) => item.reason === "alergia")
               .map(
                 (item) =>
-                  `${item.food.brand} ${item.food.name} (${ALLERGEN_LABELS[item.allergen!]})`
+                  `${item.food.brand} ${formatDisplayName(item.food.name)} (${ALLERGEN_LABELS[item.allergen!]})`
               )
               .join(", ")}
           </section>
@@ -223,8 +224,8 @@ export default function CompararClient({
             {showBudgetCard && extraCost > 0 && best && (
               <p className={styles.compareNote}>
                 Pagando ${extraCost.toLocaleString("es-CL")} más, puedes llevar{" "}
-                <strong>{best.food.name}</strong> en vez de{" "}
-                <strong>{bestWithinBudget?.food.name}</strong>.
+                <strong>{formatDisplayName(best.food.name)}</strong> en vez de{" "}
+                <strong>{bestWithinBudget?.food.name && formatDisplayName(bestWithinBudget.food.name)}</strong>.
               </p>
             )}
 

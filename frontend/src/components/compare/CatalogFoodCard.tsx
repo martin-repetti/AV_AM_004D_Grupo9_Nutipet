@@ -1,4 +1,5 @@
 import type { ScoredFood } from "@/lib/compatibility/types";
+import { formatDisplayName } from "@/utils/productName";
 import styles from "./CatalogFoodCard.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -49,7 +50,7 @@ export default function CatalogFoodCard({
       <div className={styles.header}>
         <div>
           <p className={styles.brand}>{food.brand}</p>
-          <h3>{food.name}</h3>
+          <h3>{formatDisplayName(food.name)}</h3>
           {metaParts.length > 0 && (
             <p className={styles.meta}>{metaParts.join(" · ")}</p>
           )}

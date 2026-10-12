@@ -1,4 +1,5 @@
 import type { ScoredFood } from "@/lib/compatibility/types";
+import { formatDisplayName } from "@/utils/productName";
 import styles from "./ComparisonTable.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -31,7 +32,7 @@ export default function ComparisonTable({ items, onRemove }: ComparisonTableProp
               <th>&nbsp;</th>
               {items.map(({ food }) => (
                 <th key={food.id}>
-                  <span className={styles.foodName}>{food.name}</span>
+                  <span className={styles.foodName}>{formatDisplayName(food.name)}</span>
                   <span className={styles.brand}>{food.brand}</span>
                 </th>
               ))}
