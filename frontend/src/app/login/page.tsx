@@ -122,7 +122,7 @@ export default function LoginPage() {
             Recordarme
           </label>
 
-          <Link href="#" className={styles.forgotLink}>
+          <Link href="/olvide-contrasena" className={styles.forgotLink}>
             ¿Olvidaste tu contraseña?
           </Link>
         </div>

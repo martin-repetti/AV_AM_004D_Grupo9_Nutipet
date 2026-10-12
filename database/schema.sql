@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict YrrojtVILYaE0KRxijyGTvX1oAiweyfch0uJyieDZeKFHS6HykcmaR7uiGOXgSU
+\restrict QYAGuH5rGomRNzaJIBSY1AzYmZ6mtBdLCi8tVaAzOKYOjMIeDeNPXxGe0QdJiBQ
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
@@ -176,7 +176,9 @@ CREATE TABLE public.users (
     email character varying(255) NOT NULL,
     password_hash character varying(255) NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    reset_token text,
+    reset_token_expires_at timestamp with time zone
 );
 
 
@@ -334,5 +336,5 @@ ALTER TABLE ONLY public.subscriptions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict YrrojtVILYaE0KRxijyGTvX1oAiweyfch0uJyieDZeKFHS6HykcmaR7uiGOXgSU
+\unrestrict QYAGuH5rGomRNzaJIBSY1AzYmZ6mtBdLCi8tVaAzOKYOjMIeDeNPXxGe0QdJiBQ
 
