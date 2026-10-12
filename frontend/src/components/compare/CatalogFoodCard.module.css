@@ -1,0 +1,114 @@
+.card {
+  padding: 24px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  margin: 0 0 4px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--np-muted);
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--np-ink);
+}
+
+.meta {
+  margin: 6px 0 0;
+  color: var(--np-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.score {
+  flex-shrink: 0;
+  padding: 10px 14px;
+
+  text-align: right;
+  background: var(--np-primary-soft);
+  border-radius: var(--np-radius-sm);
+  color: var(--np-primary);
+}
+
+.score span {
+  display: block;
+  font-size: 12px;
+}
+
+.score strong {
+  font-size: 20px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: var(--np-radius-pill);
+  background: var(--np-good-soft);
+  color: var(--np-good);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.infoGrid {
+  margin-top: 16px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.infoItem {
+  padding: 12px;
+
+  background: var(--np-bg);
+  border-radius: var(--np-radius-sm);
+}
+
+.infoItem span {
+  display: block;
+  margin-bottom: 4px;
+
+  font-size: 12px;
+  color: var(--np-muted);
+}
+
+.infoItem strong {
+  font-size: 14px;
+  color: var(--np-ink);
+}
+
+.priceNote {
+  margin: 12px 0 0;
+  color: var(--np-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 650px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
