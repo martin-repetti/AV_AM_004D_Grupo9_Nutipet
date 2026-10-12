@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { compareFoods } from "@/lib/compatibility/engine";
 import { petStage } from "@/lib/compatibility/petStage";
+import { normalize } from "@/lib/compatibility/normalize";
 import type { NutritionRange, RuleSetWeights } from "@/lib/compatibility/types";
 import { ALLERGEN_LABELS, type FoodRow } from "@/types/catalogFood";
 import CatalogFoodCard from "@/components/compare/CatalogFoodCard";
@@ -29,6 +30,7 @@ type CompararClientProps = {
 };
 
 const MAX_COMPARISON_ITEMS = 4;
+const DEFAULT_COMPARISON_SIZE = 3;
 
 export default function CompararClient({
   pets,
@@ -38,7 +40,12 @@ export default function CompararClient({
 }: CompararClientProps) {
   const [selectedPetId, setSelectedPetId] = useState(pets[0].id);
   const [budgetInput, setBudgetInput] = useState("");
-  const [selectedFoodIds, setSelectedFoodIds] = useState<number[]>([]);
+  // null = todavía sin tocar la selección para esta mascota: se usan las
+  // 3 mejores opciones por defecto. Al marcar/desmarcar algo, pasa a ser
+  // una selección manual explícita.
+  const [manualSelection, setManualSelection] = useState<number[] | null>(null);
+  const [search, setSearch] = useState("");
+  const [brandFilter, setBrandFilter] = useState("");
 
   const selectedPet = pets.find((pet) => pet.id === selectedPetId) ?? pets[0];
 
@@ -74,17 +81,44 @@ export default function CompararClient({
       ? best.food.priceMin - bestWithinBudget.food.priceMin
       : 0;
 
+  const defaultComparisonIds = useMemo(
+    () => eligible.slice(0, DEFAULT_COMPARISON_SIZE).map((item) => item.food.id),
+    [eligible]
+  );
+
+  const selectedFoodIds = manualSelection ?? defaultComparisonIds;
+
   const selectedForComparison = eligible.filter((item) =>
     selectedFoodIds.includes(item.food.id)
   );
 
   const toggleSelected = (foodId: number) => {
-    setSelectedFoodIds((prev) => {
-      if (prev.includes(foodId)) return prev.filter((id) => id !== foodId);
-      if (prev.length >= MAX_COMPARISON_ITEMS) return prev;
-      return [...prev, foodId];
+    setManualSelection((prev) => {
+      const base = prev ?? defaultComparisonIds;
+      if (base.includes(foodId)) return base.filter((id) => id !== foodId);
+      if (base.length >= MAX_COMPARISON_ITEMS) return base;
+      return [...base, foodId];
     });
   };
+
+  const brands = useMemo(
+    () => [...new Set(eligible.map((item) => item.food.brand))].sort(),
+    [eligible]
+  );
+
+  const filteredEligible = eligible.filter((item) => {
+    if (brandFilter && item.food.brand !== brandFilter) return false;
+
+    if (search.trim()) {
+      const term = normalize(search);
+      const haystack = normalize(
+        `${item.food.brand} ${item.food.name} ${item.food.firstIngredient ?? ""}`
+      );
+      if (!haystack.includes(term)) return false;
+    }
+
+    return true;
+  });
 
   return (
     <main className={styles.page}>
@@ -106,7 +140,7 @@ export default function CompararClient({
                 value={selectedPetId}
                 onChange={(e) => {
                   setSelectedPetId(Number(e.target.value));
-                  setSelectedFoodIds([]);
+                  setManualSelection(null);
                 }}
               >
                 {pets.map((pet) => (
@@ -201,31 +235,79 @@ export default function CompararClient({
               </p>
             )}
 
-            {selectedForComparison.length >= 2 && (
-              <ComparisonTable
-                items={selectedForComparison}
-                onRemove={toggleSelected}
-              />
+            {selectedForComparison.length > 0 && (
+              <>
+                <p className={styles.compareNote}>
+                  {manualSelection
+                    ? "Tu comparación personalizada:"
+                    : `Tus ${selectedForComparison.length} mejores opciones para ${selectedPet.name}:`}
+                </p>
+
+                <ComparisonTable
+                  items={selectedForComparison}
+                  onRemove={toggleSelected}
+                />
+              </>
             )}
 
             <section>
               <h2>Todos los alimentos compatibles</h2>
               <p>
                 Ordenados según compatibilidad. Marca hasta{" "}
-                {MAX_COMPARISON_ITEMS} para compararlos en una tabla.
+                {MAX_COMPARISON_ITEMS} para compararlos en la tabla de arriba
+                (empieza con las 3 mejores).
               </p>
 
-              <div className={styles.list}>
-                {eligible.map((item) => (
-                  <CatalogFoodCard
-                    key={item.food.id}
-                    scored={item}
-                    selectable
-                    selected={selectedFoodIds.includes(item.food.id)}
-                    onToggleSelect={() => toggleSelected(item.food.id)}
+              <div className={styles.filtersRow}>
+                <div className={styles.filterField}>
+                  <label htmlFor="search">Buscar alimento</label>
+
+                  <input
+                    id="search"
+                    type="search"
+                    placeholder="Nombre, marca o ingrediente..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
-                ))}
+                </div>
+
+                {brands.length > 1 && (
+                  <div className={styles.filterField}>
+                    <label htmlFor="brand">Marca</label>
+
+                    <select
+                      id="brand"
+                      value={brandFilter}
+                      onChange={(e) => setBrandFilter(e.target.value)}
+                    >
+                      <option value="">Todas las marcas</option>
+                      {brands.map((brand) => (
+                        <option key={brand} value={brand}>
+                          {brand}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
+
+              {filteredEligible.length === 0 ? (
+                <p className={styles.compareNote}>
+                  No encontramos alimentos que coincidan con tu búsqueda.
+                </p>
+              ) : (
+                <div className={styles.list}>
+                  {filteredEligible.map((item) => (
+                    <CatalogFoodCard
+                      key={item.food.id}
+                      scored={item}
+                      selectable
+                      selected={selectedFoodIds.includes(item.food.id)}
+                      onToggleSelect={() => toggleSelected(item.food.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </section>
           </>
         )}
