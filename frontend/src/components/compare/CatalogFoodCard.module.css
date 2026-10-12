@@ -1,9 +1,32 @@
 .card {
+  position: relative;
   padding: 24px;
 
   background: var(--np-surface);
   border: 1px solid var(--np-border);
   border-radius: var(--np-radius-card);
+}
+
+.card.selected {
+  border-color: var(--np-primary);
+  box-shadow: 0 0 0 1px var(--np-primary);
+}
+
+.selectRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--np-ink);
+}
+
+.selectRow input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--np-primary);
 }
 
 .header {
@@ -34,7 +57,7 @@
   line-height: 1.5;
 }
 
-.score {
+.scoreBlock {
   flex-shrink: 0;
   padding: 10px 14px;
 
@@ -44,29 +67,19 @@
   color: var(--np-primary);
 }
 
-.score span {
+.scoreBlock span {
   display: block;
   font-size: 12px;
 }
 
-.score strong {
+.scoreBlock strong {
   font-size: 20px;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.tag {
-  padding: 4px 10px;
-  border-radius: var(--np-radius-pill);
-  background: var(--np-good-soft);
-  color: var(--np-good);
-  font-size: 12px;
-  font-weight: 600;
+.coverage {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--np-muted);
 }
 
 .infoGrid {
@@ -103,6 +116,51 @@
   font-size: 12px;
 }
 
+.notesGrid {
+  margin-top: 16px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.notesColumn h4 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.positives h4 {
+  color: var(--np-good);
+}
+
+.considerations h4 {
+  color: var(--np-mid);
+}
+
+.notesColumn ul {
+  margin: 0;
+  padding-left: 18px;
+
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--np-ink);
+}
+
+.warnings {
+  margin-top: 12px;
+  padding: 10px 12px;
+
+  background: var(--np-bg);
+  border-radius: var(--np-radius-sm);
+
+  color: var(--np-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 @media (max-width: 650px) {
   .header {
     flex-direction: column;
@@ -110,5 +168,9 @@
 
   .infoGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .notesGrid {
+    grid-template-columns: 1fr;
   }
 }

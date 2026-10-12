@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict QYAGuH5rGomRNzaJIBSY1AzYmZ6mtBdLCi8tVaAzOKYOjMIeDeNPXxGe0QdJiBQ
+\restrict Pi56cYwhTquyNQUeE4o1KelaHqw1DYvEDdOalxGcdfVoMMabw6LBIjZxJp9AXdr
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
@@ -53,6 +53,159 @@ CREATE SEQUENCE public.breeds_id_seq
 --
 
 ALTER SEQUENCE public.breeds_id_seq OWNED BY public.breeds.id;
+
+
+--
+-- Name: compatibility_criteria_weights; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.compatibility_criteria_weights (
+    id bigint NOT NULL,
+    rule_set_id bigint NOT NULL,
+    criterion_key character varying(50) NOT NULL,
+    weight numeric(4,3) NOT NULL
+);
+
+
+--
+-- Name: compatibility_criteria_weights_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.compatibility_criteria_weights_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: compatibility_criteria_weights_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.compatibility_criteria_weights_id_seq OWNED BY public.compatibility_criteria_weights.id;
+
+
+--
+-- Name: compatibility_rule_sets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.compatibility_rule_sets (
+    id bigint NOT NULL,
+    version character varying(20) NOT NULL,
+    name character varying(100) NOT NULL,
+    description text,
+    is_active boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+--
+-- Name: compatibility_rule_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.compatibility_rule_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: compatibility_rule_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.compatibility_rule_sets_id_seq OWNED BY public.compatibility_rule_sets.id;
+
+
+--
+-- Name: foods; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.foods (
+    id bigint NOT NULL,
+    brand character varying(100) NOT NULL,
+    name character varying(200) NOT NULL,
+    species character varying(10) DEFAULT ''::character varying NOT NULL,
+    type character varying(10) DEFAULT ''::character varying NOT NULL,
+    stage character varying(20) DEFAULT ''::character varying NOT NULL,
+    conditions text[] DEFAULT '{}'::text[] NOT NULL,
+    protein numeric(5,2),
+    fat numeric(5,2),
+    fiber numeric(5,2),
+    moisture numeric(5,2),
+    protein_ms numeric(5,2),
+    fat_ms numeric(5,2),
+    fiber_ms numeric(5,2),
+    kcal_kg numeric(7,2),
+    kcal_kg_estimated boolean DEFAULT false NOT NULL,
+    allergens jsonb NOT NULL,
+    first_ingredient character varying(200),
+    formats text[] DEFAULT '{}'::text[] NOT NULL,
+    price_min numeric(10,0),
+    price_per_kg numeric(10,0),
+    price_store character varying(50),
+    price_url text,
+    source_url text,
+    scraped_at date,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+--
+-- Name: foods_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.foods_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: foods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.foods_id_seq OWNED BY public.foods.id;
+
+
+--
+-- Name: nutrition_reference_ranges; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.nutrition_reference_ranges (
+    id bigint NOT NULL,
+    species character varying(10) NOT NULL,
+    stage character varying(20) NOT NULL,
+    nutrient character varying(20) NOT NULL,
+    min_value numeric(5,2),
+    ideal_min numeric(5,2),
+    ideal_max numeric(5,2),
+    max_value numeric(5,2),
+    source text
+);
+
+
+--
+-- Name: nutrition_reference_ranges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.nutrition_reference_ranges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: nutrition_reference_ranges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.nutrition_reference_ranges_id_seq OWNED BY public.nutrition_reference_ranges.id;
 
 
 --
@@ -209,6 +362,34 @@ ALTER TABLE ONLY public.breeds ALTER COLUMN id SET DEFAULT nextval('public.breed
 
 
 --
+-- Name: compatibility_criteria_weights id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.compatibility_criteria_weights ALTER COLUMN id SET DEFAULT nextval('public.compatibility_criteria_weights_id_seq'::regclass);
+
+
+--
+-- Name: compatibility_rule_sets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.compatibility_rule_sets ALTER COLUMN id SET DEFAULT nextval('public.compatibility_rule_sets_id_seq'::regclass);
+
+
+--
+-- Name: foods id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.foods ALTER COLUMN id SET DEFAULT nextval('public.foods_id_seq'::regclass);
+
+
+--
+-- Name: nutrition_reference_ranges id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nutrition_reference_ranges ALTER COLUMN id SET DEFAULT nextval('public.nutrition_reference_ranges_id_seq'::regclass);
+
+
+--
 -- Name: pets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -242,6 +423,54 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.breeds
     ADD CONSTRAINT breeds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: compatibility_criteria_weights compatibility_criteria_weights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.compatibility_criteria_weights
+    ADD CONSTRAINT compatibility_criteria_weights_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: compatibility_criteria_weights compatibility_criteria_weights_rule_set_id_criterion_key_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.compatibility_criteria_weights
+    ADD CONSTRAINT compatibility_criteria_weights_rule_set_id_criterion_key_key UNIQUE (rule_set_id, criterion_key);
+
+
+--
+-- Name: compatibility_rule_sets compatibility_rule_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.compatibility_rule_sets
+    ADD CONSTRAINT compatibility_rule_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: foods foods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.foods
+    ADD CONSTRAINT foods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nutrition_reference_ranges nutrition_reference_ranges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nutrition_reference_ranges
+    ADD CONSTRAINT nutrition_reference_ranges_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nutrition_reference_ranges nutrition_reference_ranges_species_stage_nutrient_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nutrition_reference_ranges
+    ADD CONSTRAINT nutrition_reference_ranges_species_stage_nutrient_key UNIQUE (species, stage, nutrient);
 
 
 --
@@ -309,6 +538,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: compatibility_criteria_weights compatibility_criteria_weights_rule_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.compatibility_criteria_weights
+    ADD CONSTRAINT compatibility_criteria_weights_rule_set_id_fkey FOREIGN KEY (rule_set_id) REFERENCES public.compatibility_rule_sets(id);
+
+
+--
 -- Name: pets fk_pets_user; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -336,5 +573,5 @@ ALTER TABLE ONLY public.subscriptions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict QYAGuH5rGomRNzaJIBSY1AzYmZ6mtBdLCi8tVaAzOKYOjMIeDeNPXxGe0QdJiBQ
+\unrestrict Pi56cYwhTquyNQUeE4o1KelaHqw1DYvEDdOalxGcdfVoMMabw6LBIjZxJp9AXdr
 

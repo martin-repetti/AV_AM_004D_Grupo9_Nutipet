@@ -1,0 +1,97 @@
+.wrapper {
+  padding: 24px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.wrapper h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  color: var(--np-ink);
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+
+  border-bottom: 1px solid var(--np-border);
+  font-size: 13px;
+}
+
+.table th {
+  color: var(--np-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table td:first-child,
+.table th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+
+  background: var(--np-surface);
+  color: var(--np-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table td strong,
+.foodName {
+  color: var(--np-ink);
+  font-size: 14px;
+}
+
+.brand {
+  display: block;
+  color: var(--np-muted);
+  font-size: 12px;
+}
+
+.scoreCell strong {
+  color: var(--np-primary);
+  font-size: 15px;
+}
+
+.list {
+  margin: 0;
+  padding-left: 16px;
+  line-height: 1.5;
+}
+
+.removeButton {
+  border: none;
+  background: transparent;
+  color: var(--np-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  color: var(--np-low);
+}
+
+/* Los alimentos son columnas (para comparar lado a lado), así que en
+   mobile se deja scroll horizontal en vez de apilar como cards: cada
+   columna sigue siendo comparable contra la primera (etiquetas). */
+@media (max-width: 650px) {
+  .table th,
+  .table td {
+    padding: 8px 10px;
+  }
+}

@@ -2,6 +2,9 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import pool from "@/lib/db";
 import { verifySessionToken } from "@/lib/auth";
+import { getAllFoods } from "@/services/foods";
+import { getNutritionRanges } from "@/services/nutritionRanges";
+import { getActiveRuleSetWeights } from "@/lib/compatibility/ruleSet";
 import CompararClient, { type ComparablePet } from "./CompararClient";
 import styles from "./Comparar.module.css";
 
@@ -27,9 +30,15 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
     allergies: string | null;
     special_condition: string | null;
     birth_date: string | null;
+    weight_kg: string | null;
+    activity_level: string | null;
+    body_condition: string | null;
   }>(
     `
-      SELECT id, name, species, allergies, special_condition, birth_date::text AS birth_date
+      SELECT
+        id, name, species, allergies, special_condition,
+        birth_date::text AS birth_date,
+        weight_kg, activity_level, body_condition
       FROM pets
       WHERE user_id = $1
       ORDER BY id ASC
@@ -44,6 +53,9 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
     allergies: pet.allergies,
     specialCondition: pet.special_condition,
     birthDate: pet.birth_date,
+    weightKg: pet.weight_kg !== null ? Number(pet.weight_kg) : null,
+    activityLevel: pet.activity_level,
+    bodyCondition: pet.body_condition,
   }));
 }
 
@@ -91,5 +103,18 @@ export default async function CompararPage() {
     );
   }
 
-  return <CompararClient pets={pets} />;
+  const [catalog, nutritionRanges, weights] = await Promise.all([
+    getAllFoods(pool),
+    getNutritionRanges(pool),
+    getActiveRuleSetWeights(pool),
+  ]);
+
+  return (
+    <CompararClient
+      pets={pets}
+      catalog={catalog}
+      nutritionRanges={nutritionRanges}
+      weights={weights}
+    />
+  );
 }

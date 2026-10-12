@@ -1,4 +1,4 @@
-import type { CatalogFood } from "@/types/catalogFood";
+import type { ScoredFood } from "@/lib/compatibility/types";
 import styles from "./CatalogFoodCard.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -13,18 +13,20 @@ const STAGE_LABELS: Record<string, string> = {
 };
 
 type CatalogFoodCardProps = {
-  food: CatalogFood;
-  score?: number;
-  matchedStage?: boolean;
-  matchedCondition?: boolean;
+  scored: ScoredFood;
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
 };
 
 export default function CatalogFoodCard({
-  food,
-  score,
-  matchedStage,
-  matchedCondition,
+  scored,
+  selectable,
+  selected,
+  onToggleSelect,
 }: CatalogFoodCardProps) {
+  const { food } = scored;
+
   const metaParts = [
     TYPE_LABELS[food.type],
     STAGE_LABELS[food.stage],
@@ -32,7 +34,18 @@ export default function CatalogFoodCard({
   ].filter(Boolean);
 
   return (
-    <article className={styles.card}>
+    <article className={`${styles.card} ${selected ? styles.selected : ""}`}>
+      {selectable && (
+        <label className={styles.selectRow}>
+          <input
+            type="checkbox"
+            checked={Boolean(selected)}
+            onChange={onToggleSelect}
+          />
+          Agregar a comparar
+        </label>
+      )}
+
       <div className={styles.header}>
         <div>
           <p className={styles.brand}>{food.brand}</p>
@@ -42,22 +55,14 @@ export default function CatalogFoodCard({
           )}
         </div>
 
-        {score !== undefined && (
-          <div className={styles.score}>
-            <span>Compatibilidad</span>
-            <strong>{Math.min(100, Math.round(score))}%</strong>
-          </div>
-        )}
-      </div>
-
-      {(matchedStage || matchedCondition) && (
-        <div className={styles.tags}>
-          {matchedStage && <span className={styles.tag}>Etapa adecuada</span>}
-          {matchedCondition && (
-            <span className={styles.tag}>Para su necesidad especial</span>
-          )}
+        <div className={styles.scoreBlock}>
+          <span>Compatibilidad</span>
+          <strong>{Math.min(100, Math.round(scored.score))}%</strong>
+          <p className={styles.coverage}>
+            {Math.round(scored.coverage)}% de los datos verificados
+          </p>
         </div>
-      )}
+      </div>
 
       <div className={styles.infoGrid}>
         <div className={styles.infoItem}>
@@ -77,11 +82,51 @@ export default function CatalogFoodCard({
 
         <div className={styles.infoItem}>
           <span>Desde</span>
-          <strong>${food.price.toLocaleString("es-CL")}</strong>
+          <strong>
+            {food.priceMin !== null
+              ? `$${food.priceMin.toLocaleString("es-CL")}`
+              : "No disponible"}
+          </strong>
         </div>
       </div>
 
-      <p className={styles.priceNote}>Precio demostrativo, no confirmado con la tienda.</p>
+      {food.priceMin !== null && (
+        <p className={styles.priceNote}>
+          {food.priceStore ? `Precio en ${food.priceStore}` : "Precio de tienda"}
+          {scored.estimatedMonthlyCost !== null &&
+            ` · ~$${scored.estimatedMonthlyCost.toLocaleString("es-CL")}/mes estimado`}
+        </p>
+      )}
+
+      {(scored.positives.length > 0 || scored.considerations.length > 0) && (
+        <div className={styles.notesGrid}>
+          {scored.positives.length > 0 && (
+            <div className={`${styles.notesColumn} ${styles.positives}`}>
+              <h4>Aspectos favorables</h4>
+              <ul>
+                {scored.positives.map((text, index) => (
+                  <li key={index}>{text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {scored.considerations.length > 0 && (
+            <div className={`${styles.notesColumn} ${styles.considerations}`}>
+              <h4>Aspectos por considerar</h4>
+              <ul>
+                {scored.considerations.map((text, index) => (
+                  <li key={index}>{text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {scored.warnings.length > 0 && (
+        <p className={styles.warnings}>{scored.warnings.join(" ")}</p>
+      )}
     </article>
   );
 }

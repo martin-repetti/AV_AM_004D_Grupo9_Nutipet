@@ -1,9 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { compareFoods } from "@/lib/foodMatch";
-import { ALLERGEN_LABELS } from "@/types/catalogFood";
+import { compareFoods } from "@/lib/compatibility/engine";
+import { petStage } from "@/lib/compatibility/petStage";
+import type { NutritionRange, RuleSetWeights } from "@/lib/compatibility/types";
+import { ALLERGEN_LABELS, type FoodRow } from "@/types/catalogFood";
 import CatalogFoodCard from "@/components/compare/CatalogFoodCard";
+import ComparisonTable from "@/components/compare/ComparisonTable";
 import styles from "./Comparar.module.css";
 
 export type ComparablePet = {
@@ -13,15 +16,29 @@ export type ComparablePet = {
   allergies: string | null;
   specialCondition: string | null;
   birthDate: string | null;
+  weightKg: number | null;
+  activityLevel: string | null;
+  bodyCondition: string | null;
 };
 
 type CompararClientProps = {
   pets: ComparablePet[];
+  catalog: FoodRow[];
+  nutritionRanges: NutritionRange[];
+  weights: RuleSetWeights;
 };
 
-export default function CompararClient({ pets }: CompararClientProps) {
+const MAX_COMPARISON_ITEMS = 4;
+
+export default function CompararClient({
+  pets,
+  catalog,
+  nutritionRanges,
+  weights,
+}: CompararClientProps) {
   const [selectedPetId, setSelectedPetId] = useState(pets[0].id);
   const [budgetInput, setBudgetInput] = useState("");
+  const [selectedFoodIds, setSelectedFoodIds] = useState<number[]>([]);
 
   const selectedPet = pets.find((pet) => pet.id === selectedPetId) ?? pets[0];
 
@@ -33,13 +50,19 @@ export default function CompararClient({ pets }: CompararClientProps) {
       compareFoods(
         {
           species: selectedPet.species,
-          allergies: selectedPet.allergies,
+          stage: petStage(selectedPet.birthDate),
+          weightKg: selectedPet.weightKg,
+          activityLevel: selectedPet.activityLevel,
+          bodyCondition: selectedPet.bodyCondition,
           specialCondition: selectedPet.specialCondition,
-          birthDate: selectedPet.birthDate,
+          allergies: selectedPet.allergies,
         },
-        budget
+        catalog,
+        weights,
+        budget,
+        nutritionRanges
       ),
-    [selectedPet, budget]
+    [selectedPet, catalog, weights, budget, nutritionRanges]
   );
 
   const showBudgetCard =
@@ -47,9 +70,21 @@ export default function CompararClient({ pets }: CompararClientProps) {
     (!best || bestWithinBudget!.food.id !== best.food.id);
 
   const extraCost =
-    showBudgetCard && best && bestWithinBudget
-      ? best.food.price - bestWithinBudget.food.price
+    showBudgetCard && best && bestWithinBudget && best.food.priceMin !== null && bestWithinBudget.food.priceMin !== null
+      ? best.food.priceMin - bestWithinBudget.food.priceMin
       : 0;
+
+  const selectedForComparison = eligible.filter((item) =>
+    selectedFoodIds.includes(item.food.id)
+  );
+
+  const toggleSelected = (foodId: number) => {
+    setSelectedFoodIds((prev) => {
+      if (prev.includes(foodId)) return prev.filter((id) => id !== foodId);
+      if (prev.length >= MAX_COMPARISON_ITEMS) return prev;
+      return [...prev, foodId];
+    });
+  };
 
   return (
     <main className={styles.page}>
@@ -69,7 +104,10 @@ export default function CompararClient({ pets }: CompararClientProps) {
               <select
                 id="pet"
                 value={selectedPetId}
-                onChange={(e) => setSelectedPetId(Number(e.target.value))}
+                onChange={(e) => {
+                  setSelectedPetId(Number(e.target.value));
+                  setSelectedFoodIds([]);
+                }}
               >
                 {pets.map((pet) => (
                   <option key={pet.id} value={pet.id}>
@@ -101,16 +139,18 @@ export default function CompararClient({ pets }: CompararClientProps) {
           )}
         </section>
 
-        {excluded.length > 0 && (
+        {excluded.some((item) => item.reason === "alergia") && (
           <section className={styles.excludedNote}>
-            <strong>{excluded.length}</strong> alimento
-            {excluded.length === 1 ? "" : "s"} descartado
-            {excluded.length === 1 ? "" : "s"} por contener un alérgeno de{" "}
+            <strong>
+              {excluded.filter((item) => item.reason === "alergia").length}
+            </strong>{" "}
+            alimento(s) descartado(s) por contener un alérgeno de{" "}
             {selectedPet.name}:{" "}
             {excluded
+              .filter((item) => item.reason === "alergia")
               .map(
                 (item) =>
-                  `${item.food.brand} ${item.food.name} (${ALLERGEN_LABELS[item.allergen]})`
+                  `${item.food.brand} ${item.food.name} (${ALLERGEN_LABELS[item.allergen!]})`
               )
               .join(", ")}
           </section>
@@ -131,12 +171,7 @@ export default function CompararClient({ pets }: CompararClientProps) {
                     🏆 Mejor opción
                   </span>
 
-                  <CatalogFoodCard
-                    food={best.food}
-                    score={best.score}
-                    matchedStage={best.matchedStage}
-                    matchedCondition={best.matchedCondition}
-                  />
+                  <CatalogFoodCard scored={best} />
                 </div>
               )}
 
@@ -146,12 +181,7 @@ export default function CompararClient({ pets }: CompararClientProps) {
                     💰 Mejor opción según tu presupuesto
                   </span>
 
-                  <CatalogFoodCard
-                    food={bestWithinBudget.food}
-                    score={bestWithinBudget.score}
-                    matchedStage={bestWithinBudget.matchedStage}
-                    matchedCondition={bestWithinBudget.matchedCondition}
-                  />
+                  <CatalogFoodCard scored={bestWithinBudget} />
                 </div>
               )}
             </section>
@@ -171,18 +201,28 @@ export default function CompararClient({ pets }: CompararClientProps) {
               </p>
             )}
 
+            {selectedForComparison.length >= 2 && (
+              <ComparisonTable
+                items={selectedForComparison}
+                onRemove={toggleSelected}
+              />
+            )}
+
             <section>
               <h2>Todos los alimentos compatibles</h2>
-              <p>Ordenados según compatibilidad</p>
+              <p>
+                Ordenados según compatibilidad. Marca hasta{" "}
+                {MAX_COMPARISON_ITEMS} para compararlos en una tabla.
+              </p>
 
               <div className={styles.list}>
                 {eligible.map((item) => (
                   <CatalogFoodCard
                     key={item.food.id}
-                    food={item.food}
-                    score={item.score}
-                    matchedStage={item.matchedStage}
-                    matchedCondition={item.matchedCondition}
+                    scored={item}
+                    selectable
+                    selected={selectedFoodIds.includes(item.food.id)}
+                    onToggleSelect={() => toggleSelected(item.food.id)}
                   />
                 ))}
               </div>

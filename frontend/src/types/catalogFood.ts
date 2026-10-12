@@ -35,15 +35,15 @@ export const ALLERGEN_LABELS: Record<AllergenKey, string> = {
 };
 
 /**
- * Producto del catálogo. Viene del scraper (datos/salida/productos.json),
- * recortado a lo que usa la UI. `price` es un valor DEMO: el scraper
- * todavía no capturó precios reales (ver src/data/foodCatalog.json).
+ * Fila de la tabla `foods` (catálogo real importado del scraper vía
+ * scripts/import-foods.js). Los campos de precio y kcal_kg pueden venir
+ * `null` cuando el scraper no los encontró — nunca se inventan.
  */
-export type CatalogFood = {
-  id: string;
+export type FoodRow = {
+  id: number;
   brand: string;
   name: string;
-  /** "Perro" | "Gato" | "" (sin especie detectada, se trata como universal). */
+  /** "Perro" | "Gato" | "" (especie no detectada por el scraper). */
   species: "Perro" | "Gato" | "";
   type: "seco" | "humedo" | "";
   stage: string;
@@ -52,11 +52,20 @@ export type CatalogFood = {
   fat: number | null;
   fiber: number | null;
   moisture: number | null;
+  /** Base materia seca: comparable entre alimento seco y húmedo. */
+  proteinMs: number | null;
+  fatMs: number | null;
+  fiberMs: number | null;
+  kcalKg: number | null;
+  /** true = `kcalKg` fue estimado (Atwater), no viene real del scraper. */
+  kcalKgEstimated: boolean;
   /** `null` = el scraper no pudo confirmar si lo contiene o no. */
   allergens: Record<AllergenKey, boolean | null>;
-  firstIngredient: string;
+  firstIngredient: string | null;
   formats: string[];
-  /** MOCK: precio demostrativo, no viene del scraper todavía. */
-  price: number;
+  priceMin: number | null;
+  pricePerKg: number | null;
+  priceStore: string | null;
+  priceUrl: string | null;
   sourceUrl: string | null;
 };

@@ -54,11 +54,13 @@ cd AV_AM_004D_Grupo9_Nutipet
 psql -U postgres -c "CREATE DATABASE nutripet_db;"
 ```
 
-### 3. Cargar el esquema y las razas
+### 3. Cargar el esquema y los datos semilla
 
 ```powershell
 psql -U postgres -d nutripet_db -f database\schema.sql
 psql -U postgres -d nutripet_db -f database\seed_breeds.sql
+psql -U postgres -d nutripet_db -f database\seed_nutrition_ranges.sql
+psql -U postgres -d nutripet_db -f database\seed_compatibility_weights.sql
 ```
 
 Si necesitas volver a empezar, elimina la base con `psql -U postgres -c "DROP DATABASE nutripet_db;"` y repite los pasos 2 y 3.
@@ -77,15 +79,33 @@ Abre `frontend\.env.local` y completa:
 
 No subas `frontend\.env.local` al repositorio: ya está ignorado por Git.
 
-### 5. Instalar dependencias y ejecutar
+### 5. Instalar dependencias
 
 ```powershell
 cd frontend
 npm install
+```
+
+### 6. Importar el catálogo de alimentos
+
+El catálogo (marcas, ingredientes, precios) lo genera un scraper aparte
+y no se versiona en el repo. Pide el archivo `productos.json` más
+reciente a quien lo tenga y cárgalo a tu base:
+
+```powershell
+node scripts\import-foods.js "ruta\al\productos.json"
+```
+
+Sin ese archivo, `/comparar` funciona pero no muestra alimentos.
+
+### 7. Ejecutar
+
+```powershell
 npm run dev
 ```
 
 Abre [http://localhost:3000](http://localhost:3000) en el navegador.
+Para correr los tests del motor de compatibilidad: `npm run test`.
 
 ## Equipo
 
