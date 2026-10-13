@@ -2,7 +2,9 @@ import type { Pool } from "pg";
 import type { FoodRow } from "@/types/catalogFood";
 
 type FoodDbRow = {
-  id: number;
+  // `foods.id` es BIGINT en Postgres: el driver `pg` lo devuelve como
+  // string (no cabe garantizado en un JS number), aunque TS no lo vea.
+  id: string;
   brand: string;
   name: string;
   species: string;
@@ -36,7 +38,7 @@ function toNumber(value: string | null): number | null {
 
 function mapRow(row: FoodDbRow): FoodRow {
   return {
-    id: row.id,
+    id: Number(row.id),
     brand: row.brand,
     name: row.name,
     species: row.species === "Gato" || row.species === "Perro" ? row.species : "",

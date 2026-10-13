@@ -24,7 +24,10 @@ async function getSessionUserId(): Promise<number | null> {
 
 async function getPets(userId: number): Promise<ComparablePet[]> {
   const result = await pool.query<{
-    id: number;
+    // `pets.id` es BIGINT: el driver `pg` lo devuelve como string, no
+    // como number (aunque TS no lo refleje) — hay que convertirlo antes
+    // de compararlo con un número en el cliente (ver ComparablePet.id).
+    id: string;
     name: string;
     species: string;
     allergies: string | null;
@@ -47,7 +50,7 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
   );
 
   return result.rows.map((pet) => ({
-    id: pet.id,
+    id: Number(pet.id),
     name: pet.name,
     species: pet.species === "Gato" ? "Gato" : "Perro",
     allergies: pet.allergies,
