@@ -62,28 +62,9 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
 export default async function CompararPage() {
   const userId = await getSessionUserId();
   const pets = userId ? await getPets(userId) : [];
+  const isGuest = !userId;
 
-  if (!userId) {
-    return (
-      <main className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.empty}>
-            <div className={styles.emptyIcon}>🔒</div>
-            <h2>Inicia sesión para comparar alimentos.</h2>
-            <p>
-              Necesitamos saber las características de tu mascota para
-              descartar alimentos con alérgenos y recomendarte el resto.
-            </p>
-            <Link href="/login" className={styles.emptyButton}>
-              Iniciar sesión
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (pets.length === 0) {
+  if (!isGuest && pets.length === 0) {
     return (
       <main className={styles.page}>
         <div className={styles.container}>
@@ -115,6 +96,7 @@ export default async function CompararPage() {
       catalog={catalog}
       nutritionRanges={nutritionRanges}
       weights={weights}
+      isGuest={isGuest}
     />
   );
 }

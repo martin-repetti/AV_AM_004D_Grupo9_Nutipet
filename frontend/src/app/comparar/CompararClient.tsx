@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { compareFoods } from "@/lib/compatibility/engine";
 import { petStage } from "@/lib/compatibility/petStage";
 import { normalize } from "@/lib/compatibility/normalize";
@@ -28,6 +29,7 @@ type CompararClientProps = {
   catalog: FoodRow[];
   nutritionRanges: NutritionRange[];
   weights: RuleSetWeights;
+  isGuest?: boolean;
 };
 
 const MAX_COMPARISON_ITEMS = 4;
@@ -38,8 +40,9 @@ export default function CompararClient({
   catalog,
   nutritionRanges,
   weights,
+  isGuest = false,
 }: CompararClientProps) {
-  const [selectedPetId, setSelectedPetId] = useState(pets[0].id);
+  const [selectedPetId, setSelectedPetId] = useState(pets[0]?.id ?? 0);
   const [budgetInput, setBudgetInput] = useState("");
   // null = todavía sin tocar la selección para esta mascota: se usan las
   // 3 mejores opciones por defecto. Al marcar/desmarcar algo, pasa a ser
@@ -48,7 +51,45 @@ export default function CompararClient({
   const [search, setSearch] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
 
-  const selectedPet = pets.find((pet) => pet.id === selectedPetId) ?? pets[0];
+  // Datos de mascota para el modo invitado: viven solo en memoria del
+  // componente (useState), nunca se envían al servidor ni se guardan en
+  // localStorage/cookies. Al salir de la página o recargarla, se pierden.
+  const [guestSpecies, setGuestSpecies] = useState<"Perro" | "Gato">("Perro");
+  const [guestBirthDate, setGuestBirthDate] = useState("");
+  const [guestWeight, setGuestWeight] = useState("");
+  const [guestActivity, setGuestActivity] = useState("");
+  const [guestBodyCondition, setGuestBodyCondition] = useState("");
+  const [guestCondition, setGuestCondition] = useState("");
+  const [guestAllergies, setGuestAllergies] = useState("");
+
+  const selectedPet: ComparablePet = useMemo(
+    () =>
+      isGuest
+        ? {
+            id: -1,
+            name: "tu mascota",
+            species: guestSpecies,
+            allergies: guestAllergies.trim() || null,
+            specialCondition: guestCondition || null,
+            birthDate: guestBirthDate || null,
+            weightKg: guestWeight.trim() ? Number(guestWeight) : null,
+            activityLevel: guestActivity || null,
+            bodyCondition: guestBodyCondition || null,
+          }
+        : pets.find((pet) => pet.id === selectedPetId) ?? pets[0],
+    [
+      isGuest,
+      guestSpecies,
+      guestAllergies,
+      guestCondition,
+      guestBirthDate,
+      guestWeight,
+      guestActivity,
+      guestBodyCondition,
+      pets,
+      selectedPetId,
+    ]
+  );
 
   const parsedBudget = budgetInput.trim() ? Number(budgetInput) : null;
   const budget = Number.isFinite(parsedBudget) ? parsedBudget : null;
@@ -132,44 +173,180 @@ export default function CompararClient({
             {selectedPet.name}.
           </p>
 
-          <div className={styles.filtersRow}>
-            <div className={styles.filterField}>
-              <label htmlFor="pet">Mascota</label>
+          {isGuest ? (
+            <div className={styles.guestCard}>
+              <p className={styles.guestNote}>
+                🔒 Estás comparando como invitado: estos datos son
+                temporales, no se guardan ni se asocian a ninguna cuenta.
+                Se pierden al salir o recargar la página.{" "}
+                <Link href="/registro">Crea una cuenta</Link> para guardar
+                tus mascotas y comparar más rápido la próxima vez.
+              </p>
 
-              <select
-                id="pet"
-                value={selectedPetId}
-                onChange={(e) => {
-                  setSelectedPetId(Number(e.target.value));
-                  setManualSelection(null);
-                }}
-              >
-                {pets.map((pet) => (
-                  <option key={pet.id} value={pet.id}>
-                    {pet.species === "Gato" ? "🐱" : "🐶"} {pet.name}
-                  </option>
-                ))}
-              </select>
+              <div className={styles.filtersRow}>
+                <div className={styles.filterField}>
+                  <label htmlFor="guestSpecies">Especie</label>
+
+                  <select
+                    id="guestSpecies"
+                    value={guestSpecies}
+                    onChange={(e) => {
+                      setGuestSpecies(e.target.value as "Perro" | "Gato");
+                      setManualSelection(null);
+                    }}
+                  >
+                    <option value="Perro">🐶 Perro</option>
+                    <option value="Gato">🐱 Gato</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="guestBirthDate">Fecha de nacimiento</label>
+
+                  <input
+                    id="guestBirthDate"
+                    type="date"
+                    value={guestBirthDate}
+                    onChange={(e) => setGuestBirthDate(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="guestWeight">Peso actual</label>
+
+                  <input
+                    id="guestWeight"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="Ej: 22"
+                    value={guestWeight}
+                    onChange={(e) => setGuestWeight(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="guestActivity">Nivel de actividad</label>
+
+                  <select
+                    id="guestActivity"
+                    value={guestActivity}
+                    onChange={(e) => setGuestActivity(e.target.value)}
+                  >
+                    <option value="">Sin especificar</option>
+                    <option value="Baja">Baja</option>
+                    <option value="Moderada">Moderada</option>
+                    <option value="Alta">Alta</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="guestBodyCondition">
+                    Condición corporal
+                  </label>
+
+                  <select
+                    id="guestBodyCondition"
+                    value={guestBodyCondition}
+                    onChange={(e) => setGuestBodyCondition(e.target.value)}
+                  >
+                    <option value="">Sin especificar</option>
+                    <option value="Bajo peso">Bajo peso</option>
+                    <option value="Peso adecuado">Peso adecuado</option>
+                    <option value="Sobrepeso">Sobrepeso</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="guestCondition">
+                    Condición o necesidad especial
+                  </label>
+
+                  <select
+                    id="guestCondition"
+                    value={guestCondition}
+                    onChange={(e) => setGuestCondition(e.target.value)}
+                  >
+                    <option value="">Ninguna</option>
+                    <option value="Sensibilidad digestiva">
+                      Sensibilidad digestiva
+                    </option>
+                    <option value="Control de peso">Control de peso</option>
+                    <option value="Piel y pelaje">Piel y pelaje</option>
+                    <option value="Articulaciones">Articulaciones</option>
+                    <option value="Cuidado urinario">Cuidado urinario</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="guestAllergies">
+                    Alergias o ingredientes restringidos
+                  </label>
+
+                  <input
+                    id="guestAllergies"
+                    type="text"
+                    placeholder="Ej: pollo, trigo"
+                    value={guestAllergies}
+                    onChange={(e) => setGuestAllergies(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="budget">Presupuesto mensual (opcional)</label>
+
+                  <input
+                    id="budget"
+                    type="number"
+                    min="0"
+                    step="500"
+                    placeholder="Ej: 15000"
+                    value={budgetInput}
+                    onChange={(e) => setBudgetInput(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
+          ) : (
+            <div className={styles.filtersRow}>
+              <div className={styles.filterField}>
+                <label htmlFor="pet">Mascota</label>
 
-            <div className={styles.filterField}>
-              <label htmlFor="budget">Presupuesto mensual (opcional)</label>
+                <select
+                  id="pet"
+                  value={selectedPetId}
+                  onChange={(e) => {
+                    setSelectedPetId(Number(e.target.value));
+                    setManualSelection(null);
+                  }}
+                >
+                  {pets.map((pet) => (
+                    <option key={pet.id} value={pet.id}>
+                      {pet.species === "Gato" ? "🐱" : "🐶"} {pet.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              <input
-                id="budget"
-                type="number"
-                min="0"
-                step="500"
-                placeholder="Ej: 15000"
-                value={budgetInput}
-                onChange={(e) => setBudgetInput(e.target.value)}
-              />
+              <div className={styles.filterField}>
+                <label htmlFor="budget">Presupuesto mensual (opcional)</label>
+
+                <input
+                  id="budget"
+                  type="number"
+                  min="0"
+                  step="500"
+                  placeholder="Ej: 15000"
+                  value={budgetInput}
+                  onChange={(e) => setBudgetInput(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {selectedPet.allergies?.trim() && (
             <p className={styles.allergyNote}>
-              Alergias registradas de {selectedPet.name}: {selectedPet.allergies}
+              {isGuest ? "Alergias indicadas" : `Alergias registradas de ${selectedPet.name}`}: {selectedPet.allergies}
             </p>
           )}
         </section>

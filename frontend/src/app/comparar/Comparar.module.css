@@ -30,6 +30,32 @@
     font-size: 16px;
 }
 
+.guestCard {
+    margin-top: 20px;
+    padding: 20px;
+
+    background: var(--np-surface);
+    border: 1px solid var(--np-border);
+    border-radius: var(--np-radius-card);
+}
+
+.guestNote {
+    margin: 0 0 4px;
+
+    color: var(--np-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.guestNote a {
+    color: var(--np-primary);
+    font-weight: 600;
+}
+
+.guestCard .filtersRow {
+    margin-top: 16px;
+}
+
 .filtersRow {
     display: flex;
     flex-wrap: wrap;
