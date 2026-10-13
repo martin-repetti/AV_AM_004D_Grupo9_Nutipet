@@ -22,3 +22,36 @@ export function estimateMonthlyCost(
 
   return Math.round(monthlyKg * food.pricePerKg);
 }
+
+export type EffectivePrice = {
+  amount: number;
+  /** true = es un gasto mensual estimado; false = es el precio de un
+   * solo paquete (porque no se pudo estimar el gasto mensual). */
+  isMonthly: boolean;
+};
+
+/**
+ * Precio a usar para comparar contra el presupuesto del usuario. Un
+ * presupuesto de mascotas es naturalmente mensual ("cuánto gasto al
+ * mes"), así que se prioriza el costo mensual estimado sobre el precio
+ * de un paquete suelto — comparar un presupuesto mensual contra el
+ * precio del paquete más barato disponible (a veces el más chico) no
+ * es la comparación que el usuario espera. Si no se puede estimar el
+ * costo mensual (falta peso, kcal/kg o precio por kilo), se cae al
+ * precio del paquete como mejor dato disponible.
+ */
+export function effectiveMonthlyPrice(
+  weightKg: number | null,
+  food: FoodRow
+): EffectivePrice | null {
+  const monthlyCost = estimateMonthlyCost(weightKg, food);
+  if (monthlyCost !== null) {
+    return { amount: monthlyCost, isMonthly: true };
+  }
+
+  if (food.priceMin !== null) {
+    return { amount: food.priceMin, isMonthly: false };
+  }
+
+  return null;
+}

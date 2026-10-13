@@ -12,7 +12,7 @@ import type {
   ScoredFood,
 } from "./types";
 import { buildExplanation } from "./explain";
-import { estimateMonthlyCost } from "./monthlyCost";
+import { estimateMonthlyCost, effectiveMonthlyPrice } from "./monthlyCost";
 
 /**
  * Compatibilidad (%) = 100 × Σ(peso × compatibilidad) entre los
@@ -119,7 +119,10 @@ export function compareFoods(
 
   const bestWithinBudget =
     budget != null
-      ? eligible.find((item) => item.food.priceMin != null && item.food.priceMin <= budget) ?? null
+      ? eligible.find((item) => {
+          const price = effectiveMonthlyPrice(pet.weightKg, item.food);
+          return price != null && price.amount <= budget;
+        }) ?? null
       : null;
 
   return { eligible, excluded, best, bestWithinBudget };

@@ -144,8 +144,25 @@ describe("compareFoods", () => {
 
   it("separa la mejor opción general de la mejor opción dentro del presupuesto", () => {
     const pet = makePet();
-    const caro = makeFood({ id: 1, name: "Caro", stage: "adulto", priceMin: 50000 });
-    const barato = makeFood({ id: 2, name: "Barato", stage: "cachorro", priceMin: 5000 });
+    // Sin pricePerKg/kcalKg no se puede estimar costo mensual, así que
+    // el presupuesto compara directo contra priceMin (caso de prueba
+    // enfocado en la selección, no en el cálculo del costo mensual).
+    const caro = makeFood({
+      id: 1,
+      name: "Caro",
+      stage: "adulto",
+      priceMin: 50000,
+      pricePerKg: null,
+      kcalKg: null,
+    });
+    const barato = makeFood({
+      id: 2,
+      name: "Barato",
+      stage: "cachorro",
+      priceMin: 5000,
+      pricePerKg: null,
+      kcalKg: null,
+    });
 
     const result = compareFoods(pet, [caro, barato], DEFAULT_WEIGHTS, 10000, []);
 
@@ -153,6 +170,43 @@ describe("compareFoods", () => {
     expect(result.best?.food.id).toBe(1);
     // pero no entra en el presupuesto de 10000, así que la mejor opción
     // dentro del presupuesto debe ser la otra.
+    expect(result.bestWithinBudget?.food.id).toBe(2);
+  });
+
+  it("compara el presupuesto contra el costo MENSUAL estimado, no contra el precio de un solo paquete", () => {
+    const pet = makePet({ weightKg: 4 });
+
+    // Paquete barato ($3.000) pero muy caro por kilo -> el gasto mensual
+    // real termina siendo alto.
+    const paqueteChicoCaroPorKilo = makeFood({
+      id: 1,
+      name: "Paquete chico",
+      priceMin: 3000,
+      pricePerKg: 40000,
+      kcalKg: 3500,
+    });
+
+    // Paquete más caro ($15.000) pero barato por kilo -> el gasto
+    // mensual real es más bajo.
+    const paqueteGrandeBaratoPorKilo = makeFood({
+      id: 2,
+      name: "Paquete grande",
+      priceMin: 15000,
+      pricePerKg: 4000,
+      kcalKg: 3500,
+    });
+
+    // Presupuesto mensual de 10.000: por priceMin "sola" el chico
+    // parecería la mejor opción, pero su gasto MENSUAL real supera el
+    // presupuesto, mientras que el grande sí entra.
+    const result = compareFoods(
+      pet,
+      [paqueteChicoCaroPorKilo, paqueteGrandeBaratoPorKilo],
+      DEFAULT_WEIGHTS,
+      10000,
+      []
+    );
+
     expect(result.bestWithinBudget?.food.id).toBe(2);
   });
 });

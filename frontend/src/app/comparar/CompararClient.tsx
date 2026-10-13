@@ -153,7 +153,7 @@ export default function CompararClient({
             </div>
 
             <div className={styles.filterField}>
-              <label htmlFor="budget">Presupuesto máximo (opcional)</label>
+              <label htmlFor="budget">Presupuesto mensual (opcional)</label>
 
               <input
                 id="budget"
@@ -232,7 +232,7 @@ export default function CompararClient({
             {budget !== null && !bestWithinBudget && (
               <p className={styles.compareNote}>
                 Ningún alimento compatible con {selectedPet.name} entra en tu
-                presupuesto de ${budget.toLocaleString("es-CL")}.
+                presupuesto mensual de ${budget.toLocaleString("es-CL")}.
               </p>
             )}
 

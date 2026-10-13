@@ -1,6 +1,7 @@
+import { effectiveMonthlyPrice } from "../monthlyCost";
 import type { CriterionEvaluator } from "../types";
 
-export const evaluateBudget: CriterionEvaluator = (_pet, food, context) => {
+export const evaluateBudget: CriterionEvaluator = (pet, food, context) => {
   if (context.budget == null) {
     return {
       key: "presupuesto",
@@ -9,7 +10,9 @@ export const evaluateBudget: CriterionEvaluator = (_pet, food, context) => {
     };
   }
 
-  if (food.priceMin == null) {
+  const price = effectiveMonthlyPrice(pet.weightKg, food);
+
+  if (price == null) {
     return {
       key: "presupuesto",
       score: null,
@@ -17,13 +20,16 @@ export const evaluateBudget: CriterionEvaluator = (_pet, food, context) => {
     };
   }
 
-  const ratio = food.priceMin / context.budget;
+  const ratio = price.amount / context.budget;
+  const unit = price.isMonthly
+    ? "tu presupuesto mensual"
+    : "tu presupuesto (precio de un paquete, no pudimos estimar el gasto mensual)";
 
   if (ratio <= 0.7) {
     return {
       key: "presupuesto",
       score: 1,
-      explanation: "Bien dentro de tu presupuesto.",
+      explanation: `Bien dentro de ${unit}.`,
     };
   }
 
@@ -32,13 +38,13 @@ export const evaluateBudget: CriterionEvaluator = (_pet, food, context) => {
     return {
       key: "presupuesto",
       score,
-      explanation: "Cerca del límite de tu presupuesto.",
+      explanation: `Cerca del límite de ${unit}.`,
     };
   }
 
   return {
     key: "presupuesto",
     score: 0.1,
-    explanation: "Supera tu presupuesto.",
+    explanation: `Supera ${unit}.`,
   };
 };
