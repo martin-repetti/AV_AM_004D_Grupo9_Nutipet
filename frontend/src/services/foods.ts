@@ -29,6 +29,7 @@ type FoodDbRow = {
   price_store: string | null;
   price_url: string | null;
   source_url: string | null;
+  prices_by_format: FoodRow["pricesByFormat"];
 };
 
 function toNumber(value: string | null): number | null {
@@ -64,6 +65,7 @@ function mapRow(row: FoodDbRow): FoodRow {
     priceStore: row.price_store,
     priceUrl: row.price_url,
     sourceUrl: row.source_url,
+    pricesByFormat: row.prices_by_format ?? [],
   };
 }
 
@@ -73,7 +75,8 @@ const SELECT_FOOD_COLUMNS = `
   protein_ms, fat_ms, fiber_ms,
   kcal_kg, kcal_kg_estimated,
   allergens, first_ingredient, formats,
-  price_min, price_per_kg, price_store, price_url, source_url
+  price_min, price_per_kg, price_store, price_url, source_url,
+  prices_by_format
 `;
 
 /**

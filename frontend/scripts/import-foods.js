@@ -93,9 +93,40 @@ function estimateKcalPerKg(nutricion) {
   return Math.round(kcalPer100g * 10); // kcal/100g -> kcal/kg
 }
 
-function bestPrice(preciosPorFormato, precioMin) {
+// "catálogo kamanpet.cl" -> "kamanpet.cl"; "sitio oficial" -> "sitio
+// oficial de la marca". Se usa solo cuando el scraper no trajo una
+// tienda/url específica del precio (precio_fuente vacío), para no dejar
+// el precio sin decir de dónde salió.
+function deriveFallbackStore(fuenteTipo) {
+  if (!fuenteTipo) return null;
+  if (fuenteTipo === "sitio oficial") return "sitio oficial de la marca";
+  const match = fuenteTipo.match(/^catálogo (.+)$/);
+  return match ? match[1] : fuenteTipo;
+}
+
+function mapPricesByFormat(preciosPorFormato) {
+  if (!preciosPorFormato || preciosPorFormato.length === 0) return [];
+
+  return preciosPorFormato.map((p) => ({
+    format: p.formato,
+    price: p.precio,
+    pricePerKg: p.precio_por_kg != null ? Math.round(p.precio_por_kg) : null,
+    store: p.tienda || null,
+    url: p.url || null,
+  }));
+}
+
+function bestPrice(preciosPorFormato, precioMin, fuente) {
+  const fallbackStore = deriveFallbackStore(fuente?.tipo);
+  const fallbackUrl = fuente?.url || null;
+
   if (!preciosPorFormato || preciosPorFormato.length === 0) {
-    return { min: precioMin ?? null, perKg: null, store: null, url: null };
+    return {
+      min: precioMin ?? null,
+      perKg: null,
+      store: fallbackStore,
+      url: fallbackUrl,
+    };
   }
 
   const withPerKg = preciosPorFormato.filter((p) => p.precio_por_kg != null);
@@ -107,11 +138,13 @@ function bestPrice(preciosPorFormato, precioMin) {
     a.precio <= b.precio ? a : b
   );
 
+  const source = cheapestPerKg || cheapestOverall;
+
   return {
     min: precioMin ?? cheapestOverall.precio ?? null,
     perKg: cheapestPerKg ? Math.round(cheapestPerKg.precio_por_kg) : null,
-    store: (cheapestPerKg || cheapestOverall).tienda ?? null,
-    url: (cheapestPerKg || cheapestOverall).url ?? null,
+    store: source.tienda || fallbackStore,
+    url: source.url || fallbackUrl,
   };
 }
 
@@ -134,6 +167,8 @@ async function main() {
   let sanitizedCount = 0;
   let estimatedKcalCount = 0;
   let withPriceCount = 0;
+  let withPriceUrlCount = 0;
+  let withPricesByFormatCount = 0;
 
   try {
     await pool.query("BEGIN");
@@ -161,8 +196,12 @@ async function main() {
         if (kcalEstimated) estimatedKcalCount += 1;
       }
 
-      const price = bestPrice(item.precios_por_formato, item.precio_min);
+      const price = bestPrice(item.precios_por_formato, item.precio_min, item.fuente);
       if (price.min != null) withPriceCount += 1;
+      if (price.url != null) withPriceUrlCount += 1;
+
+      const pricesByFormat = mapPricesByFormat(item.precios_por_formato);
+      if (pricesByFormat.length > 0) withPricesByFormatCount += 1;
 
       await pool.query(
         `
@@ -173,7 +212,7 @@ async function main() {
             kcal_kg, kcal_kg_estimated,
             allergens, first_ingredient, formats,
             price_min, price_per_kg, price_store, price_url,
-            source_url, scraped_at
+            source_url, scraped_at, prices_by_format
           ) VALUES (
             $1, $2, $3, $4, $5, $6, $7,
             $8, $9, $10, $11,
@@ -181,7 +220,7 @@ async function main() {
             $15, $16,
             $17, $18, $19,
             $20, $21, $22, $23,
-            $24, $25
+            $24, $25, $26
           )
         `,
         [
@@ -210,6 +249,7 @@ async function main() {
           price.url,
           item.fuente?.url || null,
           item.fuente?.fecha_extraccion || null,
+          JSON.stringify(pricesByFormat),
         ]
       );
 
@@ -227,6 +267,8 @@ async function main() {
   console.log(`Importados ${inserted} alimentos desde ${sourcePath}`);
   console.log(`Omitidos por no tener nutrición ni precio: ${skipped}`);
   console.log(`Con precio real: ${withPriceCount}/${inserted}`);
+  console.log(`Con página de origen del precio: ${withPriceUrlCount}/${inserted}`);
+  console.log(`Con desglose de precio por formato: ${withPricesByFormatCount}/${inserted}`);
   console.log(`Con kcal/kg estimado (Atwater, no real): ${estimatedKcalCount}/${inserted}`);
   console.log(`Con algún nutriente anulado por venir "fuera de rango": ${sanitizedCount}/${inserted}`);
 }

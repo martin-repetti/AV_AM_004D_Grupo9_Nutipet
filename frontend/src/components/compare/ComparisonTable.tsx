@@ -1,5 +1,13 @@
 import type { ScoredFood } from "@/lib/compatibility/types";
 import { formatDisplayName } from "@/utils/productName";
+import {
+  bestPricePerKgFormat,
+  cheapestInRange,
+  FORMAT_RANGES,
+  hasFormatInRange,
+  summarizeFormats,
+  type FormatRangeKey,
+} from "@/utils/formatSize";
 import styles from "./ComparisonTable.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -16,9 +24,11 @@ const STAGE_LABELS: Record<string, string> = {
 type ComparisonTableProps = {
   items: ScoredFood[];
   onRemove: (foodId: number) => void;
+  /** Rango de formato elegido arriba (ej. "5-15"), o null si no se eligió ninguno. */
+  formatRange: FormatRangeKey | null;
 };
 
-export default function ComparisonTable({ items, onRemove }: ComparisonTableProps) {
+export default function ComparisonTable({ items, onRemove, formatRange }: ComparisonTableProps) {
   if (items.length === 0) return null;
 
   return (
@@ -97,33 +107,130 @@ export default function ComparisonTable({ items, onRemove }: ComparisonTableProp
 
             <tr>
               <td>Formatos</td>
-              {items.map(({ food }) => (
-                <td key={food.id}>
-                  {food.formats.length > 0 ? food.formats.join(", ") : "No informado"}
-                </td>
-              ))}
+              {items.map(({ food }) => {
+                const { visible, hiddenCount } = summarizeFormats(food.formats);
+                return (
+                  <td key={food.id}>
+                    {visible.length > 0 ? (
+                      <>
+                        {visible.join(", ")}
+                        {hiddenCount > 0 && (
+                          <span className={styles.brand}> +{hiddenCount} más</span>
+                        )}
+                      </>
+                    ) : (
+                      "No informado"
+                    )}
+                  </td>
+                );
+              })}
             </tr>
 
             <tr>
               <td>Precio</td>
               {items.map(({ food }) => (
                 <td key={food.id}>
-                  {food.priceMin !== null
-                    ? `$${food.priceMin.toLocaleString("es-CL")}${food.priceStore ? ` (${food.priceStore})` : ""}`
-                    : "No disponible"}
+                  {food.priceMin !== null ? (
+                    <>
+                      {`$${food.priceMin.toLocaleString("es-CL")}`}
+                      <br />
+                      {food.priceUrl ? (
+                        <a
+                          href={food.priceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.priceLink}
+                        >
+                          Ver en {food.priceStore ?? "la tienda"}
+                        </a>
+                      ) : (
+                        <span className={styles.brand}>
+                          {food.priceStore ? `en ${food.priceStore}` : "Tienda no especificada"}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    "No disponible"
+                  )}
                 </td>
               ))}
             </tr>
 
             <tr>
-              <td>Costo mensual estimado</td>
-              {items.map(({ food, estimatedMonthlyCost }) => (
-                <td key={food.id}>
-                  {estimatedMonthlyCost !== null
-                    ? `~$${estimatedMonthlyCost.toLocaleString("es-CL")}`
-                    : "No calculable"}
-                </td>
-              ))}
+              <td>
+                Precio según formato
+                {formatRange && (
+                  <span className={styles.brand}>
+                    {FORMAT_RANGES.find((r) => r.key === formatRange)?.label}
+                  </span>
+                )}
+              </td>
+              {items.map(({ food }) => {
+                if (!formatRange) {
+                  return (
+                    <td key={food.id} className={styles.brand}>
+                      Elige un formato arriba
+                    </td>
+                  );
+                }
+
+                const cheapest = cheapestInRange(food.pricesByFormat, formatRange);
+                if (cheapest) {
+                  return (
+                    <td key={food.id}>
+                      {`$${cheapest.price.toLocaleString("es-CL")}`}
+                      <br />
+                      <span className={styles.brand}>
+                        {cheapest.format}
+                        {cheapest.store ? ` · ${cheapest.store}` : ""}
+                      </span>
+                    </td>
+                  );
+                }
+
+                if (hasFormatInRange(food.formats, formatRange)) {
+                  return (
+                    <td key={food.id} className={styles.brand}>
+                      Disponible en este rango, precio no especificado por tamaño
+                    </td>
+                  );
+                }
+
+                return (
+                  <td key={food.id} className={styles.brand}>
+                    No disponible en este rango
+                  </td>
+                );
+              })}
+            </tr>
+
+            <tr>
+              <td>Mejor precio por kilo</td>
+              {items.map(({ food }) => {
+                const bestFormat = bestPricePerKgFormat(food.pricesByFormat);
+
+                if (bestFormat) {
+                  return (
+                    <td key={food.id}>
+                      {`$${bestFormat.pricePerKg!.toLocaleString("es-CL")}/kg`}
+                      <br />
+                      <span className={styles.brand}>
+                        comprando el formato de {bestFormat.format}
+                      </span>
+                    </td>
+                  );
+                }
+
+                if (food.pricePerKg !== null) {
+                  return <td key={food.id}>{`$${food.pricePerKg.toLocaleString("es-CL")}/kg`}</td>;
+                }
+
+                return (
+                  <td key={food.id} className={styles.brand}>
+                    No calculable
+                  </td>
+                );
+              })}
             </tr>
 
             <tr>

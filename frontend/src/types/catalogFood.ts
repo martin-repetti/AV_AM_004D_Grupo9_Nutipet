@@ -70,4 +70,17 @@ export type FoodRow = {
   priceStore: string | null;
   priceUrl: string | null;
   sourceUrl: string | null;
+  /**
+   * Desglose de precio por formato, cuando el scraper lo trae (hoy, una
+   * minoría del catálogo). `priceMin`/`pricePerKg` son el resumen de este
+   * arreglo cuando no está vacío, o el único dato disponible cuando sí lo
+   * está.
+   */
+  pricesByFormat: {
+    format: string;
+    price: number;
+    pricePerKg: number | null;
+    store: string | null;
+    url: string | null;
+  }[];
 };

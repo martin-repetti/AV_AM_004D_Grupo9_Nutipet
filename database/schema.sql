@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict Zq1xCK5XR84ItssCE85GeUGdaLgfP7DN2SJbd78R4mAeaix89L90cH93dltuc1J
+\restrict obDL7HvXLmyZWiHJPHXZQUddhAUtYRI5XkxByAMfHy1bUZv4o3jU8rCTWrWs5fu
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
@@ -150,7 +150,8 @@ CREATE TABLE public.foods (
     source_url text,
     scraped_at date,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    size character varying(20) DEFAULT ''::character varying NOT NULL
+    size character varying(20) DEFAULT ''::character varying NOT NULL,
+    prices_by_format jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -574,5 +575,5 @@ ALTER TABLE ONLY public.subscriptions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Zq1xCK5XR84ItssCE85GeUGdaLgfP7DN2SJbd78R4mAeaix89L90cH93dltuc1J
+\unrestrict obDL7HvXLmyZWiHJPHXZQUddhAUtYRI5XkxByAMfHy1bUZv4o3jU8rCTWrWs5fu
 

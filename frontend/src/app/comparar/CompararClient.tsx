@@ -8,6 +8,7 @@ import { normalize } from "@/lib/compatibility/normalize";
 import type { NutritionRange, RuleSetWeights } from "@/lib/compatibility/types";
 import { ALLERGEN_LABELS, type FoodRow } from "@/types/catalogFood";
 import { formatDisplayName } from "@/utils/productName";
+import { FORMAT_RANGES, type FormatRangeKey } from "@/utils/formatSize";
 import CatalogFoodCard from "@/components/compare/CatalogFoodCard";
 import ComparisonTable from "@/components/compare/ComparisonTable";
 import styles from "./Comparar.module.css";
@@ -50,6 +51,7 @@ export default function CompararClient({
   const [manualSelection, setManualSelection] = useState<number[] | null>(null);
   const [search, setSearch] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
+  const [formatRange, setFormatRange] = useState<FormatRangeKey | "">("");
 
   // Datos de mascota para el modo invitado: viven solo en memoria del
   // componente (useState), nunca se envían al servidor ni se guardan en
@@ -305,6 +307,23 @@ export default function CompararClient({
                     onChange={(e) => setBudgetInput(e.target.value)}
                   />
                 </div>
+
+                <div className={styles.filterField}>
+                  <label htmlFor="formatRange">Formato (opcional)</label>
+
+                  <select
+                    id="formatRange"
+                    value={formatRange}
+                    onChange={(e) => setFormatRange(e.target.value as FormatRangeKey | "")}
+                  >
+                    <option value="">Cualquier formato</option>
+                    {FORMAT_RANGES.map((range) => (
+                      <option key={range.key} value={range.key}>
+                        {range.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           ) : (
@@ -340,6 +359,23 @@ export default function CompararClient({
                   value={budgetInput}
                   onChange={(e) => setBudgetInput(e.target.value)}
                 />
+              </div>
+
+              <div className={styles.filterField}>
+                <label htmlFor="formatRange">Formato (opcional)</label>
+
+                <select
+                  id="formatRange"
+                  value={formatRange}
+                  onChange={(e) => setFormatRange(e.target.value as FormatRangeKey | "")}
+                >
+                  <option value="">Cualquier formato</option>
+                  {FORMAT_RANGES.map((range) => (
+                    <option key={range.key} value={range.key}>
+                      {range.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           )}
@@ -424,6 +460,7 @@ export default function CompararClient({
                 <ComparisonTable
                   items={selectedForComparison}
                   onRemove={toggleSelected}
+                  formatRange={formatRange || null}
                 />
               </>
             )}

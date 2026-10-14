@@ -62,6 +62,20 @@
   font-size: 12px;
 }
 
+.priceLink {
+  display: inline-block;
+  margin-top: 2px;
+
+  color: var(--np-primary);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.priceLink:hover {
+  text-decoration: underline;
+}
+
 .scoreCell strong {
   color: var(--np-primary);
   font-size: 15px;

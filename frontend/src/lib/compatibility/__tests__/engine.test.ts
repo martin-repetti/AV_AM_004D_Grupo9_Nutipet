@@ -46,6 +46,7 @@ function makeFood(overrides: Partial<FoodRow> = {}): FoodRow {
     priceStore: "tienda",
     priceUrl: null,
     sourceUrl: null,
+    pricesByFormat: [],
     ...overrides,
   };
 }
