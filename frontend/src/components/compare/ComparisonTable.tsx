@@ -127,11 +127,67 @@ export default function ComparisonTable({ items, onRemove, formatRange }: Compar
             </tr>
 
             <tr>
-              <td>Precio</td>
-              {items.map(({ food }) => (
-                <td key={food.id}>
-                  {food.priceMin !== null ? (
-                    <>
+              <td>
+                Precio
+                {formatRange && (
+                  <span className={styles.brand}>
+                    {FORMAT_RANGES.find((r) => r.key === formatRange)?.label}
+                  </span>
+                )}
+              </td>
+              {items.map(({ food }) => {
+                // Con un rango elegido: el más barato que tenemos
+                // registrado para ESE tamaño, cuando lo tenemos.
+                if (formatRange) {
+                  const cheapest = cheapestInRange(food.pricesByFormat, formatRange);
+                  if (cheapest) {
+                    return (
+                      <td key={food.id}>
+                        {`$${cheapest.price.toLocaleString("es-CL")}`}
+                        <br />
+                        <span className={styles.brand}>
+                          {cheapest.format}
+                          {cheapest.store ? ` · ${cheapest.store}` : ""}
+                        </span>
+                      </td>
+                    );
+                  }
+
+                  // No tenemos el desglose por tamaño, pero sabemos que
+                  // el producto viene en un formato de ese rango: mejor
+                  // mostrar el precio general (avisando que puede no ser
+                  // exacto) que dejar la celda sin ningún número.
+                  if (hasFormatInRange(food.formats, formatRange) && food.priceMin !== null) {
+                    return (
+                      <td key={food.id}>
+                        {`$${food.priceMin.toLocaleString("es-CL")}`}
+                        <br />
+                        <span className={styles.brand}>precio general, puede no ser de este tamaño</span>
+                        {food.priceUrl && (
+                          <a
+                            href={food.priceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.priceLink}
+                          >
+                            Ver en {food.priceStore ?? "la tienda"}
+                          </a>
+                        )}
+                      </td>
+                    );
+                  }
+
+                  return (
+                    <td key={food.id} className={styles.brand}>
+                      No disponible en este rango
+                    </td>
+                  );
+                }
+
+                // Sin filtro: el precio más barato que tenemos, en general.
+                if (food.priceMin !== null) {
+                  return (
+                    <td key={food.id}>
                       {`$${food.priceMin.toLocaleString("es-CL")}`}
                       <br />
                       {food.priceUrl ? (
@@ -148,59 +204,11 @@ export default function ComparisonTable({ items, onRemove, formatRange }: Compar
                           {food.priceStore ? `en ${food.priceStore}` : "Tienda no especificada"}
                         </span>
                       )}
-                    </>
-                  ) : (
-                    "No disponible"
-                  )}
-                </td>
-              ))}
-            </tr>
-
-            <tr>
-              <td>
-                Precio según formato
-                {formatRange && (
-                  <span className={styles.brand}>
-                    {FORMAT_RANGES.find((r) => r.key === formatRange)?.label}
-                  </span>
-                )}
-              </td>
-              {items.map(({ food }) => {
-                if (!formatRange) {
-                  return (
-                    <td key={food.id} className={styles.brand}>
-                      Elige un formato arriba
                     </td>
                   );
                 }
 
-                const cheapest = cheapestInRange(food.pricesByFormat, formatRange);
-                if (cheapest) {
-                  return (
-                    <td key={food.id}>
-                      {`$${cheapest.price.toLocaleString("es-CL")}`}
-                      <br />
-                      <span className={styles.brand}>
-                        {cheapest.format}
-                        {cheapest.store ? ` · ${cheapest.store}` : ""}
-                      </span>
-                    </td>
-                  );
-                }
-
-                if (hasFormatInRange(food.formats, formatRange)) {
-                  return (
-                    <td key={food.id} className={styles.brand}>
-                      Disponible en este rango, precio no especificado por tamaño
-                    </td>
-                  );
-                }
-
-                return (
-                  <td key={food.id} className={styles.brand}>
-                    No disponible en este rango
-                  </td>
-                );
+                return <td key={food.id}>No disponible</td>;
               })}
             </tr>
 
