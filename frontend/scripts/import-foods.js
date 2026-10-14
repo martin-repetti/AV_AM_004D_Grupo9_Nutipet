@@ -39,6 +39,44 @@ function mapSpecies(especie) {
   return "";
 }
 
+// El scraper a veces deja el valor crudo de un nutriente aunque él mismo
+// detectó que es implausible (ej. un alimento húmedo con humedad=1.5%)
+// y lo anota en `notas` como "proteina=X fuera de rango". Tratamos esos
+// campos como no verificados (null) en vez de puntuar con un dato que
+// sabemos que está mal.
+function parseOutOfRangeNutrients(notas) {
+  if (!notas) return new Set();
+  const matches = notas.matchAll(/(proteina|grasa|fibra|humedad)=[\d.]+ fuera de rango/g);
+  return new Set([...matches].map((m) => m[1]));
+}
+
+function sanitizeNutricion(nutricion, notas) {
+  const outOfRange = parseOutOfRangeNutrients(notas);
+  if (outOfRange.size === 0) return nutricion;
+
+  const sanitized = { ...nutricion };
+  for (const key of outOfRange) sanitized[key] = null;
+
+  // proteina_ms/grasa_ms/fibra_ms se calculan a partir del valor crudo Y
+  // de humedad: si cualquiera de los dos es inválido, el valor en base
+  // materia seca tampoco es confiable.
+  if (outOfRange.has("proteina") || outOfRange.has("humedad")) sanitized.proteina_ms = null;
+  if (outOfRange.has("grasa") || outOfRange.has("humedad")) sanitized.grasa_ms = null;
+  if (outOfRange.has("fibra") || outOfRange.has("humedad")) sanitized.fibra_ms = null;
+
+  return sanitized;
+}
+
+// Productos sin ningún dato aprovechable por el motor de compatibilidad
+// (ni nutrición, ni kcal, ni precio): no aportan nada y solo ensucian la
+// lista de resultados, así que no se importan.
+function hasUsableData(item) {
+  const n = item.nutricion || {};
+  const hasNutrition = n.proteina != null || n.grasa != null || n.kcal_kg != null;
+  const hasPrice = item.precio_min != null;
+  return hasNutrition || hasPrice;
+}
+
 // Fórmula de Atwater: estima kcal/kg cuando el scraper no trae kcal_kg
 // real. proteína y grasa en kcal/g según factores estándar; el resto
 // (humedad + fibra + cenizas, lo no-graso-no-proteico) se aproxima a 4
@@ -92,6 +130,8 @@ async function main() {
   const pool = new Pool(readEnvLocal());
 
   let inserted = 0;
+  let skipped = 0;
+  let sanitizedCount = 0;
   let estimatedKcalCount = 0;
   let withPriceCount = 0;
 
@@ -100,7 +140,15 @@ async function main() {
     await pool.query("DELETE FROM foods"); // import idempotente: reemplaza el catálogo completo
 
     for (const item of items) {
-      const nutricion = item.nutricion || {};
+      if (!hasUsableData(item)) {
+        skipped += 1;
+        continue;
+      }
+
+      const rawNutricion = item.nutricion || {};
+      const nutricion = sanitizeNutricion(rawNutricion, item.notas);
+      if (nutricion !== rawNutricion) sanitizedCount += 1;
+
       const ingredientes = item.ingredientes || {};
       const clasificacion = item.clasificacion || {};
 
@@ -119,7 +167,7 @@ async function main() {
       await pool.query(
         `
           INSERT INTO foods (
-            brand, name, species, type, stage, conditions,
+            brand, name, species, type, stage, size, conditions,
             protein, fat, fiber, moisture,
             protein_ms, fat_ms, fiber_ms,
             kcal_kg, kcal_kg_estimated,
@@ -127,13 +175,13 @@ async function main() {
             price_min, price_per_kg, price_store, price_url,
             source_url, scraped_at
           ) VALUES (
-            $1, $2, $3, $4, $5, $6,
-            $7, $8, $9, $10,
-            $11, $12, $13,
-            $14, $15,
-            $16, $17, $18,
-            $19, $20, $21, $22,
-            $23, $24
+            $1, $2, $3, $4, $5, $6, $7,
+            $8, $9, $10, $11,
+            $12, $13, $14,
+            $15, $16,
+            $17, $18, $19,
+            $20, $21, $22, $23,
+            $24, $25
           )
         `,
         [
@@ -142,6 +190,7 @@ async function main() {
           mapSpecies(item.especie),
           clasificacion.tipo || "",
           clasificacion.etapa || "",
+          clasificacion.tamano || "",
           clasificacion.condiciones || [],
           nutricion.proteina,
           nutricion.grasa,
@@ -176,8 +225,10 @@ async function main() {
   }
 
   console.log(`Importados ${inserted} alimentos desde ${sourcePath}`);
+  console.log(`Omitidos por no tener nutrición ni precio: ${skipped}`);
   console.log(`Con precio real: ${withPriceCount}/${inserted}`);
   console.log(`Con kcal/kg estimado (Atwater, no real): ${estimatedKcalCount}/${inserted}`);
+  console.log(`Con algún nutriente anulado por venir "fuera de rango": ${sanitizedCount}/${inserted}`);
 }
 
 main().catch((error) => {

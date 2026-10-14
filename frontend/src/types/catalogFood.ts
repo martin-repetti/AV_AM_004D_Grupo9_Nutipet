@@ -47,6 +47,8 @@ export type FoodRow = {
   species: "Perro" | "Gato" | "";
   type: "seco" | "humedo" | "";
   stage: string;
+  /** Tamaño de raza recomendado: "pequeno" | "mediano" | "grande" | "mediano-grande" | "todos" | "". No es el tamaño del envase (ver `formats`). */
+  size: string;
   conditions: string[];
   protein: number | null;
   fat: number | null;

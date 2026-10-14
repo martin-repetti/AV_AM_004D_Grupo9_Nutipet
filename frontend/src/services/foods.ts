@@ -10,6 +10,7 @@ type FoodDbRow = {
   species: string;
   type: string;
   stage: string;
+  size: string;
   conditions: string[];
   protein: string | null;
   fat: string | null;
@@ -44,6 +45,7 @@ function mapRow(row: FoodDbRow): FoodRow {
     species: row.species === "Gato" || row.species === "Perro" ? row.species : "",
     type: row.type === "seco" || row.type === "humedo" ? row.type : "",
     stage: row.stage,
+    size: row.size,
     conditions: row.conditions ?? [],
     protein: toNumber(row.protein),
     fat: toNumber(row.fat),
@@ -66,7 +68,7 @@ function mapRow(row: FoodDbRow): FoodRow {
 }
 
 const SELECT_FOOD_COLUMNS = `
-  id, brand, name, species, type, stage, conditions,
+  id, brand, name, species, type, stage, size, conditions,
   protein, fat, fiber, moisture,
   protein_ms, fat_ms, fiber_ms,
   kcal_kg, kcal_kg_estimated,

@@ -12,6 +12,7 @@ function makeFood(overrides: Partial<FoodRow> = {}): FoodRow {
     species: "Gato",
     type: "seco",
     stage: "adulto",
+    size: "",
     conditions: [],
     protein: 30,
     fat: 12,
