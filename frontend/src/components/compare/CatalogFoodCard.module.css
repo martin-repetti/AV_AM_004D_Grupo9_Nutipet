@@ -7,28 +7,6 @@
   border-radius: var(--np-radius-card);
 }
 
-.card.selected {
-  border-color: var(--np-primary);
-  box-shadow: 0 0 0 1px var(--np-primary);
-}
-
-.selectRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--np-ink);
-}
-
-.selectRow input {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--np-primary);
-}
-
 .header {
   display: flex;
   align-items: flex-start;
@@ -73,7 +51,24 @@
 }
 
 .scoreBlock strong {
-  font-size: 20px;
+  font-family: var(--np-font-head);
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.scoreBlock.good {
+  background: var(--np-good-soft);
+  color: var(--np-good);
+}
+
+.scoreBlock.mid {
+  background: #fbf0dc;
+  color: var(--np-mid);
+}
+
+.scoreBlock.low {
+  background: var(--np-low-soft);
+  color: var(--np-low);
 }
 
 .coverage {

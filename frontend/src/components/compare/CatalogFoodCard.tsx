@@ -1,5 +1,7 @@
 import type { ScoredFood } from "@/lib/compatibility/types";
 import { formatDisplayName } from "@/utils/productName";
+import { scoreTier } from "@/utils/scoreTier";
+import { displayPrice, type FormatRangeKey } from "@/utils/formatSize";
 import styles from "./CatalogFoodCard.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -15,18 +17,14 @@ const STAGE_LABELS: Record<string, string> = {
 
 type CatalogFoodCardProps = {
   scored: ScoredFood;
-  selectable?: boolean;
-  selected?: boolean;
-  onToggleSelect?: () => void;
+  formatRange: FormatRangeKey | null;
 };
 
-export default function CatalogFoodCard({
-  scored,
-  selectable,
-  selected,
-  onToggleSelect,
-}: CatalogFoodCardProps) {
+export default function CatalogFoodCard({ scored, formatRange }: CatalogFoodCardProps) {
   const { food } = scored;
+  const tier = scoreTier(scored.score);
+  const shownPrice = displayPrice(food.priceMin, food.pricesByFormat, formatRange);
+  const shownStore = shownPrice.store ?? food.priceStore;
 
   const metaParts = [
     TYPE_LABELS[food.type],
@@ -35,18 +33,7 @@ export default function CatalogFoodCard({
   ].filter(Boolean);
 
   return (
-    <article className={`${styles.card} ${selected ? styles.selected : ""}`}>
-      {selectable && (
-        <label className={styles.selectRow}>
-          <input
-            type="checkbox"
-            checked={Boolean(selected)}
-            onChange={onToggleSelect}
-          />
-          Agregar a comparar
-        </label>
-      )}
-
+    <article className={styles.card}>
       <div className={styles.header}>
         <div>
           <p className={styles.brand}>{food.brand}</p>
@@ -56,7 +43,7 @@ export default function CatalogFoodCard({
           )}
         </div>
 
-        <div className={styles.scoreBlock}>
+        <div className={`${styles.scoreBlock} ${styles[tier]}`}>
           <span>Compatibilidad</span>
           <strong>{Math.min(100, Math.round(scored.score))}%</strong>
           <p className={styles.coverage}>
@@ -82,18 +69,26 @@ export default function CatalogFoodCard({
         </div>
 
         <div className={styles.infoItem}>
-          <span>Desde</span>
+          <span>
+            {shownPrice.format
+              ? `Formato ${shownPrice.format}`
+              : formatRange
+                ? "Precio general"
+                : "Desde"}
+          </span>
           <strong>
-            {food.priceMin !== null
-              ? `$${food.priceMin.toLocaleString("es-CL")}`
+            {shownPrice.price !== null
+              ? `$${shownPrice.price.toLocaleString("es-CL")}`
               : "No disponible"}
           </strong>
         </div>
       </div>
 
-      {food.priceMin !== null && (
+      {shownPrice.price !== null && (
         <p className={styles.priceNote}>
-          {food.priceStore ? `Precio en ${food.priceStore}` : "Precio de tienda"}
+          {shownStore ? `Precio en ${shownStore}` : "Precio de tienda"}
+          {formatRange && !shownPrice.format &&
+            " · no tenemos el precio del formato elegido, este es su precio más bajo en general"}
           {scored.estimatedMonthlyCost !== null &&
             ` · ~$${scored.estimatedMonthlyCost.toLocaleString("es-CL")}/mes estimado`}
         </p>

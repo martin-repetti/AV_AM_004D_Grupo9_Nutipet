@@ -79,9 +79,15 @@ export default function PrivacidadPage() {
           <li>Corregir información incorrecta o desactualizada.</li>
           <li>
             Eliminar tu cuenta y los datos asociados a ella, salvo aquellos
-            que debamos conservar por obligación legal.
+            que debamos conservar por obligación legal. Puedes hacerlo tú
+            mismo desde <strong>Mi cuenta</strong>, o escribiéndonos.
           </li>
         </ul>
+        <p>
+          Para ejercer estos derechos, escríbenos a{" "}
+          <a href="mailto:contacto@nutripet.cl">contacto@nutripet.cl</a>.
+          Responderemos tu solicitud dentro de un plazo razonable.
+        </p>
       </section>
 
       <section className={styles.section}>

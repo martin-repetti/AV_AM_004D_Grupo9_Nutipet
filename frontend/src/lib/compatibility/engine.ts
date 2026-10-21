@@ -116,16 +116,30 @@ export function compareFoods(
   eligible.sort((a, b) => b.score - a.score || b.coverage - a.coverage);
 
   const best = eligible[0] ?? null;
-
-  const bestWithinBudget =
-    budget != null
-      ? eligible.find((item) => {
-          const price = effectiveMonthlyPrice(pet.weightKg, item.food);
-          return price != null && price.amount <= budget;
-        }) ?? null
-      : null;
+  const bestWithinBudget = pickBestWithinBudget(eligible, pet.weightKg, budget);
 
   return { eligible, excluded, best, bestWithinBudget };
+}
+
+/**
+ * El más compatible cuyo gasto efectivo (mensual estimado, o precio de
+ * paquete si no se puede estimar) entra en el presupuesto. `eligible` debe
+ * venir ordenado por compatibilidad. Exportada para poder aplicarla sobre
+ * un subconjunto (ej. solo los alimentos de un rango de formato).
+ */
+export function pickBestWithinBudget(
+  eligible: ScoredFood[],
+  weightKg: number | null,
+  budget: number | null
+): ScoredFood | null {
+  if (budget == null) return null;
+
+  return (
+    eligible.find((item) => {
+      const price = effectiveMonthlyPrice(weightKg, item.food);
+      return price != null && price.amount <= budget;
+    }) ?? null
+  );
 }
 
 export { CRITERION_KEYS };

@@ -14,7 +14,9 @@ type FormValues = {
   confirmPassword: string;
 };
 
-type FormErrors = Partial<Record<keyof FormValues, string>>;
+type FormErrors = Partial<Record<keyof FormValues, string>> & {
+  consent?: string;
+};
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -66,6 +68,7 @@ export default function RegistroPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [consentAccepted, setConsentAccepted] = useState(false);
 
   const handleChange =
     (field: keyof FormValues) =>
@@ -87,7 +90,12 @@ export default function RegistroPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validationErrors = validate(values);
+    const validationErrors: FormErrors = validate(values);
+
+    if (!consentAccepted) {
+      validationErrors.consent =
+        "Debes aceptar la política de privacidad y los términos y condiciones.";
+    }
 
     setErrors(validationErrors);
     setServerError("");
@@ -292,6 +300,33 @@ export default function RegistroPage() {
             </p>
           )}
         </div>
+
+        <label className={styles.checkboxRow}>
+          <input
+            type="checkbox"
+            checked={consentAccepted}
+            onChange={(e) => {
+              setConsentAccepted(e.target.checked);
+              setErrors((prev) => ({ ...prev, consent: undefined }));
+            }}
+            disabled={loading}
+          />
+          <span>
+            He leído y acepto la{" "}
+            <Link href="/privacidad" target="_blank">
+              Política de privacidad
+            </Link>{" "}
+            y los{" "}
+            <Link href="/terminos" target="_blank">
+              Términos y condiciones
+            </Link>
+            .
+          </span>
+        </label>
+
+        {errors.consent && (
+          <p className={styles.errorText}>{errors.consent}</p>
+        )}
 
         <button
           type="submit"

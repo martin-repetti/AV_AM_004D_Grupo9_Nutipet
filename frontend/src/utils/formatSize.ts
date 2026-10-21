@@ -86,6 +86,38 @@ export function hasFormatInRange(formats: string[], rangeKey: FormatRangeKey): b
   });
 }
 
+/**
+ * true si el producto se vende en algún tamaño del rango, según su lista
+ * de formatos o sus precios por formato. Un producto sin ninguna
+ * información de formato no cuenta: no se puede afirmar que venga en él.
+ */
+export function comesInRange(
+  formats: string[],
+  prices: PriceByFormat[],
+  rangeKey: FormatRangeKey
+): boolean {
+  return hasFormatInRange(formats, rangeKey) || cheapestInRange(prices, rangeKey) !== null;
+}
+
+/**
+ * Precio a mostrar en tarjetas y listas: con un rango elegido, el más
+ * barato de ese tamaño si se conoce (con su formato y tienda); si no, el
+ * precio general del producto (format y store = null: usar los generales).
+ */
+export function displayPrice(
+  priceMin: number | null,
+  prices: PriceByFormat[],
+  rangeKey: FormatRangeKey | null
+): { price: number | null; format: string | null; store: string | null } {
+  if (rangeKey) {
+    const cheapest = cheapestInRange(prices, rangeKey);
+    if (cheapest) {
+      return { price: cheapest.price, format: cheapest.format, store: cheapest.store };
+    }
+  }
+  return { price: priceMin, format: null, store: null };
+}
+
 /** El formato con mejor precio por kilo, cuando el scraper lo trae. */
 export function bestPricePerKgFormat(prices: PriceByFormat[]): PriceByFormat | null {
   const withPerKg = prices.filter((p) => p.pricePerKg !== null);

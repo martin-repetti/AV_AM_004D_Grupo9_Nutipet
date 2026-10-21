@@ -1,0 +1,231 @@
+.page {
+    min-height: 70vh;
+    padding: 60px 32px 80px;
+    background-color: var(--np-bg);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.top {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eyebrow {
+    color: var(--np-primary);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+}
+
+.top h1 {
+    margin: 0;
+    font-size: 32px;
+    color: var(--np-ink);
+}
+
+.card {
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    background: var(--np-surface);
+    border: 1px solid var(--np-border);
+    border-radius: var(--np-radius-card);
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--np-ink);
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding-top: 10px;
+    border-top: 1px solid var(--np-border);
+
+    font-size: 14px;
+    color: var(--np-muted);
+}
+
+.infoRow strong {
+    color: var(--np-ink);
+}
+
+.dangerZone {
+    padding: 20px 22px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    background: var(--np-low-soft);
+    border: 1px solid var(--np-low);
+    border-radius: var(--np-radius-card);
+}
+
+.dangerHeader h2 {
+    margin: 0;
+    font-size: 15px;
+    color: var(--np-ink);
+}
+
+.dangerHeader p {
+    margin: 4px 0 0;
+    color: var(--np-muted);
+    font-size: 13px;
+}
+
+.deleteButton {
+    align-self: flex-start;
+    flex-shrink: 0;
+
+    min-height: 44px;
+    padding: 0 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--np-low);
+    border-radius: var(--np-radius-pill);
+    background: var(--np-surface);
+
+    color: var(--np-low);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background: var(--np-low);
+    color: #ffffff;
+}
+
+.deleteButton:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.confirmForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.confirmForm label {
+    color: var(--np-ink);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.confirmForm input {
+    height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid var(--np-border-strong);
+    border-radius: var(--np-radius-sm);
+    background: var(--np-surface);
+
+    color: var(--np-ink);
+    font-size: 14px;
+}
+
+.confirmActions {
+    display: flex;
+    gap: 12px;
+}
+
+.cancelButton {
+    min-height: 44px;
+    padding: 0 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--np-border-strong);
+    border-radius: var(--np-radius-pill);
+    background: var(--np-surface);
+
+    color: var(--np-muted);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.errorText {
+    margin: 0;
+    color: var(--np-low);
+    font-size: 13px;
+}
+
+.empty {
+    padding: 60px 32px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    background: var(--np-surface);
+    border: 1px solid var(--np-border);
+    border-radius: var(--np-radius-card);
+}
+
+.emptyIcon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 50%;
+    background: var(--np-primary-soft);
+
+    font-size: 34px;
+}
+
+.empty h2 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--np-ink);
+}
+
+.emptyButton {
+    margin-top: 20px;
+
+    min-height: 46px;
+    padding: 0 22px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--np-radius-pill);
+    background: var(--np-primary);
+    color: #ffffff;
+
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.emptyButton:hover {
+    background: var(--np-primary-hover);
+}

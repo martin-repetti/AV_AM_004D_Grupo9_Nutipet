@@ -2,6 +2,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import styles from "./Navbar.module.css";
 import ProfileMenu, { type SessionUser } from "./ProfileMenu";
+import MobileNav from "./MobileNav";
+import { NAV_LINKS } from "./navLinks";
 import { verifySessionToken } from "@/lib/auth";
 
 async function getSessionUser(): Promise<SessionUser | null> {
@@ -34,22 +36,26 @@ export default async function Navbar() {
         </Link>
 
         <nav className={styles.links}>
-          <Link href="/">Inicio</Link>
-          <Link href="/comparar">Comparar</Link>
-          <Link href="/mascotas">Mascotas</Link>
-          <Link href="/historial-precios">Historial de precios</Link>
-          <Link href="/favoritos">Favoritos</Link>
-          <Link href="/contacto">Contacto</Link>
+          {NAV_LINKS.map((link) => (
+            <Link key={link.href} href={link.href}>
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         <div className={styles.actions}>
-          <input
-            type="search"
-            placeholder="Buscar alimento..."
-            className={styles.search}
-          />
+          <form action="/comparar" method="get" role="search">
+            <input
+              type="search"
+              name="q"
+              placeholder="Buscar alimento..."
+              aria-label="Buscar alimento"
+              className={styles.search}
+            />
+          </form>
 
           <ProfileMenu user={user} />
+          <MobileNav />
         </div>
       </div>
     </header>

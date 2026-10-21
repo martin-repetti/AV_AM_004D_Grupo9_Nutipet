@@ -73,7 +73,7 @@ function sanitizeNutricion(nutricion, notas) {
 function hasUsableData(item) {
   const n = item.nutricion || {};
   const hasNutrition = n.proteina != null || n.grasa != null || n.kcal_kg != null;
-  const hasPrice = item.precio_min != null;
+  const hasPrice = item.precio_min != null && item.precio_min >= MIN_VALID_PRICE;
   return hasNutrition || hasPrice;
 }
 
@@ -104,47 +104,79 @@ function deriveFallbackStore(fuenteTipo) {
   return match ? match[1] : fuenteTipo;
 }
 
-function mapPricesByFormat(preciosPorFormato) {
-  if (!preciosPorFormato || preciosPorFormato.length === 0) return [];
+// Ningún alimento para mascotas cuesta menos que esto: un precio menor es
+// un error de lectura del scraper (ej. "Pack 3×2 Tiki Cat" leído como $3).
+const MIN_VALID_PRICE = 500;
 
-  return preciosPorFormato.map((p) => ({
-    format: p.formato,
-    price: p.precio,
-    pricePerKg: p.precio_por_kg != null ? Math.round(p.precio_por_kg) : null,
-    store: p.tienda || null,
-    url: p.url || null,
-  }));
+// "jumbo_cat" -> "jumbo.cl", "superzoo" -> "superzoo.cl": el scraper usa
+// identificadores distintos para la misma tienda según la fuente.
+function normalizeStore(tienda) {
+  if (!tienda) return null;
+  let store = tienda.trim().toLowerCase().replace(/_(cat|dog|gato|perro)$/, "");
+  if (!store.includes(".")) store += ".cl";
+  return store;
 }
 
-function bestPrice(preciosPorFormato, precioMin, fuente) {
-  const fallbackStore = deriveFallbackStore(fuente?.tipo);
-  const fallbackUrl = fuente?.url || null;
+function isSingleFormat(formato) {
+  return /^\s*[\d.,]+\s*(kg|g)\s*$/i.test(formato || "");
+}
 
-  if (!preciosPorFormato || preciosPorFormato.length === 0) {
-    return {
-      min: precioMin ?? null,
-      perKg: null,
-      store: fallbackStore,
-      url: fallbackUrl,
+/**
+ * Une `ofertas` (precios del producto en todas las tiendas) con
+ * `precios_por_formato`, sin duplicados. Una oferta con formato ambiguo
+ * ("80 g | 70 g | 1 kg") se guarda sin formato ni precio/kg: no se sabe a
+ * qué tamaño corresponde el precio, así que no se inventa.
+ */
+function collectOffers(item) {
+  const raw = [...(item.ofertas || []), ...(item.precios_por_formato || [])];
+  const seen = new Set();
+  const offers = [];
+
+  for (const o of raw) {
+    if (o.precio == null || o.precio < MIN_VALID_PRICE) continue;
+
+    const singleFormat = isSingleFormat(o.formato);
+    const offer = {
+      format: singleFormat ? o.formato.trim() : "",
+      price: o.precio,
+      pricePerKg:
+        singleFormat && o.precio_por_kg != null ? Math.round(o.precio_por_kg) : null,
+      store: normalizeStore(o.tienda),
+      url: o.url || null,
     };
+
+    const key = `${offer.store}|${offer.format}|${offer.price}|${offer.url}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    offers.push(offer);
   }
 
-  const withPerKg = preciosPorFormato.filter((p) => p.precio_por_kg != null);
+  return offers;
+}
+
+function bestPrice(offers, precioMin, precioFuente, fuente) {
+  const fallbackStore =
+    normalizeStore(precioFuente?.tienda) || deriveFallbackStore(fuente?.tipo);
+  const fallbackUrl = precioFuente?.url || fuente?.url || null;
+  const validPrecioMin = precioMin != null && precioMin >= MIN_VALID_PRICE ? precioMin : null;
+
+  if (offers.length === 0) {
+    return { min: validPrecioMin, perKg: null, store: fallbackStore, url: fallbackUrl };
+  }
+
+  const cheapest = offers.reduce((a, b) => (a.price <= b.price ? a : b));
+  const withPerKg = offers.filter((o) => o.pricePerKg != null);
   const cheapestPerKg = withPerKg.length
-    ? withPerKg.reduce((a, b) => (a.precio_por_kg <= b.precio_por_kg ? a : b))
+    ? withPerKg.reduce((a, b) => (a.pricePerKg <= b.pricePerKg ? a : b))
     : null;
 
-  const cheapestOverall = preciosPorFormato.reduce((a, b) =>
-    a.precio <= b.precio ? a : b
-  );
-
-  const source = cheapestPerKg || cheapestOverall;
-
+  // La tienda y el link acompañan al precio que se muestra (el más barato),
+  // no al de mejor precio por kilo, que puede ser otra oferta.
   return {
-    min: precioMin ?? cheapestOverall.precio ?? null,
-    perKg: cheapestPerKg ? Math.round(cheapestPerKg.precio_por_kg) : null,
-    store: source.tienda || fallbackStore,
-    url: source.url || fallbackUrl,
+    min: cheapest.price,
+    perKg: cheapestPerKg ? cheapestPerKg.pricePerKg : null,
+    store: cheapest.store || fallbackStore,
+    url: cheapest.url || fallbackUrl,
   };
 }
 
@@ -169,6 +201,7 @@ async function main() {
   let withPriceCount = 0;
   let withPriceUrlCount = 0;
   let withPricesByFormatCount = 0;
+  let discardedPriceCount = 0;
 
   try {
     await pool.query("BEGIN");
@@ -196,12 +229,13 @@ async function main() {
         if (kcalEstimated) estimatedKcalCount += 1;
       }
 
-      const price = bestPrice(item.precios_por_formato, item.precio_min, item.fuente);
-      if (price.min != null) withPriceCount += 1;
-      if (price.url != null) withPriceUrlCount += 1;
+      const pricesByFormat = collectOffers(item);
+      if (pricesByFormat.some((o) => o.format)) withPricesByFormatCount += 1;
 
-      const pricesByFormat = mapPricesByFormat(item.precios_por_formato);
-      if (pricesByFormat.length > 0) withPricesByFormatCount += 1;
+      const price = bestPrice(pricesByFormat, item.precio_min, item.precio_fuente, item.fuente);
+      if (price.min != null) withPriceCount += 1;
+      if (price.min != null && price.url != null) withPriceUrlCount += 1;
+      if (item.precio_min != null && price.min == null) discardedPriceCount += 1;
 
       await pool.query(
         `
@@ -269,6 +303,7 @@ async function main() {
   console.log(`Con precio real: ${withPriceCount}/${inserted}`);
   console.log(`Con página de origen del precio: ${withPriceUrlCount}/${inserted}`);
   console.log(`Con desglose de precio por formato: ${withPricesByFormatCount}/${inserted}`);
+  console.log(`Precio descartado por ser inválido (< $${MIN_VALID_PRICE}): ${discardedPriceCount}`);
   console.log(`Con kcal/kg estimado (Atwater, no real): ${estimatedKcalCount}/${inserted}`);
   console.log(`Con algún nutriente anulado por venir "fuera de rango": ${sanitizedCount}/${inserted}`);
 }

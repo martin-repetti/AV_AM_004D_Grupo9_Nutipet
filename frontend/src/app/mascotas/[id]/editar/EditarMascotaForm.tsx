@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { setFlashMessage } from "@/components/ui/FlashMessage";
@@ -48,30 +48,20 @@ export default function EditarMascotaForm({ pet }: EditarMascotaFormProps) {
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-  // En la primera carga no queremos perder la raza que ya tenía la
-  // mascota mientras se cargan las opciones; solo se reinicia cuando el
-  // usuario cambia la especie manualmente.
-  const isFirstRun = useRef(true);
-
+  // Solo carga las opciones de raza. La raza elegida se reinicia en el
+  // onChange de especie (acción del usuario), no aquí: en desarrollo React
+  // ejecuta los efectos dos veces y un reinicio aquí borraría la raza ya
+  // guardada de la mascota.
   useEffect(() => {
     if (!species) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setBreeds([]);
-      setBreed("");
       return;
     }
-
-    const keepCurrentBreed = isFirstRun.current;
-    isFirstRun.current = false;
 
     const loadBreeds = async () => {
       try {
         setLoadingBreeds(true);
-
-        if (!keepCurrentBreed) {
-          setBreed("");
-        }
-
         setError("");
 
         const response = await fetch(
@@ -248,7 +238,10 @@ export default function EditarMascotaForm({ pet }: EditarMascotaFormProps) {
                   id="species"
                   name="species"
                   value={species}
-                  onChange={(e) => setSpecies(e.target.value)}
+                  onChange={(e) => {
+                    setSpecies(e.target.value);
+                    setBreed("");
+                  }}
                   required
                 >
                   <option value="" disabled>

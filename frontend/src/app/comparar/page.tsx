@@ -62,7 +62,13 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
   }));
 }
 
-export default async function CompararPage() {
+export default async function CompararPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string | string[] }>;
+}) {
+  const { q } = await searchParams;
+  const initialSearch = (Array.isArray(q) ? q[0] : q)?.trim() ?? "";
   const userId = await getSessionUserId();
   const pets = userId ? await getPets(userId) : [];
   const isGuest = !userId;
@@ -95,6 +101,9 @@ export default async function CompararPage() {
 
   return (
     <CompararClient
+      // Una búsqueda nueva desde el navbar reinicia la página con ese texto.
+      key={initialSearch}
+      initialSearch={initialSearch}
       pets={pets}
       catalog={catalog}
       nutritionRanges={nutritionRanges}

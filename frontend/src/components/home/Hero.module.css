@@ -75,23 +75,173 @@
   background: var(--np-surface);
 }
 
-.visual {
-  display: flex;
-  justify-content: center;
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 18px;
+
+  color: var(--np-primary);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-.visualPlaceholder {
-  width: 100%;
-  min-height: 360px;
+.content .guestHint {
+  margin-top: 14px;
+  font-size: 14px;
+}
+
+/* ---------- Vista previa con resultados reales ---------- */
+
+.preview {
+  padding: 28px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  border-radius: 28px;
+  background: var(--np-primary-soft);
+}
+
+.previewHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.previewTag {
+  padding: 4px 12px;
+
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.previewProfile {
+  color: var(--np-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.previewList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.previewItem {
+  padding: 16px 18px;
+
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+
+  border-radius: var(--np-radius-sm);
+  background: var(--np-surface);
+  box-shadow: 0 4px 14px rgba(43, 33, 26, 0.06);
+}
+
+.rank {
+  width: 30px;
+  height: 30px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 28px;
-  background: var(--np-primary-soft);
+  border-radius: 50%;
+  background: var(--np-bg);
+  color: var(--np-muted);
 
-  font-size: 110px;
+  font-family: var(--np-font-head);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.previewItem:first-child .rank {
+  background: var(--np-primary);
+  color: #ffffff;
+}
+
+.previewFood {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.previewBrand {
+  color: var(--np-muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.previewName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-family: var(--np-font-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--np-ink);
+}
+
+.previewPrice {
+  color: var(--np-muted);
+  font-size: 12px;
+}
+
+.previewScore {
+  font-family: var(--np-font-head);
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.good {
+  color: var(--np-good);
+}
+
+.mid {
+  color: var(--np-mid);
+}
+
+.low {
+  color: var(--np-low);
+}
+
+.preview .previewNote {
+  margin: 0;
+  max-width: none;
+
+  color: var(--np-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.previewLink {
+  align-self: flex-start;
+
+  color: var(--np-primary);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.previewLink:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {
@@ -99,12 +249,22 @@
     grid-template-columns: 1fr;
   }
 
-  .visual {
-    order: -1;
-  }
-
   .content h1 {
     font-size: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .preview {
+    padding: 20px 16px;
+  }
+
+  .previewName {
+    white-space: normal;
+  }
+
+  .previewScore {
+    font-size: 22px;
   }
 }
 

@@ -79,6 +79,10 @@ export default function ProfileMenu({ user }: ProfileMenuProps) {
           <p className={styles.greeting}>Hola, {firstName}</p>
           <p className={styles.email}>{user.email}</p>
 
+          <Link href="/cuenta" className={styles.accountLink} onClick={() => setOpen(false)}>
+            Mi cuenta
+          </Link>
+
           <button
             type="button"
             className={styles.logoutButton}

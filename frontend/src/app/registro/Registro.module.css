@@ -16,6 +16,30 @@
   gap: 8px;
 }
 
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  color: var(--np-ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.checkboxRow input {
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  width: 16px;
+  height: 16px;
+  accent-color: var(--np-primary);
+}
+
+.checkboxRow a {
+  color: var(--np-primary);
+  font-weight: 600;
+}
+
 .field label {
   color: var(--np-ink);
   font-size: 14px;

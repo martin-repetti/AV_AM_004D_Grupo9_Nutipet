@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   bestPricePerKgFormat,
   cheapestInRange,
+  comesInRange,
   hasFormatInRange,
   parseFormatToKg,
   summarizeFormats,
@@ -65,6 +66,29 @@ describe("cheapestInRange", () => {
         "15+"
       )
     ).toBeNull();
+  });
+});
+
+describe("comesInRange", () => {
+  const offer = (format: string): PriceByFormat => ({
+    format,
+    price: 10000,
+    pricePerKg: null,
+    store: null,
+    url: null,
+  });
+
+  it("acepta el producto si la lista de formatos o los precios por formato caen en el rango", () => {
+    expect(comesInRange(["3 kg"], [], "1-5")).toBe(true);
+    expect(comesInRange([], [offer("10 kg")], "5-15")).toBe(true);
+  });
+
+  it("lo descarta si ningún formato conocido cae en el rango", () => {
+    expect(comesInRange(["500 g"], [offer("20 kg")], "1-5")).toBe(false);
+  });
+
+  it("lo descarta si no hay ninguna información de formato", () => {
+    expect(comesInRange([], [offer("")], "1-5")).toBe(false);
   });
 });
 

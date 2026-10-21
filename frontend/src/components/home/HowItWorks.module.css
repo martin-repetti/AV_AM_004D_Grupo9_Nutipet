@@ -1,0 +1,145 @@
+.section {
+  padding: 80px 32px;
+  background: var(--np-bg);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  max-width: 680px;
+  margin-bottom: 40px;
+}
+
+.header span {
+  display: block;
+  margin-bottom: 10px;
+
+  color: var(--np-primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 38px;
+  line-height: 1.15;
+  color: var(--np-ink);
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step {
+  padding: 28px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.stepNumber {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-family: var(--np-font-head);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.step h3 {
+  margin: 18px 0 8px;
+  font-size: 20px;
+  color: var(--np-ink);
+}
+
+.step p {
+  margin: 0;
+  color: var(--np-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.stats {
+  margin-top: 24px;
+  padding: 24px 28px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 48px;
+
+  border-radius: var(--np-radius-card);
+  background: var(--np-secondary);
+}
+
+.stats div {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.stats strong {
+  font-family: var(--np-font-head);
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.stats span {
+  color: var(--np-secondary-text);
+  font-size: 15px;
+}
+
+.cta {
+  margin-left: auto;
+  min-height: 48px;
+  padding: 0 24px;
+
+  display: inline-flex;
+  align-items: center;
+
+  border-radius: var(--np-radius-pill);
+  background: #ffffff;
+  color: var(--np-secondary);
+
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.cta:hover {
+  background: var(--np-secondary-text);
+}
+
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .header h2 {
+    font-size: 30px;
+  }
+
+  .cta {
+    margin-left: 0;
+  }
+}

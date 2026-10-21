@@ -1,16 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { compareFoods } from "@/lib/compatibility/engine";
+import { compareFoods, pickBestWithinBudget } from "@/lib/compatibility/engine";
 import { petStage } from "@/lib/compatibility/petStage";
 import { normalize } from "@/lib/compatibility/normalize";
 import type { NutritionRange, RuleSetWeights } from "@/lib/compatibility/types";
 import { ALLERGEN_LABELS, type FoodRow } from "@/types/catalogFood";
 import { formatDisplayName } from "@/utils/productName";
-import { FORMAT_RANGES, type FormatRangeKey } from "@/utils/formatSize";
+import {
+  cheapestInRange,
+  comesInRange,
+  FORMAT_RANGES,
+  type FormatRangeKey,
+} from "@/utils/formatSize";
 import CatalogFoodCard from "@/components/compare/CatalogFoodCard";
 import ComparisonTable from "@/components/compare/ComparisonTable";
+import FoodListItem from "@/components/compare/FoodListItem";
 import styles from "./Comparar.module.css";
 
 export type ComparablePet = {
@@ -31,10 +37,13 @@ type CompararClientProps = {
   nutritionRanges: NutritionRange[];
   weights: RuleSetWeights;
   isGuest?: boolean;
+  /** Búsqueda que llega desde el buscador del navbar (?q=...). */
+  initialSearch?: string;
 };
 
 const MAX_COMPARISON_ITEMS = 4;
 const DEFAULT_COMPARISON_SIZE = 3;
+const LIST_PAGE_SIZE = 12;
 
 export default function CompararClient({
   pets,
@@ -42,6 +51,7 @@ export default function CompararClient({
   nutritionRanges,
   weights,
   isGuest = false,
+  initialSearch = "",
 }: CompararClientProps) {
   const [selectedPetId, setSelectedPetId] = useState(pets[0]?.id ?? 0);
   const [budgetInput, setBudgetInput] = useState("");
@@ -49,7 +59,16 @@ export default function CompararClient({
   // 3 mejores opciones por defecto. Al marcar/desmarcar algo, pasa a ser
   // una selección manual explícita.
   const [manualSelection, setManualSelection] = useState<number[] | null>(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
+  const listSectionRef = useRef<HTMLElement>(null);
+
+  // Al llegar desde el buscador del navbar, el resultado está en la lista
+  // de más abajo: se baja hasta ella para que la búsqueda se vea.
+  useEffect(() => {
+    if (initialSearch) {
+      listSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [initialSearch]);
   const [brandFilter, setBrandFilter] = useState("");
   const [formatRange, setFormatRange] = useState<FormatRangeKey | "">("");
 
@@ -96,7 +115,7 @@ export default function CompararClient({
   const parsedBudget = budgetInput.trim() ? Number(budgetInput) : null;
   const budget = Number.isFinite(parsedBudget) ? parsedBudget : null;
 
-  const { eligible, excluded, best, bestWithinBudget } = useMemo(
+  const { eligible: allEligible, excluded } = useMemo(
     () =>
       compareFoods(
         {
@@ -115,6 +134,24 @@ export default function CompararClient({
       ),
     [selectedPet, catalog, weights, budget, nutritionRanges]
   );
+
+  // El motor puntúa contra el catálogo completo (los percentiles de energía
+  // no deben depender del filtro); el formato solo decide qué se muestra.
+  const rangeKey = formatRange || null;
+  const eligible = useMemo(
+    () =>
+      rangeKey
+        ? allEligible.filter(({ food }) =>
+            comesInRange(food.formats, food.pricesByFormat, rangeKey)
+          )
+        : allEligible,
+    [allEligible, rangeKey]
+  );
+  const hiddenByFormat = allEligible.length - eligible.length;
+  const rangeLabel = FORMAT_RANGES.find((range) => range.key === rangeKey)?.label;
+
+  const best = eligible[0] ?? null;
+  const bestWithinBudget = pickBestWithinBudget(eligible, selectedPet.weightKg, budget);
 
   const showBudgetCard =
     Boolean(bestWithinBudget) &&
@@ -163,6 +200,14 @@ export default function CompararClient({
 
     return true;
   });
+
+  // La cantidad visible vuelve a la primera página sola cuando cambia la
+  // búsqueda, la marca o la mascota (la "clave" de la lista), sin efectos.
+  const listKey = `${selectedPet.id}|${selectedPet.species}|${search}|${brandFilter}|${rangeKey}`;
+  const [listPage, setListPage] = useState({ key: listKey, count: LIST_PAGE_SIZE });
+  const visibleCount = listPage.key === listKey ? listPage.count : LIST_PAGE_SIZE;
+  const visibleEligible = filteredEligible.slice(0, visibleCount);
+  const selectionFull = selectedFoodIds.length >= MAX_COMPARISON_ITEMS;
 
   return (
     <main className={styles.page}>
@@ -314,7 +359,10 @@ export default function CompararClient({
                   <select
                     id="formatRange"
                     value={formatRange}
-                    onChange={(e) => setFormatRange(e.target.value as FormatRangeKey | "")}
+                    onChange={(e) => {
+                    setFormatRange(e.target.value as FormatRangeKey | "");
+                    setManualSelection(null);
+                  }}
                   >
                     <option value="">Cualquier formato</option>
                     {FORMAT_RANGES.map((range) => (
@@ -367,7 +415,10 @@ export default function CompararClient({
                 <select
                   id="formatRange"
                   value={formatRange}
-                  onChange={(e) => setFormatRange(e.target.value as FormatRangeKey | "")}
+                  onChange={(e) => {
+                    setFormatRange(e.target.value as FormatRangeKey | "");
+                    setManualSelection(null);
+                  }}
                 >
                   <option value="">Cualquier formato</option>
                   {FORMAT_RANGES.map((range) => (
@@ -404,12 +455,28 @@ export default function CompararClient({
           </section>
         )}
 
+        {rangeKey && eligible.length > 0 && (
+          <p className={styles.compareNote}>
+            Mostrando solo alimentos que se venden en formato <strong>{rangeLabel}</strong>.
+            {hiddenByFormat > 0 &&
+              ` Se ocultaron ${hiddenByFormat} que no vienen en ese tamaño o no informan su formato.`}
+          </p>
+        )}
+
         {eligible.length === 0 ? (
-          <div className={styles.empty}>
-            <div className={styles.emptyIcon}>🚫</div>
-            <h2>No encontramos alimentos sin alérgenos para {selectedPet.name}.</h2>
-            <p>Revisa las alergias registradas en su perfil.</p>
-          </div>
+          allEligible.length > 0 ? (
+            <div className={styles.empty}>
+              <div className={styles.emptyIcon}>📦</div>
+              <h2>Ningún alimento compatible con {selectedPet.name} viene en formato {rangeLabel}.</h2>
+              <p>Prueba con otro rango de formato, o elige &quot;Cualquier formato&quot;.</p>
+            </div>
+          ) : (
+            <div className={styles.empty}>
+              <div className={styles.emptyIcon}>🚫</div>
+              <h2>No encontramos alimentos sin alérgenos para {selectedPet.name}.</h2>
+              <p>Revisa las alergias registradas en su perfil.</p>
+            </div>
+          )
         ) : (
           <>
             <section className={styles.highlights}>
@@ -419,7 +486,7 @@ export default function CompararClient({
                     🏆 Mejor opción
                   </span>
 
-                  <CatalogFoodCard scored={best} />
+                  <CatalogFoodCard scored={best} formatRange={rangeKey} />
                 </div>
               )}
 
@@ -429,7 +496,7 @@ export default function CompararClient({
                     💰 Mejor opción según tu presupuesto
                   </span>
 
-                  <CatalogFoodCard scored={bestWithinBudget} />
+                  <CatalogFoodCard scored={bestWithinBudget} formatRange={rangeKey} />
                 </div>
               )}
             </section>
@@ -450,27 +517,23 @@ export default function CompararClient({
             )}
 
             {selectedForComparison.length > 0 && (
-              <>
-                <p className={styles.compareNote}>
-                  {manualSelection
-                    ? "Tu comparación personalizada:"
-                    : `Tus ${selectedForComparison.length} mejores opciones para ${selectedPet.name}:`}
-                </p>
-
-                <ComparisonTable
-                  items={selectedForComparison}
-                  onRemove={toggleSelected}
-                  formatRange={formatRange || null}
-                />
-              </>
+              <ComparisonTable
+                title={
+                  manualSelection
+                    ? `Tu comparación (${selectedForComparison.length})`
+                    : `Las ${selectedForComparison.length} mejores opciones para ${selectedPet.name}`
+                }
+                items={selectedForComparison}
+                onRemove={toggleSelected}
+                formatRange={rangeKey}
+              />
             )}
 
-            <section>
+            <section ref={listSectionRef} className={styles.listSection}>
               <h2>Todos los alimentos compatibles</h2>
               <p>
                 Ordenados según compatibilidad. Marca hasta{" "}
-                {MAX_COMPARISON_ITEMS} para compararlos en la tabla de arriba
-                (empieza con las 3 mejores).
+                {MAX_COMPARISON_ITEMS} para compararlos en la tabla de arriba.
               </p>
 
               <div className={styles.filtersRow}>
@@ -511,17 +574,46 @@ export default function CompararClient({
                   No encontramos alimentos que coincidan con tu búsqueda.
                 </p>
               ) : (
-                <div className={styles.list}>
-                  {filteredEligible.map((item) => (
-                    <CatalogFoodCard
-                      key={item.food.id}
-                      scored={item}
-                      selectable
-                      selected={selectedFoodIds.includes(item.food.id)}
-                      onToggleSelect={() => toggleSelected(item.food.id)}
-                    />
-                  ))}
-                </div>
+                <>
+                  <p className={styles.listCount}>
+                    Mostrando {visibleEligible.length} de {filteredEligible.length} alimentos
+                    {selectionFull &&
+                      ` · Ya tienes ${MAX_COMPARISON_ITEMS} en la tabla: quita uno para agregar otro.`}
+                    {rangeKey &&
+                      visibleEligible.some(
+                        ({ food }) => !cheapestInRange(food.pricesByFormat, rangeKey)
+                      ) &&
+                      " · *Precio general: no tenemos el precio de ese producto para el formato elegido."}
+                  </p>
+
+                  <div className={styles.list}>
+                    {visibleEligible.map((item) => {
+                      const selected = selectedFoodIds.includes(item.food.id);
+                      return (
+                        <FoodListItem
+                          key={item.food.id}
+                          scored={item}
+                          selected={selected}
+                          selectionFull={selectionFull}
+                          formatRange={rangeKey}
+                          onToggleSelect={() => toggleSelected(item.food.id)}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  {visibleEligible.length < filteredEligible.length && (
+                    <button
+                      type="button"
+                      className={styles.showMoreButton}
+                      onClick={() =>
+                        setListPage({ key: listKey, count: visibleCount + LIST_PAGE_SIZE })
+                      }
+                    >
+                      Mostrar {Math.min(LIST_PAGE_SIZE, filteredEligible.length - visibleEligible.length)} más
+                    </button>
+                  )}
+                </>
               )}
             </section>
           </>
