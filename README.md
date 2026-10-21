@@ -31,6 +31,22 @@ Mejora la experiencia de compra y entrega opciones de mejor calidad en lo que a 
 | **Backend** | [Node.js](https://nodejs.org/) junto a [NestJS](https://nestjs.com/) |
 | **Base de datos** | [PostgreSQL](https://www.postgresql.org/) |
 
+## Arquitectura
+
+NutriPET sigue una **arquitectura monolítica en capas de 3 niveles (3-tier)**: una única aplicación Next.js que contiene el frontend y el backend (API Routes), conectada a una base de datos PostgreSQL. La comunicación entre capas se hace mediante una API REST con respuestas en JSON, y la autenticación es *stateless* con JWT.
+
+| Capa | Tecnologías | Responsabilidad |
+|------|-------------|-----------------|
+| **Presentación** | Next.js, React, TypeScript | Interfaz con la que interactúa el usuario desde el navegador. |
+| **Lógica de negocio** | API Routes de Next.js, Node.js | Recibe las peticiones HTTP, aplica la lógica y responde en JSON. |
+| **Datos** | PostgreSQL | Almacena la información y responde a las consultas SQL del backend. |
+
+<img width="2200" height="1120" alt="arquitectura-nutripet" src="https://github.com/user-attachments/assets/18384481-d79a-4593-b15f-11aa2b1e5f1d" />
+
+### Autenticación
+
+El backend emite y valida un **JWT**, que se guarda en una **cookie HttpOnly**. De este modo el token no es accesible desde JavaScript del navegador, lo que reduce el riesgo de robo por ataques XSS.
+
 ## Ejecución local
 
 ### Requisitos previos
@@ -119,15 +135,5 @@ Para correr los tests del motor de compatibilidad: `npm run test`.
 ## Metodología
 
 La metodología empleada en el desarrollo de este proyecto es **Scrum**, organizando sprints, reuniones semanales y revisando el avance constante del desarrollo del proyecto.
+
 <img width="750" height="500" alt="imagen" src="https://github.com/user-attachments/assets/643a012f-58da-4d37-b0a7-57282669feab" />
-
-## Arquitectura
-
-La arquitectura elegida para el desarrollo fue **MVP (Modelo Vista Presentador)**, lo que nos da un manejo completo y simple de la plataforma, tanto para pruebas como para mantención.
-<img width="546" height="461" alt="imagen" src="https://github.com/user-attachments/assets/f962d0ab-46cf-4ceb-b826-5e4820ed33df" />
-
-<div align="center">
-
-
-
-</div>
