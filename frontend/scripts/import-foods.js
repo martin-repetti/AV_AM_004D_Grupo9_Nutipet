@@ -1,7 +1,7 @@
 /**
  * Importa el catálogo scrapeado (productos.json) a la tabla `foods`.
- * Uso único por entorno: cada integrante lo corre una vez contra su
- * propia base local después de aplicar database/schema.sql.
+ * Se puede correr cada vez que el scraper genere un archivo nuevo: actualiza
+ * los alimentos (sin cambiarles el id) y agrega sus precios al historial.
  *
  * Uso:
  *   node scripts/import-foods.js <ruta-a-productos.json>
@@ -12,6 +12,7 @@
 const fs = require("fs");
 const path = require("path");
 const { Pool } = require("pg");
+const { mergeProducts } = require("./merge-products");
 
 const DEFAULT_SOURCE =
   "C:/Users/pract/Downloads/scraper_mascotas/scraper_mascotas/datos/salida/productos.json";
@@ -121,6 +122,15 @@ function isSingleFormat(formato) {
   return /^\s*[\d.,]+\s*(kg|g)\s*$/i.test(formato || "");
 }
 
+// El scraper trae precio_por_kg solo para algunas ofertas; con un formato
+// único se puede calcular igual a partir del tamaño.
+function pricePerKg(offer) {
+  if (offer.precio_por_kg != null) return Math.round(offer.precio_por_kg);
+  const match = offer.formato.trim().match(/^([\d.,]+)\s*(kg|g)$/i);
+  const kg = Number(match[1].replace(",", ".")) / (match[2].toLowerCase() === "g" ? 1000 : 1);
+  return kg > 0 ? Math.round(offer.precio / kg) : null;
+}
+
 /**
  * Une `ofertas` (precios del producto en todas las tiendas) con
  * `precios_por_formato`, sin duplicados. Una oferta con formato ambiguo
@@ -139,10 +149,11 @@ function collectOffers(item) {
     const offer = {
       format: singleFormat ? o.formato.trim() : "",
       price: o.precio,
-      pricePerKg:
-        singleFormat && o.precio_por_kg != null ? Math.round(o.precio_por_kg) : null,
+      pricePerKg: singleFormat ? pricePerKg(o) : null,
       store: normalizeStore(o.tienda),
       url: o.url || null,
+      // Solo para el historial de precios; no se guarda en prices_by_format.
+      recordedOn: o.fecha || null,
     };
 
     const key = `${offer.store}|${offer.format}|${offer.price}|${offer.url}`;
@@ -180,6 +191,52 @@ function bestPrice(offers, precioMin, precioFuente, fuente) {
   };
 }
 
+// Precios antiguos que el scraper guardó antes de existir el historial en
+// la base (historial_precios.csv, junto a la carpeta salida/). Se cruzan
+// con el catálogo por la URL de la oferta.
+function readLegacyHistory(sourcePath) {
+  const csvPath = path.join(path.dirname(sourcePath), "..", "historial_precios.csv");
+  if (!fs.existsSync(csvPath)) return [];
+
+  const lines = fs.readFileSync(csvPath, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/).filter(Boolean);
+  const header = lines[0].split(",");
+  const column = (name) => header.indexOf(name);
+  const [priceCol, storeCol, urlCol, dateCol] = ["precio", "tienda", "url", "fecha_extraccion"].map(column);
+
+  return lines.slice(1).map((line) => {
+    // Los nombres pueden traer comas; precio, tienda, url y fecha no.
+    const cells = line.split(",");
+    const fromEnd = (col) => cells[cells.length - (header.length - col)];
+    return {
+      price: Math.round(Number(fromEnd(priceCol))),
+      store: normalizeStore(fromEnd(storeCol)),
+      url: fromEnd(urlCol),
+      recordedOn: fromEnd(dateCol),
+    };
+  });
+}
+
+async function recordPrice(pool, foodId, offer, recordedOn) {
+  await pool.query(
+    `
+      INSERT INTO food_price_history (food_id, store, format, price, url, recorded_on)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      ON CONFLICT (food_id, store, format, recorded_on)
+      DO UPDATE SET price = LEAST(food_price_history.price, EXCLUDED.price)
+    `,
+    [foodId, offer.store || "", offer.format || "", offer.price, offer.url, recordedOn]
+  );
+}
+
+// Un ingrediente es un nombre corto ("Pollo deshidratado"); cuando el
+// scraper deja una frase de la descripción del producto, se descarta.
+const MAX_INGREDIENT_LENGTH = 80;
+
+function firstIngredient(ingredientes) {
+  const value = ingredientes.primer_ingrediente?.trim();
+  return value && value.length <= MAX_INGREDIENT_LENGTH ? value : null;
+}
+
 async function main() {
   const sourcePath = process.argv[2] || DEFAULT_SOURCE;
 
@@ -191,21 +248,41 @@ async function main() {
     process.exit(1);
   }
 
-  const items = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
+  const rawItems = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
+
+  // Las notas "fuera de rango" son de cada registro, así que se sanea
+  // antes de unir los registros del mismo alimento.
+  let sanitizedCount = 0;
+  const sanitizedItems = rawItems.map((item) => {
+    const raw = item.nutricion || {};
+    const nutricion = sanitizeNutricion(raw, item.notas);
+    if (nutricion !== raw) sanitizedCount += 1;
+    return { ...item, nutricion };
+  });
+  const items = mergeProducts(sanitizedItems);
+  const mergedGroups = items.filter((item) => item.mergedFrom > 1).length;
+
   const pool = new Pool(readEnvLocal());
 
   let inserted = 0;
   let skipped = 0;
-  let sanitizedCount = 0;
   let estimatedKcalCount = 0;
   let withPriceCount = 0;
   let withPriceUrlCount = 0;
   let withPricesByFormatCount = 0;
   let discardedPriceCount = 0;
+  let historyCount = 0;
+  const today = new Date().toISOString().slice(0, 10);
+  // URL de cada oferta -> alimento y formato, para cruzar el historial antiguo.
+  const offersByUrl = new Map();
 
   try {
     await pool.query("BEGIN");
-    await pool.query("DELETE FROM foods"); // import idempotente: reemplaza el catálogo completo
+    // Alimentos de imports anteriores a product_key: se reemplazan una única vez.
+    await pool.query("DELETE FROM foods WHERE product_key IS NULL");
+    // Los que esta corrida no traiga quedan inactivos (no se borran: pueden
+    // ser favoritos de alguien y tienen historial de precios).
+    await pool.query("UPDATE foods SET is_active = false");
 
     for (const item of items) {
       if (!hasUsableData(item)) {
@@ -213,9 +290,7 @@ async function main() {
         continue;
       }
 
-      const rawNutricion = item.nutricion || {};
-      const nutricion = sanitizeNutricion(rawNutricion, item.notas);
-      if (nutricion !== rawNutricion) sanitizedCount += 1;
+      const nutricion = item.nutricion;
 
       const ingredientes = item.ingredientes || {};
       const clasificacion = item.clasificacion || {};
@@ -237,7 +312,7 @@ async function main() {
       if (price.min != null && price.url != null) withPriceUrlCount += 1;
       if (item.precio_min != null && price.min == null) discardedPriceCount += 1;
 
-      await pool.query(
+      const result = await pool.query(
         `
           INSERT INTO foods (
             brand, name, species, type, stage, size, conditions,
@@ -246,7 +321,8 @@ async function main() {
             kcal_kg, kcal_kg_estimated,
             allergens, first_ingredient, formats,
             price_min, price_per_kg, price_store, price_url,
-            source_url, scraped_at, prices_by_format
+            source_url, scraped_at, prices_by_format,
+            product_key, is_active
           ) VALUES (
             $1, $2, $3, $4, $5, $6, $7,
             $8, $9, $10, $11,
@@ -254,8 +330,25 @@ async function main() {
             $15, $16,
             $17, $18, $19,
             $20, $21, $22, $23,
-            $24, $25, $26
+            $24, $25, $26,
+            $27, true
           )
+          ON CONFLICT (product_key) DO UPDATE SET
+            brand = EXCLUDED.brand, name = EXCLUDED.name, species = EXCLUDED.species,
+            type = EXCLUDED.type, stage = EXCLUDED.stage, size = EXCLUDED.size,
+            conditions = EXCLUDED.conditions,
+            protein = EXCLUDED.protein, fat = EXCLUDED.fat, fiber = EXCLUDED.fiber,
+            moisture = EXCLUDED.moisture,
+            protein_ms = EXCLUDED.protein_ms, fat_ms = EXCLUDED.fat_ms, fiber_ms = EXCLUDED.fiber_ms,
+            kcal_kg = EXCLUDED.kcal_kg, kcal_kg_estimated = EXCLUDED.kcal_kg_estimated,
+            allergens = EXCLUDED.allergens, first_ingredient = EXCLUDED.first_ingredient,
+            formats = EXCLUDED.formats,
+            price_min = EXCLUDED.price_min, price_per_kg = EXCLUDED.price_per_kg,
+            price_store = EXCLUDED.price_store, price_url = EXCLUDED.price_url,
+            source_url = EXCLUDED.source_url, scraped_at = EXCLUDED.scraped_at,
+            prices_by_format = EXCLUDED.prices_by_format,
+            is_active = true
+          RETURNING id
         `,
         [
           item.marca,
@@ -275,7 +368,7 @@ async function main() {
           kcalKg,
           kcalEstimated,
           JSON.stringify(ingredientes.contiene || {}),
-          ingredientes.primer_ingrediente || null,
+          firstIngredient(ingredientes),
           item.formatos || [],
           price.min,
           price.perKg,
@@ -283,11 +376,26 @@ async function main() {
           price.url,
           item.fuente?.url || null,
           item.fuente?.fecha_extraccion || null,
-          JSON.stringify(pricesByFormat),
+          JSON.stringify(pricesByFormat.map(({ recordedOn: _recordedOn, ...offer }) => offer)),
+          item.productKey,
         ]
       );
 
+      const foodId = result.rows[0].id;
+      for (const offer of pricesByFormat) {
+        await recordPrice(pool, foodId, offer, offer.recordedOn || item.fuente?.fecha_extraccion || today);
+        historyCount += 1;
+        if (offer.url) offersByUrl.set(offer.url, { foodId, format: offer.format });
+      }
+
       inserted += 1;
+    }
+
+    for (const legacy of readLegacyHistory(sourcePath)) {
+      const match = offersByUrl.get(legacy.url);
+      if (!match || !(legacy.price >= MIN_VALID_PRICE) || !legacy.recordedOn) continue;
+      await recordPrice(pool, match.foodId, { ...legacy, format: match.format }, legacy.recordedOn);
+      historyCount += 1;
     }
 
     await pool.query("COMMIT");
@@ -299,13 +407,17 @@ async function main() {
   }
 
   console.log(`Importados ${inserted} alimentos desde ${sourcePath}`);
+  console.log(
+    `Registros del scraper: ${rawItems.length} -> ${items.length} alimentos (${mergedGroups} unidos por ser el mismo producto en otro tamaño o tienda)`
+  );
   console.log(`Omitidos por no tener nutrición ni precio: ${skipped}`);
   console.log(`Con precio real: ${withPriceCount}/${inserted}`);
   console.log(`Con página de origen del precio: ${withPriceUrlCount}/${inserted}`);
   console.log(`Con desglose de precio por formato: ${withPricesByFormatCount}/${inserted}`);
   console.log(`Precio descartado por ser inválido (< $${MIN_VALID_PRICE}): ${discardedPriceCount}`);
+  console.log(`Precios registrados en el historial: ${historyCount}`);
   console.log(`Con kcal/kg estimado (Atwater, no real): ${estimatedKcalCount}/${inserted}`);
-  console.log(`Con algún nutriente anulado por venir "fuera de rango": ${sanitizedCount}/${inserted}`);
+  console.log(`Registros con algún nutriente anulado por venir "fuera de rango": ${sanitizedCount}/${rawItems.length}`);
 }
 
 main().catch((error) => {

@@ -1,6 +1,6 @@
 .row {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) 180px 110px 100px;
+  grid-template-columns: 34px minmax(0, 1fr) 180px 110px 100px;
   align-items: center;
   gap: 20px;
 
@@ -22,6 +22,14 @@
 .row.selected:hover {
   border-color: var(--np-primary);
   box-shadow: inset 0 0 0 1px var(--np-primary);
+}
+
+/* La casilla de comparar y, con sesión, el corazón de favoritos debajo. */
+.check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .check input {
@@ -171,7 +179,7 @@
 
 @media (max-width: 860px) {
   .row {
-    grid-template-columns: 28px minmax(0, 1fr) auto;
+    grid-template-columns: 34px minmax(0, 1fr) auto;
     grid-template-areas:
       "check identity score"
       ". macros price";

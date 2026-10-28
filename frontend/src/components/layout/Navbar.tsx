@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import styles from "./Navbar.module.css";
 import ProfileMenu, { type SessionUser } from "./ProfileMenu";
 import MobileNav from "./MobileNav";
-import { NAV_LINKS } from "./navLinks";
+import { getNavLinks } from "./navLinks";
 import { verifySessionToken } from "@/lib/auth";
 
 async function getSessionUser(): Promise<SessionUser | null> {
@@ -26,6 +26,7 @@ async function getSessionUser(): Promise<SessionUser | null> {
 
 export default async function Navbar() {
   const user = await getSessionUser();
+  const navLinks = getNavLinks(user !== null);
 
   return (
     <header className={styles.navbar}>
@@ -36,7 +37,7 @@ export default async function Navbar() {
         </Link>
 
         <nav className={styles.links}>
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link key={link.href} href={link.href}>
               {link.label}
             </Link>
@@ -55,7 +56,7 @@ export default async function Navbar() {
           </form>
 
           <ProfileMenu user={user} />
-          <MobileNav />
+          <MobileNav links={navLinks} />
         </div>
       </div>
     </header>

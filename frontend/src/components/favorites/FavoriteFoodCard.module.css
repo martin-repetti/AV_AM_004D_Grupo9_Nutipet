@@ -6,6 +6,11 @@
   border-radius: var(--np-radius-card);
 }
 
+.selected {
+  border-color: var(--np-secondary);
+  box-shadow: 0 0 0 1px var(--np-secondary);
+}
+
 .header {
   display: flex;
   align-items: flex-start;
@@ -23,43 +28,50 @@
 
 .header h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   color: var(--np-ink);
 }
 
-.score {
+.meta {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--np-muted);
+}
+
+.price {
   flex-shrink: 0;
   padding: 10px 14px;
 
   text-align: right;
   background: var(--np-primary-soft);
   border-radius: var(--np-radius-sm);
-  color: var(--np-primary);
 }
 
-.score span {
+.price span,
+.price small {
   display: block;
   font-size: 12px;
+  color: var(--np-muted);
 }
 
-.score strong {
+.price strong {
   font-size: 20px;
+  color: var(--np-ink);
 }
 
-.compatGood strong {
-  color: var(--np-good);
-}
+.inactive {
+  margin: 16px 0 0;
+  padding: 10px 14px;
 
-.compatMid strong {
-  color: var(--np-mid);
-}
+  background: var(--np-low-soft);
+  border-radius: var(--np-radius-sm);
 
-.compatLow strong {
-  color: var(--np-low);
+  color: var(--np-ink);
+  font-size: 14px;
 }
 
 .infoGrid {
-  margin-top: 20px;
+  margin: 20px 0 0;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -73,17 +85,18 @@
   border-radius: var(--np-radius-sm);
 }
 
-.infoItem span {
-  display: block;
+.infoItem dt {
   margin-bottom: 4px;
-
   font-size: 12px;
   color: var(--np-muted);
 }
 
-.infoItem strong {
+.infoItem dd {
+  margin: 0;
   font-size: 14px;
+  font-weight: 700;
   color: var(--np-ink);
+  overflow-wrap: anywhere;
 }
 
 .actions {
@@ -98,11 +111,13 @@
 
 .removeButton {
   margin-right: auto;
+  padding: 0;
 
   border: none;
   background: transparent;
 
   color: var(--np-muted);
+  font: inherit;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -110,6 +125,11 @@
 
 .removeButton:hover {
   color: var(--np-low);
+}
+
+.removeButton:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 .secondaryButton,
@@ -123,8 +143,10 @@
 
   border-radius: var(--np-radius-pill);
 
+  font: inherit;
   font-size: 14px;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -132,6 +154,11 @@
   border: 1px solid var(--np-border-strong);
   background: var(--np-surface);
   color: var(--np-primary);
+}
+
+.secondaryButton[aria-pressed="true"] {
+  border-color: var(--np-secondary);
+  color: var(--np-secondary);
 }
 
 .primaryButton {
@@ -149,7 +176,17 @@
     flex-direction: column;
   }
 
+  .price {
+    text-align: left;
+  }
+
   .infoGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .removeButton {
+    width: 100%;
+    margin-right: 0;
+    text-align: left;
   }
 }

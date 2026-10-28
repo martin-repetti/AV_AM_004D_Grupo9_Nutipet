@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { NAV_LINKS } from "./navLinks";
+import type { NavLink } from "./navLinks";
 import styles from "./MobileNav.module.css";
 
-export default function MobileNav() {
+export default function MobileNav({ links }: { links: NavLink[] }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -38,7 +38,7 @@ export default function MobileNav() {
           </form>
 
           <nav className={styles.links}>
-            {NAV_LINKS.map((link) => (
+            {links.map((link) => (
               <Link key={link.href} href={link.href} onClick={close}>
                 {link.label}
               </Link>

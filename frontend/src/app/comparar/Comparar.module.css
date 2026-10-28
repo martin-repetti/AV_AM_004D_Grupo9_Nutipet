@@ -215,6 +215,18 @@
     line-height: 1.6;
 }
 
+.inlineButton {
+    padding: 0;
+    border: none;
+    background: none;
+
+    color: var(--np-primary);
+    font: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .listSection {
     /* Deja aire bajo el navbar al hacer scroll automático hasta aquí. */
     scroll-margin-top: 24px;
@@ -265,4 +277,15 @@
         min-width: 0;
         width: 100%;
     }
+}
+
+.favoriteError {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+
+  background: var(--np-low-soft);
+  border-radius: var(--np-radius-sm);
+
+  color: var(--np-low);
+  font-size: 14px;
 }

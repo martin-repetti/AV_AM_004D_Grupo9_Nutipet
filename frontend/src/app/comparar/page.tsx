@@ -1,26 +1,12 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 import pool from "@/lib/db";
-import { verifySessionToken } from "@/lib/auth";
+import { getSessionUserId } from "@/lib/session";
+import { getFavoriteFoodIds } from "@/services/favorites";
 import { getAllFoods } from "@/services/foods";
 import { getNutritionRanges } from "@/services/nutritionRanges";
 import { getActiveRuleSetWeights } from "@/lib/compatibility/ruleSet";
 import CompararClient, { type ComparablePet } from "./CompararClient";
 import styles from "./Comparar.module.css";
-
-async function getSessionUserId(): Promise<number | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("nutripet_session")?.value;
-
-  if (!token) return null;
-
-  try {
-    const session = await verifySessionToken(token);
-    return Number(session.userId) || null;
-  } catch {
-    return null;
-  }
-}
 
 async function getPets(userId: number): Promise<ComparablePet[]> {
   const result = await pool.query<{
@@ -36,12 +22,13 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
     weight_kg: string | null;
     activity_level: string | null;
     body_condition: string | null;
+    food_preference: string | null;
   }>(
     `
       SELECT
         id, name, species, allergies, special_condition,
         birth_date::text AS birth_date,
-        weight_kg, activity_level, body_condition
+        weight_kg, activity_level, body_condition, food_preference
       FROM pets
       WHERE user_id = $1
       ORDER BY id ASC
@@ -59,6 +46,7 @@ async function getPets(userId: number): Promise<ComparablePet[]> {
     weightKg: pet.weight_kg !== null ? Number(pet.weight_kg) : null,
     activityLevel: pet.activity_level,
     bodyCondition: pet.body_condition,
+    foodPreference: pet.food_preference,
   }));
 }
 
@@ -93,10 +81,11 @@ export default async function CompararPage({
     );
   }
 
-  const [catalog, nutritionRanges, weights] = await Promise.all([
+  const [catalog, nutritionRanges, weights, favoriteIds] = await Promise.all([
     getAllFoods(pool),
     getNutritionRanges(pool),
     getActiveRuleSetWeights(pool),
+    userId ? getFavoriteFoodIds(pool, userId) : Promise.resolve(null),
   ]);
 
   return (
@@ -109,6 +98,7 @@ export default async function CompararPage({
       nutritionRanges={nutritionRanges}
       weights={weights}
       isGuest={isGuest}
+      initialFavoriteIds={favoriteIds}
     />
   );
 }

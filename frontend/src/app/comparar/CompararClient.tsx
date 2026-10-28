@@ -17,6 +17,7 @@ import {
 import CatalogFoodCard from "@/components/compare/CatalogFoodCard";
 import ComparisonTable from "@/components/compare/ComparisonTable";
 import FoodListItem from "@/components/compare/FoodListItem";
+import { useFavorites } from "@/components/favorites/useFavorites";
 import styles from "./Comparar.module.css";
 
 export type ComparablePet = {
@@ -29,7 +30,24 @@ export type ComparablePet = {
   weightKg: number | null;
   activityLevel: string | null;
   bodyCondition: string | null;
+  /** Preferencia registrada: "Seco" | "Húmedo" | "Mixto" | "" | null. */
+  foodPreference: string | null;
 };
+
+type FoodTypeFilter = "" | "seco" | "humedo";
+
+const TYPE_FILTER_LABELS: Record<Exclude<FoodTypeFilter, "">, string> = {
+  seco: "secos",
+  humedo: "húmedos",
+};
+
+/** "Seco" -> "seco", "Húmedo" -> "humedo"; "Mixto" o sin preferencia -> todos. */
+function preferenceToType(preference: string | null | undefined): FoodTypeFilter {
+  const normalized = normalize(preference ?? "");
+  if (normalized === "seco") return "seco";
+  if (normalized === "humedo") return "humedo";
+  return "";
+}
 
 type CompararClientProps = {
   pets: ComparablePet[];
@@ -39,6 +57,8 @@ type CompararClientProps = {
   isGuest?: boolean;
   /** Búsqueda que llega desde el buscador del navbar (?q=...). */
   initialSearch?: string;
+  /** Favoritos del usuario; null para invitados (sin botón de favorito). */
+  initialFavoriteIds?: number[] | null;
 };
 
 const MAX_COMPARISON_ITEMS = 4;
@@ -52,7 +72,9 @@ export default function CompararClient({
   weights,
   isGuest = false,
   initialSearch = "",
+  initialFavoriteIds = null,
 }: CompararClientProps) {
+  const { favoriteFor, error: favoriteError } = useFavorites(initialFavoriteIds);
   const [selectedPetId, setSelectedPetId] = useState(pets[0]?.id ?? 0);
   const [budgetInput, setBudgetInput] = useState("");
   // null = todavía sin tocar la selección para esta mascota: se usan las
@@ -71,6 +93,10 @@ export default function CompararClient({
   }, [initialSearch]);
   const [brandFilter, setBrandFilter] = useState("");
   const [formatRange, setFormatRange] = useState<FormatRangeKey | "">("");
+  // El tipo de alimento a mostrar sale de la preferencia de la mascota (no
+  // hay un selector aparte). Esto solo permite ver los otros tipos un rato;
+  // se reinicia al cambiar de mascota.
+  const [ignorePreference, setIgnorePreference] = useState(false);
 
   // Datos de mascota para el modo invitado: viven solo en memoria del
   // componente (useState), nunca se envían al servidor ni se guardan en
@@ -82,6 +108,7 @@ export default function CompararClient({
   const [guestBodyCondition, setGuestBodyCondition] = useState("");
   const [guestCondition, setGuestCondition] = useState("");
   const [guestAllergies, setGuestAllergies] = useState("");
+  const [guestFoodPreference, setGuestFoodPreference] = useState("");
 
   const selectedPet: ComparablePet = useMemo(
     () =>
@@ -96,10 +123,12 @@ export default function CompararClient({
             weightKg: guestWeight.trim() ? Number(guestWeight) : null,
             activityLevel: guestActivity || null,
             bodyCondition: guestBodyCondition || null,
+            foodPreference: guestFoodPreference || null,
           }
         : pets.find((pet) => pet.id === selectedPetId) ?? pets[0],
     [
       isGuest,
+      guestFoodPreference,
       guestSpecies,
       guestAllergies,
       guestCondition,
@@ -136,19 +165,31 @@ export default function CompararClient({
   );
 
   // El motor puntúa contra el catálogo completo (los percentiles de energía
-  // no deben depender del filtro); el formato solo decide qué se muestra.
+  // no deben depender de los filtros); tipo y formato solo deciden qué se
+  // muestra. Un alimento sin tipo detectado no cuenta como seco ni húmedo.
   const rangeKey = formatRange || null;
+  const preferredType = preferenceToType(selectedPet.foodPreference);
+  const typeFilter: FoodTypeFilter = ignorePreference ? "" : preferredType;
   const eligible = useMemo(
     () =>
-      rangeKey
-        ? allEligible.filter(({ food }) =>
-            comesInRange(food.formats, food.pricesByFormat, rangeKey)
-          )
-        : allEligible,
-    [allEligible, rangeKey]
+      allEligible.filter(({ food }) => {
+        if (typeFilter && food.type !== typeFilter) return false;
+        if (rangeKey && !comesInRange(food.formats, food.pricesByFormat, rangeKey)) return false;
+        return true;
+      }),
+    [allEligible, rangeKey, typeFilter]
   );
-  const hiddenByFormat = allEligible.length - eligible.length;
+  const hiddenByFilters = allEligible.length - eligible.length;
   const rangeLabel = FORMAT_RANGES.find((range) => range.key === rangeKey)?.label;
+
+  // "alimentos secos (preferencia de Rocky) en formato 1 - 5 kg"
+  const activeFilterText = [
+    typeFilter &&
+      `alimentos ${TYPE_FILTER_LABELS[typeFilter]} (preferencia de ${selectedPet.name})`,
+    rangeKey && `en formato ${rangeLabel}`,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   const best = eligible[0] ?? null;
   const bestWithinBudget = pickBestWithinBudget(eligible, selectedPet.weightKg, budget);
@@ -203,7 +244,7 @@ export default function CompararClient({
 
   // La cantidad visible vuelve a la primera página sola cuando cambia la
   // búsqueda, la marca o la mascota (la "clave" de la lista), sin efectos.
-  const listKey = `${selectedPet.id}|${selectedPet.species}|${search}|${brandFilter}|${rangeKey}`;
+  const listKey = `${selectedPet.id}|${selectedPet.species}|${search}|${brandFilter}|${rangeKey}|${typeFilter}`;
   const [listPage, setListPage] = useState({ key: listKey, count: LIST_PAGE_SIZE });
   const visibleCount = listPage.key === listKey ? listPage.count : LIST_PAGE_SIZE;
   const visibleEligible = filteredEligible.slice(0, visibleCount);
@@ -354,6 +395,25 @@ export default function CompararClient({
                 </div>
 
                 <div className={styles.filterField}>
+                  <label htmlFor="guestFoodPreference">Preferencia de alimento</label>
+
+                  <select
+                    id="guestFoodPreference"
+                    value={guestFoodPreference}
+                    onChange={(e) => {
+                      setGuestFoodPreference(e.target.value);
+                      setIgnorePreference(false);
+                      setManualSelection(null);
+                    }}
+                  >
+                    <option value="">Sin preferencia</option>
+                    <option value="Seco">Seco</option>
+                    <option value="Húmedo">Húmedo</option>
+                    <option value="Mixto">Mixto</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterField}>
                   <label htmlFor="formatRange">Formato (opcional)</label>
 
                   <select
@@ -383,7 +443,9 @@ export default function CompararClient({
                   id="pet"
                   value={selectedPetId}
                   onChange={(e) => {
-                    setSelectedPetId(Number(e.target.value));
+                    const petId = Number(e.target.value);
+                    setSelectedPetId(petId);
+                    setIgnorePreference(false);
                     setManualSelection(null);
                   }}
                 >
@@ -455,11 +517,54 @@ export default function CompararClient({
           </section>
         )}
 
-        {rangeKey && eligible.length > 0 && (
+        {activeFilterText && eligible.length > 0 && (
           <p className={styles.compareNote}>
-            Mostrando solo alimentos que se venden en formato <strong>{rangeLabel}</strong>.
-            {hiddenByFormat > 0 &&
-              ` Se ocultaron ${hiddenByFormat} que no vienen en ese tamaño o no informan su formato.`}
+            Mostrando solo <strong>{activeFilterText}</strong>.
+            {hiddenByFilters > 0 &&
+              ` Se ocultaron ${hiddenByFilters} que no cumplen ${typeFilter && rangeKey ? "estos filtros" : "este filtro"}.`}
+            {typeFilter && (
+              <>
+                {" "}
+                <button
+                  type="button"
+                  className={styles.inlineButton}
+                  onClick={() => {
+                    setIgnorePreference(true);
+                    setManualSelection(null);
+                  }}
+                >
+                  Ver también {typeFilter === "seco" ? "húmedos" : "secos"}
+                </button>
+                {!isGuest && (
+                  <>
+                    {" · "}
+                    <Link
+                      href={`/mascotas/${selectedPet.id}/editar`}
+                      className={styles.inlineButton}
+                    >
+                      Cambiar su preferencia
+                    </Link>
+                  </>
+                )}
+              </>
+            )}
+          </p>
+        )}
+
+        {ignorePreference && preferredType && (
+          <p className={styles.compareNote}>
+            Mostrando alimentos secos y húmedos, aunque {selectedPet.name} prefiere{" "}
+            {TYPE_FILTER_LABELS[preferredType]}.{" "}
+            <button
+              type="button"
+              className={styles.inlineButton}
+              onClick={() => {
+                setIgnorePreference(false);
+                setManualSelection(null);
+              }}
+            >
+              Volver a solo {TYPE_FILTER_LABELS[preferredType]}
+            </button>
           </p>
         )}
 
@@ -467,8 +572,23 @@ export default function CompararClient({
           allEligible.length > 0 ? (
             <div className={styles.empty}>
               <div className={styles.emptyIcon}>📦</div>
-              <h2>Ningún alimento compatible con {selectedPet.name} viene en formato {rangeLabel}.</h2>
-              <p>Prueba con otro rango de formato, o elige &quot;Cualquier formato&quot;.</p>
+              <h2>Ningún alimento compatible con {selectedPet.name} cumple: {activeFilterText}.</h2>
+              <p>
+                {typeFilter ? (
+                  <button
+                    type="button"
+                    className={styles.inlineButton}
+                    onClick={() => {
+                      setIgnorePreference(true);
+                      setManualSelection(null);
+                    }}
+                  >
+                    Ver también {typeFilter === "seco" ? "húmedos" : "secos"}
+                  </button>
+                ) : (
+                  "Prueba con otro rango de formato."
+                )}
+              </p>
             </div>
           ) : (
             <div className={styles.empty}>
@@ -479,6 +599,12 @@ export default function CompararClient({
           )
         ) : (
           <>
+            {favoriteError && (
+              <p className={styles.favoriteError} role="alert">
+                {favoriteError}
+              </p>
+            )}
+
             <section className={styles.highlights}>
               {best && (
                 <div className={styles.highlightCard}>
@@ -486,7 +612,11 @@ export default function CompararClient({
                     🏆 Mejor opción
                   </span>
 
-                  <CatalogFoodCard scored={best} formatRange={rangeKey} />
+                  <CatalogFoodCard
+                    scored={best}
+                    formatRange={rangeKey}
+                    favorite={favoriteFor(best.food.id)}
+                  />
                 </div>
               )}
 
@@ -496,7 +626,11 @@ export default function CompararClient({
                     💰 Mejor opción según tu presupuesto
                   </span>
 
-                  <CatalogFoodCard scored={bestWithinBudget} formatRange={rangeKey} />
+                  <CatalogFoodCard
+                    scored={bestWithinBudget}
+                    formatRange={rangeKey}
+                    favorite={favoriteFor(bestWithinBudget.food.id)}
+                  />
                 </div>
               )}
             </section>
@@ -597,6 +731,7 @@ export default function CompararClient({
                           selectionFull={selectionFull}
                           formatRange={rangeKey}
                           onToggleSelect={() => toggleSelected(item.food.id)}
+                          favorite={favoriteFor(item.food.id)}
                         />
                       );
                     })}

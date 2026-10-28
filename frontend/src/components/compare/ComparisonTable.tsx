@@ -32,9 +32,9 @@ type ComparisonTableProps = {
   formatRange: FormatRangeKey | null;
 };
 
-type PriceCell = {
-  /** Valor exacto comparable; null si no hay precio o si es aproximado. */
-  exact: number | null;
+type PerKgCell = {
+  /** Precio por kilo comparable, o null si no se puede calcular. */
+  value: number | null;
   content: ReactNode;
 };
 
@@ -73,70 +73,72 @@ function StoreLink({ food }: { food: FoodRow }) {
   );
 }
 
-function priceCell(food: FoodRow, formatRange: FormatRangeKey | null): PriceCell {
+// El precio del envase no se marca como "más barato": entre envases de
+// distinto tamaño solo dice cuál cuesta menos, no cuál conviene. Lo que
+// compara valor es el precio por kilo (fila siguiente).
+function priceCell(food: FoodRow, formatRange: FormatRangeKey | null): ReactNode {
   if (formatRange) {
     const cheapest = cheapestInRange(food.pricesByFormat, formatRange);
     if (cheapest) {
-      return {
-        exact: cheapest.price,
-        content: (
-          <>
-            <span className={styles.bigValue}>{formatClp(cheapest.price)}</span>
-            <span className={styles.note}>
-              {cheapest.format}
-              {cheapest.store ? ` · ${storeLabel(cheapest.store)}` : ""}
-            </span>
-          </>
-        ),
-      };
+      return (
+        <>
+          <span className={styles.bigValue}>{formatClp(cheapest.price)}</span>
+          <span className={styles.note}>
+            {cheapest.format}
+            {cheapest.store ? ` · ${storeLabel(cheapest.store)}` : ""}
+          </span>
+        </>
+      );
     }
 
     // Sin desglose por tamaño, pero el producto sí viene en un formato
     // de este rango: precio general, avisando que puede no ser exacto.
     if (hasFormatInRange(food.formats, formatRange) && food.priceMin !== null) {
-      return {
-        exact: null,
-        content: (
-          <>
-            <span className={styles.bigValue}>{formatClp(food.priceMin)}</span>
-            <span className={styles.warning}>precio general, puede no ser de este tamaño</span>
-            <StoreLink food={food} />
-          </>
-        ),
-      };
+      return (
+        <>
+          <span className={styles.bigValue}>{formatClp(food.priceMin)}</span>
+          <span className={styles.warning}>precio general, puede no ser de este tamaño</span>
+          <StoreLink food={food} />
+        </>
+      );
     }
 
-    return {
-      exact: null,
-      content: <span className={styles.empty}>No disponible en este rango</span>,
-    };
+    return <span className={styles.empty}>No disponible en este rango</span>;
   }
 
   if (food.priceMin !== null) {
-    return {
-      exact: food.priceMin,
-      content: (
-        <>
-          <span className={styles.bigValue}>{formatClp(food.priceMin)}</span>
-          <StoreLink food={food} />
-        </>
-      ),
-    };
+    return (
+      <>
+        <span className={styles.bigValue}>{formatClp(food.priceMin)}</span>
+        <StoreLink food={food} />
+      </>
+    );
   }
 
-  return { exact: null, content: <span className={styles.empty}>No disponible</span> };
+  return <span className={styles.empty}>No disponible</span>;
 }
 
-function perKgCell(food: FoodRow): PriceCell {
+function WetFoodNote({ food }: { food: FoodRow }) {
+  if (food.type !== "humedo") return null;
+  return (
+    <span className={styles.note}>
+      Húmedo ({food.moisture !== null ? `${food.moisture}% agua` : "alto contenido de agua"}):
+      compáralo solo con otros húmedos.
+    </span>
+  );
+}
+
+function perKgCell(food: FoodRow): PerKgCell {
   const bestFormat = bestPricePerKgFormat(food.pricesByFormat);
 
   if (bestFormat) {
     return {
-      exact: bestFormat.pricePerKg,
+      value: bestFormat.pricePerKg,
       content: (
         <>
           <span className={styles.bigValue}>{formatClp(bestFormat.pricePerKg!)}/kg</span>
           <span className={styles.note}>comprando el formato de {bestFormat.format}</span>
+          <WetFoodNote food={food} />
         </>
       ),
     };
@@ -144,21 +146,44 @@ function perKgCell(food: FoodRow): PriceCell {
 
   if (food.pricePerKg !== null) {
     return {
-      exact: food.pricePerKg,
-      content: <span className={styles.bigValue}>{formatClp(food.pricePerKg)}/kg</span>,
+      value: food.pricePerKg,
+      content: (
+        <>
+          <span className={styles.bigValue}>{formatClp(food.pricePerKg)}/kg</span>
+          <WetFoodNote food={food} />
+        </>
+      ),
     };
   }
 
-  return { exact: null, content: <span className={styles.empty}>No calculable</span> };
+  return { value: null, content: <span className={styles.empty}>No calculable</span> };
 }
 
-/** Índice(s) del valor mínimo, solo si hay al menos 2 valores comparables. */
-function lowestIndexes(values: (number | null)[]): Set<number> {
-  const numeric = values.filter((v): v is number => v !== null);
-  if (numeric.length < 2) return new Set();
+/**
+ * Índices con el menor precio por kilo, comparando solo dentro del mismo
+ * tipo de alimento: un húmedo (~80% agua) rinde mucho menos por kilo que
+ * un seco, así que compararlos entre sí engaña. En cada tipo hace falta al
+ * menos 2 valores y que no estén todos empatados; si no, no hay "mejor".
+ */
+function bestPerKgIndexes(items: ScoredFood[], values: (number | null)[]): Set<number> {
+  const byType = new Map<string, number[]>();
 
-  const min = Math.min(...numeric);
-  return new Set(values.flatMap((v, i) => (v === min ? [i] : [])));
+  items.forEach(({ food }, index) => {
+    if (!food.type || values[index] === null) return;
+    byType.set(food.type, [...(byType.get(food.type) ?? []), index]);
+  });
+
+  const best = new Set<number>();
+  for (const indexes of byType.values()) {
+    const groupValues = indexes.map((i) => values[i]!);
+    const min = Math.min(...groupValues);
+    if (indexes.length < 2 || groupValues.every((v) => v === min)) continue;
+    indexes.forEach((i) => {
+      if (values[i] === min) best.add(i);
+    });
+  }
+
+  return best;
 }
 
 function NutrientRow({
@@ -212,11 +237,13 @@ export default function ComparisonTable({ title, items, onRemove, formatRange }:
   if (items.length === 0) return null;
 
   const span = items.length + 1;
-  const bestScore = Math.max(...items.map((item) => item.score));
+  const scores = items.map((item) => Math.round(item.score));
+  const bestScore = Math.max(...scores);
+  // Si todos empatan, ninguno es "el más compatible".
+  const allScoresTied = scores.every((score) => score === bestScore);
   const prices = items.map(({ food }) => priceCell(food, formatRange));
   const perKg = items.map(({ food }) => perKgCell(food));
-  const cheapest = lowestIndexes(prices.map((p) => p.exact));
-  const cheapestPerKg = lowestIndexes(perKg.map((p) => p.exact));
+  const cheapestPerKg = bestPerKgIndexes(items, perKg.map((p) => p.value));
   const rangeLabel = FORMAT_RANGES.find((r) => r.key === formatRange)?.label;
 
   return (
@@ -224,8 +251,9 @@ export default function ComparisonTable({ title, items, onRemove, formatRange }:
       <div className={styles.heading}>
         <h2>{title}</h2>
         <p>
-          <span className={styles.legendBest}>Mejor</span> marca el valor más
-          conveniente de cada fila, cuando se puede comparar con exactitud.
+          <span className={styles.legendBest}>Mejor</span> marca lo más
+          conveniente cuando se puede comparar con justicia: el precio por kilo,
+          solo entre alimentos del mismo tipo.
         </p>
       </div>
 
@@ -239,9 +267,9 @@ export default function ComparisonTable({ title, items, onRemove, formatRange }:
               <th scope="col" className={styles.corner} style={{ width: LABEL_COLUMN_WIDTH }}>
                 <span className={styles.srOnly}>Característica</span>
               </th>
-              {items.map(({ food, score, coverage }) => {
+              {items.map(({ food, score, coverage }, index) => {
                 const tier = scoreTier(score);
-                const isBest = items.length > 1 && score === bestScore;
+                const isBest = items.length > 1 && !allScoresTied && scores[index] === bestScore;
 
                 return (
                   <th key={food.id} scope="col" className={styles.foodHead}>
@@ -283,14 +311,8 @@ export default function ComparisonTable({ title, items, onRemove, formatRange }:
                 {rangeLabel && <span className={styles.rowHint}>formato {rangeLabel}</span>}
               </th>
               {prices.map((price, index) => (
-                <td
-                  key={items[index].food.id}
-                  className={cheapest.has(index) ? styles.bestCell : undefined}
-                >
-                  <div className={styles.stack}>
-                    {price.content}
-                    {cheapest.has(index) && <span className={styles.bestTag}>Más barato</span>}
-                  </div>
+                <td key={items[index].food.id}>
+                  <div className={styles.stack}>{price}</div>
                 </td>
               ))}
             </tr>
@@ -304,7 +326,11 @@ export default function ComparisonTable({ title, items, onRemove, formatRange }:
                 >
                   <div className={styles.stack}>
                     {price.content}
-                    {cheapestPerKg.has(index) && <span className={styles.bestTag}>Mejor precio/kg</span>}
+                    {cheapestPerKg.has(index) && (
+                      <span className={styles.bestTag}>
+                        Mejor precio/kg entre {items[index].food.type === "humedo" ? "húmedos" : "secos"}
+                      </span>
+                    )}
                   </div>
                 </td>
               ))}

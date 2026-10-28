@@ -112,6 +112,17 @@ reciente a quien lo tenga y cárgalo a tu base:
 node scripts\import-foods.js "ruta\al\productos.json"
 ```
 
+El import une los registros que son el mismo alimento en otro tamaño o
+en otra tienda (ver `scripts/merge-products.js`), así cada producto
+aparece una vez con todas sus ofertas. Se puede correr cada vez que el
+scraper genere un archivo nuevo: actualiza cada alimento sin cambiarle
+el id (los favoritos siguen apuntando al mismo), deja inactivos los que
+el scraper ya no encontró y agrega los precios del día a
+`food_price_history`, que es lo que muestra el historial de precios.
+
+Si tu base es anterior a favoritos e historial, aplica primero
+`database/migration_favoritos_historial.sql`.
+
 Sin ese archivo, `/comparar` funciona pero no muestra alimentos.
 
 ### 7. Ejecutar

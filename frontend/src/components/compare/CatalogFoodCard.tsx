@@ -2,6 +2,7 @@ import type { ScoredFood } from "@/lib/compatibility/types";
 import { formatDisplayName } from "@/utils/productName";
 import { scoreTier } from "@/utils/scoreTier";
 import { displayPrice, type FormatRangeKey } from "@/utils/formatSize";
+import FavoriteButton, { type FavoriteToggle } from "@/components/favorites/FavoriteButton";
 import styles from "./CatalogFoodCard.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -18,9 +19,11 @@ const STAGE_LABELS: Record<string, string> = {
 type CatalogFoodCardProps = {
   scored: ScoredFood;
   formatRange: FormatRangeKey | null;
+  /** Solo con sesión iniciada. */
+  favorite?: FavoriteToggle;
 };
 
-export default function CatalogFoodCard({ scored, formatRange }: CatalogFoodCardProps) {
+export default function CatalogFoodCard({ scored, formatRange, favorite }: CatalogFoodCardProps) {
   const { food } = scored;
   const tier = scoreTier(scored.score);
   const shownPrice = displayPrice(food.priceMin, food.pricesByFormat, formatRange);
@@ -36,7 +39,10 @@ export default function CatalogFoodCard({ scored, formatRange }: CatalogFoodCard
     <article className={styles.card}>
       <div className={styles.header}>
         <div>
-          <p className={styles.brand}>{food.brand}</p>
+          <div className={styles.brandRow}>
+            <p className={styles.brand}>{food.brand}</p>
+            {favorite && <FavoriteButton {...favorite} foodName={formatDisplayName(food.name)} />}
+          </div>
           <h3>{formatDisplayName(food.name)}</h3>
           {metaParts.length > 0 && (
             <p className={styles.meta}>{metaParts.join(" · ")}</p>

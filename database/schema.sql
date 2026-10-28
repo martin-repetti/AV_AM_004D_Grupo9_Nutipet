@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict obDL7HvXLmyZWiHJPHXZQUddhAUtYRI5XkxByAMfHy1bUZv4o3jU8rCTWrWs5fu
+\restrict fpYcPmHF65IEKwflv6doKzjaTgcDFlnPsF14YIGOJdtOJ30ehTSPKBNCesHL68D
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
@@ -120,6 +120,51 @@ ALTER SEQUENCE public.compatibility_rule_sets_id_seq OWNED BY public.compatibili
 
 
 --
+-- Name: favorite_foods; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.favorite_foods (
+    user_id bigint NOT NULL,
+    food_id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
+-- Name: food_price_history; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.food_price_history (
+    id bigint NOT NULL,
+    food_id bigint NOT NULL,
+    store character varying(50) DEFAULT ''::character varying NOT NULL,
+    format character varying(20) DEFAULT ''::character varying NOT NULL,
+    price numeric(10,0) NOT NULL,
+    url text,
+    recorded_on date NOT NULL
+);
+
+
+--
+-- Name: food_price_history_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.food_price_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: food_price_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.food_price_history_id_seq OWNED BY public.food_price_history.id;
+
+
+--
 -- Name: foods; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -151,7 +196,9 @@ CREATE TABLE public.foods (
     scraped_at date,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     size character varying(20) DEFAULT ''::character varying NOT NULL,
-    prices_by_format jsonb DEFAULT '[]'::jsonb NOT NULL
+    prices_by_format jsonb DEFAULT '[]'::jsonb NOT NULL,
+    product_key character varying(400),
+    is_active boolean DEFAULT true NOT NULL
 );
 
 
@@ -378,6 +425,13 @@ ALTER TABLE ONLY public.compatibility_rule_sets ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: food_price_history id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.food_price_history ALTER COLUMN id SET DEFAULT nextval('public.food_price_history_id_seq'::regclass);
+
+
+--
 -- Name: foods id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -449,6 +503,30 @@ ALTER TABLE ONLY public.compatibility_criteria_weights
 
 ALTER TABLE ONLY public.compatibility_rule_sets
     ADD CONSTRAINT compatibility_rule_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: favorite_foods favorite_foods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.favorite_foods
+    ADD CONSTRAINT favorite_foods_pkey PRIMARY KEY (user_id, food_id);
+
+
+--
+-- Name: food_price_history food_price_history_food_id_store_format_recorded_on_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.food_price_history
+    ADD CONSTRAINT food_price_history_food_id_store_format_recorded_on_key UNIQUE (food_id, store, format, recorded_on);
+
+
+--
+-- Name: food_price_history food_price_history_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.food_price_history
+    ADD CONSTRAINT food_price_history_pkey PRIMARY KEY (id);
 
 
 --
@@ -540,11 +618,34 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: foods_product_key_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX foods_product_key_key ON public.foods USING btree (product_key);
+
+
+--
 -- Name: compatibility_criteria_weights compatibility_criteria_weights_rule_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.compatibility_criteria_weights
     ADD CONSTRAINT compatibility_criteria_weights_rule_set_id_fkey FOREIGN KEY (rule_set_id) REFERENCES public.compatibility_rule_sets(id);
+
+
+--
+-- Name: favorite_foods favorite_foods_food_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.favorite_foods
+    ADD CONSTRAINT favorite_foods_food_id_fkey FOREIGN KEY (food_id) REFERENCES public.foods(id) ON DELETE CASCADE;
+
+
+--
+-- Name: favorite_foods favorite_foods_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.favorite_foods
+    ADD CONSTRAINT favorite_foods_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -572,8 +673,16 @@ ALTER TABLE ONLY public.subscriptions
 
 
 --
+-- Name: food_price_history food_price_history_food_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.food_price_history
+    ADD CONSTRAINT food_price_history_food_id_fkey FOREIGN KEY (food_id) REFERENCES public.foods(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict obDL7HvXLmyZWiHJPHXZQUddhAUtYRI5XkxByAMfHy1bUZv4o3jU8rCTWrWs5fu
+\unrestrict fpYcPmHF65IEKwflv6doKzjaTgcDFlnPsF14YIGOJdtOJ30ehTSPKBNCesHL68D
 

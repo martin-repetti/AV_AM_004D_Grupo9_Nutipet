@@ -2,6 +2,7 @@ import type { ScoredFood } from "@/lib/compatibility/types";
 import { formatDisplayName } from "@/utils/productName";
 import { scoreTier } from "@/utils/scoreTier";
 import { displayPrice, type FormatRangeKey } from "@/utils/formatSize";
+import FavoriteButton, { type FavoriteToggle } from "@/components/favorites/FavoriteButton";
 import styles from "./FoodListItem.module.css";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -22,6 +23,8 @@ type FoodListItemProps = {
   selectionFull: boolean;
   onToggleSelect: () => void;
   formatRange: FormatRangeKey | null;
+  /** Solo con sesión iniciada. */
+  favorite?: FavoriteToggle;
 };
 
 function nutrient(value: number | null): string {
@@ -34,6 +37,7 @@ export default function FoodListItem({
   selectionFull,
   onToggleSelect,
   formatRange,
+  favorite,
 }: FoodListItemProps) {
   const { food, score } = scored;
   const shownPrice = displayPrice(food.priceMin, food.pricesByFormat, formatRange);
@@ -54,6 +58,7 @@ export default function FoodListItem({
         <label htmlFor={checkboxId} className={styles.srOnly}>
           Agregar {formatDisplayName(food.name)} a la comparación
         </label>
+        {favorite && <FavoriteButton {...favorite} foodName={formatDisplayName(food.name)} />}
       </div>
 
       <div className={styles.identity}>

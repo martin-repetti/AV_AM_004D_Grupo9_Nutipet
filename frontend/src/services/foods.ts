@@ -1,5 +1,6 @@
 import type { Pool } from "pg";
 import type { FoodRow } from "@/types/catalogFood";
+import type { FavoriteFood } from "@/services/favorites";
 
 type FoodDbRow = {
   // `foods.id` es BIGINT en Postgres: el driver `pg` lo devuelve como
@@ -30,6 +31,7 @@ type FoodDbRow = {
   price_url: string | null;
   source_url: string | null;
   prices_by_format: FoodRow["pricesByFormat"];
+  is_active: boolean;
 };
 
 function toNumber(value: string | null): number | null {
@@ -76,7 +78,7 @@ const SELECT_FOOD_COLUMNS = `
   kcal_kg, kcal_kg_estimated,
   allergens, first_ingredient, formats,
   price_min, price_per_kg, price_store, price_url, source_url,
-  prices_by_format
+  prices_by_format, is_active
 `;
 
 /**
@@ -91,7 +93,7 @@ export async function getFoodsBySpecies(
   species: "Perro" | "Gato"
 ): Promise<FoodRow[]> {
   const result = await pool.query<FoodDbRow>(
-    `SELECT ${SELECT_FOOD_COLUMNS} FROM foods WHERE species = $1 ORDER BY id ASC`,
+    `SELECT ${SELECT_FOOD_COLUMNS} FROM foods WHERE is_active AND species = $1 ORDER BY id ASC`,
     [species]
   );
 
@@ -106,8 +108,23 @@ export async function getFoodsBySpecies(
  */
 export async function getAllFoods(pool: Pool): Promise<FoodRow[]> {
   const result = await pool.query<FoodDbRow>(
-    `SELECT ${SELECT_FOOD_COLUMNS} FROM foods WHERE species != '' ORDER BY id ASC`
+    `SELECT ${SELECT_FOOD_COLUMNS} FROM foods WHERE is_active AND species != '' ORDER BY id ASC`
   );
 
   return result.rows.map(mapRow);
+}
+
+/**
+ * Alimentos por id, incluidos los que el scraper ya no encuentra
+ * (inactivos): un favorito guardado no debe desaparecer sin aviso.
+ */
+export async function getFoodsByIds(pool: Pool, ids: number[]): Promise<FavoriteFood[]> {
+  if (ids.length === 0) return [];
+
+  const result = await pool.query<FoodDbRow>(
+    `SELECT ${SELECT_FOOD_COLUMNS} FROM foods WHERE id = ANY($1::bigint[])`,
+    [ids]
+  );
+
+  return result.rows.map((row) => ({ food: mapRow(row), isActive: row.is_active }));
 }
