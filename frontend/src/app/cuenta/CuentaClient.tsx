@@ -3,13 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setFlashMessage } from "@/components/ui/FlashMessage";
+import type { Payment, UserPlan } from "@/services/plans";
+import SubscriptionCard from "./SubscriptionCard";
 import styles from "./Cuenta.module.css";
 
 type CuentaClientProps = {
   user: { name: string; email: string };
+  plan: UserPlan;
+  payments: Payment[];
 };
 
-export default function CuentaClient({ user }: CuentaClientProps) {
+export default function CuentaClient({ user, plan, payments }: CuentaClientProps) {
   const router = useRouter();
 
   const [confirming, setConfirming] = useState(false);
@@ -69,12 +73,14 @@ export default function CuentaClient({ user }: CuentaClientProps) {
           </div>
         </section>
 
+        <SubscriptionCard plan={plan} payments={payments} />
+
         <section className={styles.dangerZone}>
           <div className={styles.dangerHeader}>
             <h2>Eliminar cuenta</h2>
             <p>
-              Esto borra tu cuenta, tus mascotas y todos los datos
-              asociados de forma permanente. No se puede deshacer.
+              Esto borra tu cuenta, tus mascotas, tu suscripción y todos
+              los datos asociados de forma permanente. No se puede deshacer.
             </p>
           </div>
 

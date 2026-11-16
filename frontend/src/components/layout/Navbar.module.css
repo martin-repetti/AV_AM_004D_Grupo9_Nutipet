@@ -32,8 +32,10 @@
   white-space: nowrap;
 }
 
-.brandIcon {
-  font-size: 26px;
+.logo {
+  display: block;
+  width: auto;
+  height: 44px;
 }
 
 .links {

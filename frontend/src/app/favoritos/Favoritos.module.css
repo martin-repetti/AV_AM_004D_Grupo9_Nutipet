@@ -127,6 +127,143 @@
   font-size: 14px;
 }
 
+/* ---------- Alertas de precio ---------- */
+
+.alertsLock {
+  margin-bottom: 20px;
+}
+
+.alerts {
+  margin-bottom: 24px;
+  padding: 20px 22px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.alerts h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: var(--np-ink);
+}
+
+.alerts ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alerts li {
+  padding: 12px 0;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "tag food price"
+    "tag meta price";
+  align-items: center;
+  gap: 2px 14px;
+
+  border-top: 1px solid var(--np-border);
+}
+
+.alerts li:first-child {
+  border-top: none;
+}
+
+.alertDrop,
+.alertBest {
+  grid-area: tag;
+  padding: 4px 10px;
+
+  border-radius: var(--np-radius-pill);
+
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.alertDrop {
+  background: var(--np-good-soft);
+  color: var(--np-good);
+}
+
+.alertBest {
+  background: var(--np-secondary);
+  color: #ffffff;
+}
+
+.alertFood {
+  grid-area: food;
+  padding: 0;
+
+  border: none;
+  background: none;
+
+  color: var(--np-ink);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.alertFood:hover {
+  color: var(--np-primary);
+  text-decoration: underline;
+}
+
+.alertMeta {
+  grid-area: meta;
+  color: var(--np-muted);
+  font-size: 13px;
+}
+
+.alertPrice {
+  grid-area: price;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.alertPrice s {
+  color: var(--np-muted);
+  font-size: 13px;
+}
+
+.alertPrice strong {
+  color: var(--np-ink);
+}
+
+.alertPrice em {
+  margin-left: 4px;
+  color: var(--np-good);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.alertsEmpty {
+  margin: 0;
+  color: var(--np-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .alerts li {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "tag"
+      "food"
+      "meta"
+      "price";
+    justify-items: start;
+  }
+
+  .alertPrice {
+    text-align: left;
+  }
+}
+
 .historySection {
   margin-top: 56px;
   scroll-margin-top: 24px;

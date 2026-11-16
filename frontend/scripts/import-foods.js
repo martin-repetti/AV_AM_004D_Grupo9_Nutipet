@@ -266,6 +266,7 @@ async function main() {
 
   let inserted = 0;
   let skipped = 0;
+  let snacks = 0;
   let estimatedKcalCount = 0;
   let withPriceCount = 0;
   let withPriceUrlCount = 0;
@@ -285,6 +286,13 @@ async function main() {
     await pool.query("UPDATE foods SET is_active = false");
 
     for (const item of items) {
+      // Un snack o premio no es un alimento completo: recomendarlo como
+      // dieta diaria sería un error, así que no entra al comparador.
+      if (item.clasificacion?.tipo === "snack") {
+        snacks += 1;
+        continue;
+      }
+
       if (!hasUsableData(item)) {
         skipped += 1;
         continue;
@@ -411,6 +419,7 @@ async function main() {
     `Registros del scraper: ${rawItems.length} -> ${items.length} alimentos (${mergedGroups} unidos por ser el mismo producto en otro tamaño o tienda)`
   );
   console.log(`Omitidos por no tener nutrición ni precio: ${skipped}`);
+  console.log(`Omitidos por ser snacks o premios (no son alimento completo): ${snacks}`);
   console.log(`Con precio real: ${withPriceCount}/${inserted}`);
   console.log(`Con página de origen del precio: ${withPriceUrlCount}/${inserted}`);
   console.log(`Con desglose de precio por formato: ${withPricesByFormatCount}/${inserted}`);

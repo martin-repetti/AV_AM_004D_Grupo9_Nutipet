@@ -59,9 +59,19 @@ type CompararClientProps = {
   initialSearch?: string;
   /** Favoritos del usuario; null para invitados (sin botón de favorito). */
   initialFavoriteIds?: number[] | null;
+  /** Cuántos alimentos caben en la tabla comparativa según el plan. */
+  maxCompare?: number;
+  /** Comparación avanzada (Premium). */
+  detailedComparison?: boolean;
 };
 
-const MAX_COMPARISON_ITEMS = 4;
+const SPECIES_OPTIONS: { value: "Perro" | "Gato"; icon: string }[] = [
+  { value: "Perro", icon: "🐶" },
+  { value: "Gato", icon: "🐱" },
+];
+
+/** Máximo de alimentos en la tabla si el plan no indica otro (invitados y Gratis). */
+const DEFAULT_MAX_COMPARISON_ITEMS = 4;
 const DEFAULT_COMPARISON_SIZE = 3;
 const LIST_PAGE_SIZE = 12;
 
@@ -73,6 +83,8 @@ export default function CompararClient({
   isGuest = false,
   initialSearch = "",
   initialFavoriteIds = null,
+  maxCompare = DEFAULT_MAX_COMPARISON_ITEMS,
+  detailedComparison = false,
 }: CompararClientProps) {
   const { favoriteFor, error: favoriteError } = useFavorites(initialFavoriteIds);
   const [selectedPetId, setSelectedPetId] = useState(pets[0]?.id ?? 0);
@@ -218,7 +230,7 @@ export default function CompararClient({
     setManualSelection((prev) => {
       const base = prev ?? defaultComparisonIds;
       if (base.includes(foodId)) return base.filter((id) => id !== foodId);
-      if (base.length >= MAX_COMPARISON_ITEMS) return base;
+      if (base.length >= maxCompare) return base;
       return [...base, foodId];
     });
   };
@@ -248,7 +260,7 @@ export default function CompararClient({
   const [listPage, setListPage] = useState({ key: listKey, count: LIST_PAGE_SIZE });
   const visibleCount = listPage.key === listKey ? listPage.count : LIST_PAGE_SIZE;
   const visibleEligible = filteredEligible.slice(0, visibleCount);
-  const selectionFull = selectedFoodIds.length >= MAX_COMPARISON_ITEMS;
+  const selectionFull = selectedFoodIds.length >= maxCompare;
 
   return (
     <main className={styles.page}>
@@ -263,176 +275,212 @@ export default function CompararClient({
 
           {isGuest ? (
             <div className={styles.guestCard}>
-              <p className={styles.guestNote}>
-                🔒 Estás comparando como invitado: estos datos son
-                temporales, no se guardan ni se asocian a ninguna cuenta.
-                Se pierden al salir o recargar la página.{" "}
-                <Link href="/registro">Crea una cuenta</Link> para guardar
-                tus mascotas y comparar más rápido la próxima vez.
-              </p>
-
-              <div className={styles.filtersRow}>
-                <div className={styles.filterField}>
-                  <label htmlFor="guestSpecies">Especie</label>
-
-                  <select
-                    id="guestSpecies"
-                    value={guestSpecies}
-                    onChange={(e) => {
-                      setGuestSpecies(e.target.value as "Perro" | "Gato");
-                      setManualSelection(null);
-                    }}
-                  >
-                    <option value="Perro">🐶 Perro</option>
-                    <option value="Gato">🐱 Gato</option>
-                  </select>
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestBirthDate">Fecha de nacimiento</label>
-
-                  <input
-                    id="guestBirthDate"
-                    type="date"
-                    value={guestBirthDate}
-                    onChange={(e) => setGuestBirthDate(e.target.value)}
-                  />
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestWeight">Peso actual</label>
-
-                  <input
-                    id="guestWeight"
-                    type="number"
-                    min="0.1"
-                    step="0.1"
-                    placeholder="Ej: 22"
-                    value={guestWeight}
-                    onChange={(e) => setGuestWeight(e.target.value)}
-                  />
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestActivity">Nivel de actividad</label>
-
-                  <select
-                    id="guestActivity"
-                    value={guestActivity}
-                    onChange={(e) => setGuestActivity(e.target.value)}
-                  >
-                    <option value="">Sin especificar</option>
-                    <option value="Baja">Baja</option>
-                    <option value="Moderada">Moderada</option>
-                    <option value="Alta">Alta</option>
-                  </select>
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestBodyCondition">
-                    Condición corporal
-                  </label>
-
-                  <select
-                    id="guestBodyCondition"
-                    value={guestBodyCondition}
-                    onChange={(e) => setGuestBodyCondition(e.target.value)}
-                  >
-                    <option value="">Sin especificar</option>
-                    <option value="Bajo peso">Bajo peso</option>
-                    <option value="Peso adecuado">Peso adecuado</option>
-                    <option value="Sobrepeso">Sobrepeso</option>
-                  </select>
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestCondition">
-                    Condición o necesidad especial
-                  </label>
-
-                  <select
-                    id="guestCondition"
-                    value={guestCondition}
-                    onChange={(e) => setGuestCondition(e.target.value)}
-                  >
-                    <option value="">Ninguna</option>
-                    <option value="Sensibilidad digestiva">
-                      Sensibilidad digestiva
-                    </option>
-                    <option value="Control de peso">Control de peso</option>
-                    <option value="Piel y pelaje">Piel y pelaje</option>
-                    <option value="Articulaciones">Articulaciones</option>
-                    <option value="Cuidado urinario">Cuidado urinario</option>
-                  </select>
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestAllergies">
-                    Alergias o ingredientes restringidos
-                  </label>
-
-                  <input
-                    id="guestAllergies"
-                    type="text"
-                    placeholder="Ej: pollo, trigo"
-                    value={guestAllergies}
-                    onChange={(e) => setGuestAllergies(e.target.value)}
-                  />
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="budget">Presupuesto mensual (opcional)</label>
-
-                  <input
-                    id="budget"
-                    type="number"
-                    min="0"
-                    step="500"
-                    placeholder="Ej: 15000"
-                    value={budgetInput}
-                    onChange={(e) => setBudgetInput(e.target.value)}
-                  />
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="guestFoodPreference">Preferencia de alimento</label>
-
-                  <select
-                    id="guestFoodPreference"
-                    value={guestFoodPreference}
-                    onChange={(e) => {
-                      setGuestFoodPreference(e.target.value);
-                      setIgnorePreference(false);
-                      setManualSelection(null);
-                    }}
-                  >
-                    <option value="">Sin preferencia</option>
-                    <option value="Seco">Seco</option>
-                    <option value="Húmedo">Húmedo</option>
-                    <option value="Mixto">Mixto</option>
-                  </select>
-                </div>
-
-                <div className={styles.filterField}>
-                  <label htmlFor="formatRange">Formato (opcional)</label>
-
-                  <select
-                    id="formatRange"
-                    value={formatRange}
-                    onChange={(e) => {
-                    setFormatRange(e.target.value as FormatRangeKey | "");
-                    setManualSelection(null);
-                  }}
-                  >
-                    <option value="">Cualquier formato</option>
-                    {FORMAT_RANGES.map((range) => (
-                      <option key={range.key} value={range.key}>
-                        {range.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className={styles.guestBanner}>
+                <span className={styles.guestBadge}>Modo invitado</span>
+                <p>
+                  Estos datos son temporales: no se guardan y se pierden al
+                  salir o recargar la página.
+                </p>
+                <Link href="/registro" className={styles.guestCta}>
+                  Crear cuenta gratis
+                </Link>
               </div>
+
+              <fieldset className={styles.guestGroup}>
+                <legend>
+                  <span className={styles.groupNumber}>1</span>
+                  Tu mascota
+                </legend>
+
+                <div className={styles.guestGrid}>
+                  <div className={styles.guestField}>
+                    <span id="guestSpeciesLabel" className={styles.fieldLabel}>
+                      Especie
+                    </span>
+                    <div
+                      className={styles.speciesToggle}
+                      role="radiogroup"
+                      aria-labelledby="guestSpeciesLabel"
+                    >
+                      {SPECIES_OPTIONS.map((option) => (
+                        <label
+                          key={option.value}
+                          className={`${styles.speciesOption} ${
+                            guestSpecies === option.value ? styles.speciesActive : ""
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="guestSpecies"
+                            id={`guestSpecies-${option.value}`}
+                            value={option.value}
+                            checked={guestSpecies === option.value}
+                            onChange={() => {
+                              setGuestSpecies(option.value);
+                              setManualSelection(null);
+                            }}
+                          />
+                          <span aria-hidden="true">{option.icon}</span>
+                          {option.value}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={styles.guestField}>
+                    <label htmlFor="guestBirthDate">Fecha de nacimiento</label>
+                    <input
+                      id="guestBirthDate"
+                      type="date"
+                      value={guestBirthDate}
+                      onChange={(e) => setGuestBirthDate(e.target.value)}
+                    />
+                  </div>
+
+                  <div className={styles.guestField}>
+                    <label htmlFor="guestWeight">Peso actual</label>
+                    <div className={styles.withUnit}>
+                      <input
+                        id="guestWeight"
+                        type="number"
+                        min="0.1"
+                        step="0.1"
+                        placeholder="Ej: 22"
+                        value={guestWeight}
+                        onChange={(e) => setGuestWeight(e.target.value)}
+                      />
+                      <span className={styles.unitSuffix}>kg</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.guestField}>
+                    <label htmlFor="guestActivity">Nivel de actividad</label>
+                    <select
+                      id="guestActivity"
+                      value={guestActivity}
+                      onChange={(e) => setGuestActivity(e.target.value)}
+                    >
+                      <option value="">Sin especificar</option>
+                      <option value="Baja">Baja</option>
+                      <option value="Moderada">Moderada</option>
+                      <option value="Alta">Alta</option>
+                    </select>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset className={styles.guestGroup}>
+                <legend>
+                  <span className={styles.groupNumber}>2</span>
+                  Salud y necesidades
+                </legend>
+
+                <div className={styles.guestGrid}>
+                  <div className={styles.guestField}>
+                    <label htmlFor="guestBodyCondition">Condición corporal</label>
+                    <select
+                      id="guestBodyCondition"
+                      value={guestBodyCondition}
+                      onChange={(e) => setGuestBodyCondition(e.target.value)}
+                    >
+                      <option value="">Sin especificar</option>
+                      <option value="Bajo peso">Bajo peso</option>
+                      <option value="Peso adecuado">Peso adecuado</option>
+                      <option value="Sobrepeso">Sobrepeso</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.guestField}>
+                    <label htmlFor="guestCondition">Condición o necesidad especial</label>
+                    <select
+                      id="guestCondition"
+                      value={guestCondition}
+                      onChange={(e) => setGuestCondition(e.target.value)}
+                    >
+                      <option value="">Ninguna</option>
+                      <option value="Sensibilidad digestiva">Sensibilidad digestiva</option>
+                      <option value="Control de peso">Control de peso</option>
+                      <option value="Piel y pelaje">Piel y pelaje</option>
+                      <option value="Articulaciones">Articulaciones</option>
+                      <option value="Cuidado urinario">Cuidado urinario</option>
+                    </select>
+                  </div>
+
+                  <div className={`${styles.guestField} ${styles.guestFieldWide}`}>
+                    <label htmlFor="guestAllergies">Alergias o ingredientes restringidos</label>
+                    <input
+                      id="guestAllergies"
+                      type="text"
+                      placeholder="Ej: pollo, trigo"
+                      value={guestAllergies}
+                      onChange={(e) => setGuestAllergies(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset className={styles.guestGroup}>
+                <legend>
+                  <span className={styles.groupNumber}>3</span>
+                  Preferencias de compra
+                  <span className={styles.optionalTag}>Opcional</span>
+                </legend>
+
+                <div className={styles.guestGrid}>
+                  <div className={styles.guestField}>
+                    <label htmlFor="guestFoodPreference">Tipo de alimento</label>
+                    <select
+                      id="guestFoodPreference"
+                      value={guestFoodPreference}
+                      onChange={(e) => {
+                        setGuestFoodPreference(e.target.value);
+                        setIgnorePreference(false);
+                        setManualSelection(null);
+                      }}
+                    >
+                      <option value="">Sin preferencia</option>
+                      <option value="Seco">Seco</option>
+                      <option value="Húmedo">Húmedo</option>
+                      <option value="Mixto">Mixto</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.guestField}>
+                    <label htmlFor="formatRange">Formato</label>
+                    <select
+                      id="formatRange"
+                      value={formatRange}
+                      onChange={(e) => {
+                        setFormatRange(e.target.value as FormatRangeKey | "");
+                        setManualSelection(null);
+                      }}
+                    >
+                      <option value="">Cualquier formato</option>
+                      {FORMAT_RANGES.map((range) => (
+                        <option key={range.key} value={range.key}>
+                          {range.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className={`${styles.guestField} ${styles.guestFieldWide}`}>
+                    <label htmlFor="budget">Presupuesto mensual</label>
+                    <div className={styles.withUnit}>
+                      <span className={styles.unitPrefix}>$</span>
+                      <input
+                        id="budget"
+                        type="number"
+                        min="0"
+                        step="500"
+                        placeholder="Ej: 15000"
+                        value={budgetInput}
+                        onChange={(e) => setBudgetInput(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
             </div>
           ) : (
             <div className={styles.filtersRow}>
@@ -660,6 +708,7 @@ export default function CompararClient({
                 items={selectedForComparison}
                 onRemove={toggleSelected}
                 formatRange={rangeKey}
+                detailed={detailedComparison}
               />
             )}
 
@@ -667,7 +716,7 @@ export default function CompararClient({
               <h2>Todos los alimentos compatibles</h2>
               <p>
                 Ordenados según compatibilidad. Marca hasta{" "}
-                {MAX_COMPARISON_ITEMS} para compararlos en la tabla de arriba.
+                {maxCompare} para compararlos en la tabla de arriba.
               </p>
 
               <div className={styles.filtersRow}>
@@ -712,7 +761,7 @@ export default function CompararClient({
                   <p className={styles.listCount}>
                     Mostrando {visibleEligible.length} de {filteredEligible.length} alimentos
                     {selectionFull &&
-                      ` · Ya tienes ${MAX_COMPARISON_ITEMS} en la tabla: quita uno para agregar otro.`}
+                      ` · Ya tienes ${maxCompare} en la tabla: quita uno para agregar otro.`}
                     {rangeKey &&
                       visibleEligible.some(
                         ({ food }) => !cheapestInRange(food.pricesByFormat, rangeKey)

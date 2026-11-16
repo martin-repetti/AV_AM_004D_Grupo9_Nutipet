@@ -497,7 +497,7 @@ export default function EditarMascotaForm({ pet }: EditarMascotaFormProps) {
             </div>
 
             <div className={styles.notice}>
-              NutriPet entrega recomendaciones orientativas. En mascotas con
+              HuellaFit entrega recomendaciones orientativas. En mascotas con
               condiciones clínicas, la alimentación debe ser revisada con un
               médico veterinario.
             </div>

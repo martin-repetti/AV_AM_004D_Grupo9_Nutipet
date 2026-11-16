@@ -5,7 +5,7 @@ const STAGE_RANGES: { maxYears: number; stage: string }[] = [
 ];
 
 /** Deriva "cachorro" | "adulto" | "senior" desde la fecha de nacimiento. */
-export function petStage(birthDate: string | null): string | null {
+export function petStage(birthDate: string | Date | null): string | null {
   if (!birthDate) return null;
 
   const birth = new Date(birthDate);

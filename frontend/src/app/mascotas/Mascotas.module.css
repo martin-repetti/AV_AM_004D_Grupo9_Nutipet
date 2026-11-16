@@ -51,6 +51,37 @@
   background: var(--np-primary-hover);
 }
 
+.top .planUsage {
+  margin-top: 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--np-muted);
+  font-size: 14px;
+}
+
+.planFree,
+.planPremium {
+  padding: 3px 10px;
+
+  border-radius: var(--np-radius-pill);
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.planFree {
+  background: var(--np-subtle);
+  color: var(--np-ink);
+}
+
+.planPremium {
+  background: var(--np-secondary);
+  color: #ffffff;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { formatDisplayName } from "@/utils/productName";
 import { scoreTier } from "@/utils/scoreTier";
@@ -35,6 +36,12 @@ export default function Hero({ preview }: HeroProps) {
             convienen, por qué, y dónde comprarlos al mejor precio.
           </p>
 
+          <ul className={styles.highlights}>
+            <li>Considera edad, peso, actividad, condición y alergias</li>
+            <li>Precios reales de tiendas chilenas, por formato</li>
+            <li>Explica por qué cada alimento obtiene su puntaje</li>
+          </ul>
+
           <div className={styles.actions}>
             <Link href="/comparar" className={styles.primaryButton}>
               Comparar alimentos
@@ -50,45 +57,57 @@ export default function Hero({ preview }: HeroProps) {
           </p>
         </div>
 
-        <aside className={styles.preview} aria-label="Ejemplo de resultados de NutriPet">
-          <div className={styles.previewHeader}>
-            <span className={styles.previewTag}>Ejemplo real</span>
-            <span className={styles.previewProfile}>🐱 {preview.profileLabel}</span>
-          </div>
+        <div className={styles.visual}>
+          <Image
+            src="/images/home/hero-mascotas.webp"
+            alt="Ilustración de un gato y un perro junto a sus platos de comida"
+            width={1200}
+            height={816}
+            sizes="(max-width: 900px) 100vw, 50vw"
+            loading="eager"
+            className={styles.illustration}
+          />
 
-          <ol className={styles.previewList}>
-            {preview.foods.map((food, index) => {
-              const tier = scoreTier(food.score);
-              return (
-                <li key={food.id} className={styles.previewItem}>
-                  <span className={styles.rank}>{index + 1}</span>
+          <aside className={styles.preview} aria-label="Ejemplo de resultados de HuellaFit">
+            <div className={styles.previewHeader}>
+              <span className={styles.previewTag}>Ejemplo real</span>
+              <span className={styles.previewProfile}>🐱 {preview.profileLabel}</span>
+            </div>
 
-                  <span className={styles.previewFood}>
-                    <span className={styles.previewBrand}>{food.brand}</span>
-                    <span className={styles.previewName}>{formatDisplayName(food.name)}</span>
-                    {food.priceMin !== null && (
-                      <span className={styles.previewPrice}>
-                        Desde ${food.priceMin.toLocaleString("es-CL")}
-                      </span>
-                    )}
-                  </span>
+            <ol className={styles.previewList}>
+              {preview.foods.map((food, index) => {
+                const tier = scoreTier(food.score);
+                return (
+                  <li key={food.id} className={styles.previewItem}>
+                    <span className={styles.rank}>{index + 1}</span>
 
-                  <span className={`${styles.previewScore} ${styles[tier]}`}>
-                    {Math.min(100, Math.round(food.score))}%
-                  </span>
-                </li>
-              );
-            })}
-          </ol>
+                    <span className={styles.previewFood}>
+                      <span className={styles.previewBrand}>{food.brand}</span>
+                      <span className={styles.previewName}>{formatDisplayName(food.name)}</span>
+                      {food.priceMin !== null && (
+                        <span className={styles.previewPrice}>
+                          Desde ${food.priceMin.toLocaleString("es-CL")}
+                        </span>
+                      )}
+                    </span>
 
-          <p className={styles.previewNote}>
-            Resultado del mismo motor y catálogo que usarás al comparar.
-          </p>
+                    <span className={`${styles.previewScore} ${styles[tier]}`}>
+                      {Math.min(100, Math.round(food.score))}%
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
 
-          <Link href="/comparar" className={styles.previewLink}>
-            Probar con tu mascota →
-          </Link>
-        </aside>
+            <p className={styles.previewNote}>
+              Resultado del mismo motor y catálogo que usarás al comparar.
+            </p>
+
+            <Link href="/comparar" className={styles.previewLink}>
+              Probar con tu mascota →
+            </Link>
+          </aside>
+        </div>
       </div>
     </section>
   );

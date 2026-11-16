@@ -215,3 +215,91 @@
     width: 100%;
   }
 }
+/* ---------- Herramientas Premium ---------- */
+
+.toolsSection {
+  margin-top: 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.toolsHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.toolsHeader h2 {
+  margin: 0;
+  font-size: 26px;
+  color: var(--np-ink);
+}
+
+.premiumTag {
+  padding: 4px 12px;
+
+  border-radius: var(--np-radius-pill);
+  background: var(--np-secondary);
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.reportButton {
+  min-height: 42px;
+  padding: 0 18px;
+
+  display: inline-flex;
+  align-items: center;
+
+  border: 1px solid var(--np-primary);
+  border-radius: var(--np-radius-pill);
+  color: var(--np-primary);
+
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.reportButton:hover {
+  background: var(--np-primary);
+  color: #ffffff;
+}
+
+.toolCard {
+  padding: 22px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.toolCard h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--np-ink);
+}
+
+.toolIntro {
+  margin: 6px 0 18px;
+  color: var(--np-muted);
+  font-size: 14px;
+}
+
+.locks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 760px) {
+  .locks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

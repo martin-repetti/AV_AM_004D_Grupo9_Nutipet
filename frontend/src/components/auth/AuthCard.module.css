@@ -37,8 +37,10 @@
   font-weight: 700;
 }
 
-.brandIcon {
-  font-size: 24px;
+.logo {
+  display: block;
+  width: auto;
+  height: 56px;
 }
 
 .card h1 {

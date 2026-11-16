@@ -1,6 +1,6 @@
 <div align="center">
 
-# NutriPET
+# HuellaFit
 
 ### Proyecto Capstone
 
@@ -18,7 +18,7 @@
 
 ## Descripción
 
-**NutriPET** es un producto dirigido a mejorar la decisión de compra de usuarios que buscan productos específicos según la necesidad y el entorno de sus mascotas.
+**HuellaFit** es un producto dirigido a mejorar la decisión de compra de usuarios que buscan productos específicos según la necesidad y el entorno de sus mascotas.
 
 Mejora la experiencia de compra y entrega opciones de mejor calidad en lo que a alimentación respecta.
 
@@ -33,7 +33,7 @@ Mejora la experiencia de compra y entrega opciones de mejor calidad en lo que a 
 
 ## Arquitectura
 
-NutriPET sigue una **arquitectura monolítica en capas de 3 niveles (3-tier)**: una única aplicación Next.js que contiene el frontend y el backend (API Routes), conectada a una base de datos PostgreSQL. La comunicación entre capas se hace mediante una API REST con respuestas en JSON, y la autenticación es *stateless* con JWT.
+HuellaFit sigue una **arquitectura monolítica en capas de 3 niveles (3-tier)**: una única aplicación Next.js que contiene el frontend y el backend (API Routes), conectada a una base de datos PostgreSQL. La comunicación entre capas se hace mediante una API REST con respuestas en JSON, y la autenticación es *stateless* con JWT.
 
 | Capa | Tecnologías | Responsabilidad |
 |------|-------------|-----------------|
@@ -41,7 +41,7 @@ NutriPET sigue una **arquitectura monolítica en capas de 3 niveles (3-tier)**: 
 | **Lógica de negocio** | API Routes de Next.js, Node.js | Recibe las peticiones HTTP, aplica la lógica y responde en JSON. |
 | **Datos** | PostgreSQL | Almacena la información y responde a las consultas SQL del backend. |
 
-<img width="2200" height="1120" alt="arquitectura-nutripet" src="https://github.com/user-attachments/assets/18384481-d79a-4593-b15f-11aa2b1e5f1d" />
+<img width="2200" height="1120" alt="arquitectura-huellafit" src="https://github.com/user-attachments/assets/18384481-d79a-4593-b15f-11aa2b1e5f1d" />
 
 ### Autenticación
 
@@ -77,6 +77,7 @@ psql -U postgres -d nutripet_db -f database\schema.sql
 psql -U postgres -d nutripet_db -f database\seed_breeds.sql
 psql -U postgres -d nutripet_db -f database\seed_nutrition_ranges.sql
 psql -U postgres -d nutripet_db -f database\seed_compatibility_weights.sql
+psql -U postgres -d nutripet_db -f database\seed_plans.sql
 ```
 
 Si necesitas volver a empezar, elimina la base con `psql -U postgres -c "DROP DATABASE nutripet_db;"` y repite los pasos 2 y 3.
@@ -121,7 +122,9 @@ el scraper ya no encontró y agrega los precios del día a
 `food_price_history`, que es lo que muestra el historial de precios.
 
 Si tu base es anterior a favoritos e historial, aplica primero
-`database/migration_favoritos_historial.sql`.
+`database/migration_favoritos_historial.sql`. Si es anterior a las
+suscripciones (plan Premium), aplica también
+`database/migration_suscripciones.sql`.
 
 Sin ese archivo, `/comparar` funciona pero no muestra alimentos.
 
@@ -148,3 +151,18 @@ Para correr los tests del motor de compatibilidad: `npm run test`.
 La metodología empleada en el desarrollo de este proyecto es **Scrum**, organizando sprints, reuniones semanales y revisando el avance constante del desarrollo del proyecto.
 
 <img width="750" height="500" alt="imagen" src="https://github.com/user-attachments/assets/643a012f-58da-4d37-b0a7-57282669feab" />
+
+## Planes y suscripción
+
+- **Gratis**: hasta 2 mascotas y comparación de hasta 4 alimentos.
+- **Premium** ($1.990 al mes): hasta 10 mascotas, comparación avanzada de
+  hasta 6 alimentos, simulador de presupuesto mensual, alertas de precio,
+  historial de peso, seguimiento nutricional y reporte descargable.
+
+Un usuario sin suscripción vigente está en el plan Gratis. El pago de
+Premium es **simulado** (proyecto académico): al confirmar en
+`/planes/premium` se registra la suscripción por 30 días y un pago de
+demostración, sin pasarela ni cobro real. Cancelar desde Mi cuenta
+mantiene Premium hasta el fin del periodo. Los límites y precios están
+en la tabla `plans` (`database/seed_plans.sql`); la lógica, en
+`frontend/src/services/plans.ts`.

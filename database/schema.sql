@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict fpYcPmHF65IEKwflv6doKzjaTgcDFlnPsF14YIGOJdtOJ30ehTSPKBNCesHL68D
+\restrict 8dlr6C5a9Vl6wDctQ62cjSqKcXNLiZEKGSGeB3NwZFm7SiT0jMAsbv8wFHp9q7u
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
@@ -258,6 +258,74 @@ ALTER SEQUENCE public.nutrition_reference_ranges_id_seq OWNED BY public.nutritio
 
 
 --
+-- Name: pet_food_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pet_food_logs (
+    id bigint NOT NULL,
+    pet_id bigint NOT NULL,
+    food_id bigint,
+    food_name character varying(300) NOT NULL,
+    started_on date NOT NULL,
+    note character varying(200),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
+-- Name: pet_food_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pet_food_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pet_food_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pet_food_logs_id_seq OWNED BY public.pet_food_logs.id;
+
+
+--
+-- Name: pet_weight_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pet_weight_logs (
+    id bigint NOT NULL,
+    pet_id bigint NOT NULL,
+    weight_kg numeric(5,2) NOT NULL,
+    recorded_on date NOT NULL,
+    note character varying(200),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT pet_weight_logs_weight_kg_check CHECK ((weight_kg > (0)::numeric))
+);
+
+
+--
+-- Name: pet_weight_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pet_weight_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pet_weight_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pet_weight_logs_id_seq OWNED BY public.pet_weight_logs.id;
+
+
+--
 -- Name: pets; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -311,7 +379,9 @@ CREATE TABLE public.plans (
     max_pets integer NOT NULL,
     price_monthly integer DEFAULT 0 NOT NULL,
     active boolean DEFAULT true NOT NULL,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    code character varying(20),
+    max_compare integer DEFAULT 4 NOT NULL
 );
 
 
@@ -332,6 +402,39 @@ CREATE SEQUENCE public.plans_id_seq
 --
 
 ALTER SEQUENCE public.plans_id_seq OWNED BY public.plans.id;
+
+
+--
+-- Name: subscription_payments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.subscription_payments (
+    id bigint NOT NULL,
+    subscription_id bigint NOT NULL,
+    amount integer NOT NULL,
+    method character varying(30) DEFAULT 'simulado'::character varying NOT NULL,
+    reference character varying(40) NOT NULL,
+    paid_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
+-- Name: subscription_payments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.subscription_payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscription_payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.subscription_payments_id_seq OWNED BY public.subscription_payments.id;
 
 
 --
@@ -446,6 +549,20 @@ ALTER TABLE ONLY public.nutrition_reference_ranges ALTER COLUMN id SET DEFAULT n
 
 
 --
+-- Name: pet_food_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_food_logs ALTER COLUMN id SET DEFAULT nextval('public.pet_food_logs_id_seq'::regclass);
+
+
+--
+-- Name: pet_weight_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_weight_logs ALTER COLUMN id SET DEFAULT nextval('public.pet_weight_logs_id_seq'::regclass);
+
+
+--
 -- Name: pets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -457,6 +574,13 @@ ALTER TABLE ONLY public.pets ALTER COLUMN id SET DEFAULT nextval('public.pets_id
 --
 
 ALTER TABLE ONLY public.plans ALTER COLUMN id SET DEFAULT nextval('public.plans_id_seq'::regclass);
+
+
+--
+-- Name: subscription_payments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscription_payments ALTER COLUMN id SET DEFAULT nextval('public.subscription_payments_id_seq'::regclass);
 
 
 --
@@ -554,6 +678,30 @@ ALTER TABLE ONLY public.nutrition_reference_ranges
 
 
 --
+-- Name: pet_food_logs pet_food_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_food_logs
+    ADD CONSTRAINT pet_food_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pet_weight_logs pet_weight_logs_pet_id_recorded_on_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_weight_logs
+    ADD CONSTRAINT pet_weight_logs_pet_id_recorded_on_key UNIQUE (pet_id, recorded_on);
+
+
+--
+-- Name: pet_weight_logs pet_weight_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_weight_logs
+    ADD CONSTRAINT pet_weight_logs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: pets pets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -575,6 +723,14 @@ ALTER TABLE ONLY public.plans
 
 ALTER TABLE ONLY public.plans
     ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subscription_payments subscription_payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscription_payments
+    ADD CONSTRAINT subscription_payments_pkey PRIMARY KEY (id);
 
 
 --
@@ -622,6 +778,27 @@ ALTER TABLE ONLY public.users
 --
 
 CREATE UNIQUE INDEX foods_product_key_key ON public.foods USING btree (product_key);
+
+
+--
+-- Name: pet_food_logs_pet_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX pet_food_logs_pet_idx ON public.pet_food_logs USING btree (pet_id, started_on);
+
+
+--
+-- Name: plans_code_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX plans_code_key ON public.plans USING btree (code);
+
+
+--
+-- Name: subscriptions_one_current_per_user; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX subscriptions_one_current_per_user ON public.subscriptions USING btree (user_id) WHERE ((status)::text = ANY ((ARRAY['active'::character varying, 'canceled'::character varying])::text[]));
 
 
 --
@@ -681,8 +858,40 @@ ALTER TABLE ONLY public.food_price_history
 
 
 --
+-- Name: pet_food_logs pet_food_logs_food_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_food_logs
+    ADD CONSTRAINT pet_food_logs_food_id_fkey FOREIGN KEY (food_id) REFERENCES public.foods(id) ON DELETE SET NULL;
+
+
+--
+-- Name: pet_food_logs pet_food_logs_pet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_food_logs
+    ADD CONSTRAINT pet_food_logs_pet_id_fkey FOREIGN KEY (pet_id) REFERENCES public.pets(id) ON DELETE CASCADE;
+
+
+--
+-- Name: pet_weight_logs pet_weight_logs_pet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pet_weight_logs
+    ADD CONSTRAINT pet_weight_logs_pet_id_fkey FOREIGN KEY (pet_id) REFERENCES public.pets(id) ON DELETE CASCADE;
+
+
+--
+-- Name: subscription_payments subscription_payments_subscription_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscription_payments
+    ADD CONSTRAINT subscription_payments_subscription_id_fkey FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict fpYcPmHF65IEKwflv6doKzjaTgcDFlnPsF14YIGOJdtOJ30ehTSPKBNCesHL68D
+\unrestrict 8dlr6C5a9Vl6wDctQ62cjSqKcXNLiZEKGSGeB3NwZFm7SiT0jMAsbv8wFHp9q7u
 

@@ -1,14 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import styles from "./Navbar.module.css";
 import ProfileMenu, { type SessionUser } from "./ProfileMenu";
 import MobileNav from "./MobileNav";
 import { getNavLinks } from "./navLinks";
-import { verifySessionToken } from "@/lib/auth";
+import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 async function getSessionUser(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("nutripet_session")?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
 
   if (!token) return null;
 
@@ -31,9 +32,15 @@ export default async function Navbar() {
   return (
     <header className={styles.navbar}>
       <div className={styles.container}>
-        <Link href="/" className={styles.brand}>
-          <span className={styles.brandIcon}>🐾</span>
-          <span>NutriPet</span>
+        <Link href="/" className={styles.brand} aria-label="HuellaFit, ir al inicio">
+          <Image
+            src="/brand/huellafit-logo.png"
+            alt="HuellaFit"
+            width={900}
+            height={267}
+            loading="eager"
+            className={styles.logo}
+          />
         </Link>
 
         <nav className={styles.links}>

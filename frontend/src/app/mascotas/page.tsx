@@ -2,8 +2,9 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import PetCard from "@/components/ui/PetCard";
 import pool from "@/lib/db";
-import { verifySessionToken } from "@/lib/auth";
+import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 import { speciesIcon, formatAge, formatWeight, formatBreed } from "@/utils/pet";
+import { getUserPlan, isPremium, type UserPlan } from "@/services/plans";
 import styles from "./Mascotas.module.css";
 
 type PetRow = {
@@ -19,7 +20,7 @@ type PetRow = {
 
 async function getSessionUserId(): Promise<number | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("nutripet_session")?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
 
   if (!token) return null;
 
@@ -59,6 +60,8 @@ export default async function MascotasPage() {
   const pets = userId
     ? await getPets(userId)
     : [];
+  const plan: UserPlan | null = userId ? await getUserPlan(pool, userId) : null;
+  const atLimit = plan !== null && pets.length >= plan.maxPets;
 
   return (
     <main className={styles.page}>
@@ -70,16 +73,31 @@ export default async function MascotasPage() {
             <p>
               Administra los perfiles y características de tus mascotas.
             </p>
+            {plan && (
+              <p className={styles.planUsage}>
+                <span className={isPremium(plan) ? styles.planPremium : styles.planFree}>
+                  Plan {plan.name}
+                </span>
+                {pets.length} de {plan.maxPets} mascotas
+              </p>
+            )}
           </div>
 
-          {pets.length > 0 && (
-            <Link
-              href="/mascotas/nueva"
-              className={styles.addButton}
-            >
-              + Agregar mascota
-            </Link>
-          )}
+          {pets.length > 0 &&
+            (atLimit && plan && !isPremium(plan) ? (
+              <Link href="/planes" className={styles.addButton}>
+                Registra hasta 10 con Premium
+              </Link>
+            ) : (
+              !atLimit && (
+                <Link
+                  href="/mascotas/nueva"
+                  className={styles.addButton}
+                >
+                  + Agregar mascota
+                </Link>
+              )
+            ))}
         </div>
 
         {!userId ? (

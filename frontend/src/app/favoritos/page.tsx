@@ -2,7 +2,9 @@ import Link from "next/link";
 import pool from "@/lib/db";
 import { getSessionUserId } from "@/lib/session";
 import { getFavoriteFoods } from "@/services/favorites";
-import { getFoodWithLongestHistory } from "@/services/priceHistory";
+import { getFoodWithLongestHistory, getPriceHistory } from "@/services/priceHistory";
+import { getUserPlan, isPremium } from "@/services/plans";
+import { priceAlertsFor, type PriceAlert } from "@/utils/priceAlerts";
 import FavoritosClient from "./FavoritosClient";
 import styles from "./Favoritos.module.css";
 
@@ -35,10 +37,23 @@ export default async function FavoritosPage() {
     );
   }
 
-  const favorites = await getFavoriteFoods(pool, userId);
+  const [favorites, plan] = await Promise.all([getFavoriteFoods(pool, userId), getUserPlan(pool, userId)]);
   const fallbackHistoryFood = favorites.length === 0 ? await getFoodWithLongestHistory(pool) : null;
 
+  // Alertas de precio (Premium): bajas en el último registro de cada favorito.
+  let alerts: PriceAlert[] | null = null;
+  if (isPremium(plan)) {
+    const histories = await Promise.all(
+      favorites.map(({ food }) => getPriceHistory(pool, food.id).then((records) => priceAlertsFor(food.id, records)))
+    );
+    alerts = histories.flat().sort((a, b) => b.dropPercent - a.dropPercent);
+  }
+
   return (
-    <FavoritosClient initialFavorites={favorites} fallbackHistoryFood={fallbackHistoryFood} />
+    <FavoritosClient
+      initialFavorites={favorites}
+      fallbackHistoryFood={fallbackHistoryFood}
+      alerts={alerts}
+    />
   );
 }

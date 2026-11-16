@@ -22,6 +22,8 @@ export default function NuevaMascotaPage() {
   const [loadingBreeds, setLoadingBreeds] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // Si el plan no permite más mascotas, el error ofrece pasarse a Premium.
+  const [upgradeUrl, setUpgradeUrl] = useState<string | null>(null);
 
   // Cargar razas cuando cambia la especie
   useEffect(() => {
@@ -113,6 +115,7 @@ export default function NuevaMascotaPage() {
 
       if (!response.ok) {
         setError(data.message || "No se pudo registrar la mascota.");
+        setUpgradeUrl(data.upgradeUrl ?? null);
         return;
       }
 
@@ -450,7 +453,7 @@ export default function NuevaMascotaPage() {
             </div>
 
             <div className={styles.notice}>
-              NutriPet entrega recomendaciones orientativas. En mascotas con
+              HuellaFit entrega recomendaciones orientativas. En mascotas con
               condiciones clínicas, la alimentación debe ser revisada con un
               médico veterinario.
             </div>
@@ -465,6 +468,12 @@ export default function NuevaMascotaPage() {
               }}
             >
               {error}
+              {upgradeUrl && (
+                <>
+                  {" "}
+                  <Link href={upgradeUrl}>Ver planes</Link>
+                </>
+              )}
             </p>
           )}
 

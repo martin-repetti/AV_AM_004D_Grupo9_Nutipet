@@ -2,6 +2,7 @@ import Link from "next/link";
 import pool from "@/lib/db";
 import { getSessionUserId } from "@/lib/session";
 import { getFavoriteFoodIds } from "@/services/favorites";
+import { getUserPlan, isPremium } from "@/services/plans";
 import { getAllFoods } from "@/services/foods";
 import { getNutritionRanges } from "@/services/nutritionRanges";
 import { getActiveRuleSetWeights } from "@/lib/compatibility/ruleSet";
@@ -81,11 +82,12 @@ export default async function CompararPage({
     );
   }
 
-  const [catalog, nutritionRanges, weights, favoriteIds] = await Promise.all([
+  const [catalog, nutritionRanges, weights, favoriteIds, plan] = await Promise.all([
     getAllFoods(pool),
     getNutritionRanges(pool),
     getActiveRuleSetWeights(pool),
     userId ? getFavoriteFoodIds(pool, userId) : Promise.resolve(null),
+    userId ? getUserPlan(pool, userId) : Promise.resolve(null),
   ]);
 
   return (
@@ -99,6 +101,8 @@ export default async function CompararPage({
       weights={weights}
       isGuest={isGuest}
       initialFavoriteIds={favoriteIds}
+      maxCompare={plan?.maxCompare}
+      detailedComparison={plan !== null && isPremium(plan)}
     />
   );
 }

@@ -1,0 +1,283 @@
+.page {
+  padding: 56px 32px 80px;
+  background: var(--np-bg);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--np-primary);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  margin: 10px 0 0;
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.15;
+  color: var(--np-ink);
+}
+
+.header p {
+  margin: 14px 0 0;
+  color: var(--np-muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.featured {
+  border: 2px solid var(--np-primary);
+  box-shadow: var(--np-shadow);
+}
+
+.ribbon {
+  position: absolute;
+  top: -13px;
+  right: 24px;
+
+  padding: 4px 12px;
+
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 26px;
+  color: var(--np-ink);
+}
+
+.price {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.price strong {
+  font-family: var(--np-font-head);
+  font-size: 40px;
+  color: var(--np-ink);
+}
+
+.price span {
+  color: var(--np-muted);
+}
+
+.list {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list li {
+  display: flex;
+  gap: 10px;
+
+  color: var(--np-ink);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.list li::before {
+  content: "✓";
+  flex: none;
+  color: var(--np-good);
+  font-weight: 800;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 48px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--np-radius-pill);
+
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.primaryButton {
+  background: var(--np-primary);
+  color: #ffffff;
+}
+
+.primaryButton:hover {
+  background: var(--np-primary-hover);
+}
+
+.secondaryButton {
+  border: 1px solid var(--np-border-strong);
+  color: var(--np-primary);
+}
+
+.currentTag {
+  align-self: flex-start;
+  padding: 6px 14px;
+
+  border-radius: var(--np-radius-pill);
+  background: var(--np-sage-soft, #e3ece4);
+  color: var(--np-secondary);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.activeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activeBox p {
+  margin: 0;
+  color: var(--np-muted);
+  font-size: 14px;
+}
+
+.activeBox a {
+  color: var(--np-primary);
+  font-weight: 700;
+}
+
+.compare {
+  margin-top: 56px;
+}
+
+.compare h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+  color: var(--np-ink);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  background: var(--np-surface);
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-card);
+}
+
+.tableWrap table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.tableWrap thead th {
+  padding: 16px 20px;
+  background: var(--np-subtle);
+  color: var(--np-ink);
+  font-size: 14px;
+  text-align: left;
+}
+
+.tableWrap thead th:not(:first-child),
+.tableWrap td {
+  width: 22%;
+  text-align: center;
+}
+
+.tableWrap tbody th,
+.tableWrap td {
+  padding: 16px 20px;
+  border-top: 1px solid var(--np-border);
+  vertical-align: middle;
+}
+
+.tableWrap tbody th {
+  text-align: left;
+  font-weight: 400;
+}
+
+.tableWrap tbody th strong {
+  display: block;
+  color: var(--np-ink);
+  font-size: 15px;
+}
+
+.tableWrap tbody th span {
+  display: block;
+  margin-top: 4px;
+  color: var(--np-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.yes {
+  color: var(--np-good);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.no {
+  color: var(--np-muted);
+}
+
+.text {
+  color: var(--np-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.note {
+  margin: 14px 0 0;
+  color: var(--np-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding: 40px 16px 64px;
+  }
+
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    padding: 26px 22px;
+  }
+}

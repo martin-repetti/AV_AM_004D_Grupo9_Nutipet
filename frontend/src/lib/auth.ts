@@ -1,5 +1,8 @@
 import { SignJWT, jwtVerify } from "jose";
 
+/** Nombre de la cookie con el token de sesión (HttpOnly). */
+export const SESSION_COOKIE = "huellafit_session";
+
 const secret = process.env.JWT_SECRET;
 
 if (!secret) {

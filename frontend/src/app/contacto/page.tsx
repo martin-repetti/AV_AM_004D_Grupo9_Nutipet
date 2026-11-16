@@ -6,8 +6,8 @@ const CHANNELS = [
   {
     icon: "📷",
     label: "Instagram",
-    value: "@nutripet.cl",
-    href: "https://instagram.com/nutripet.cl",
+    value: "@huellafit.cl",
+    href: "https://instagram.com/huellafit.cl",
   },
   {
     icon: "💬",
@@ -18,8 +18,8 @@ const CHANNELS = [
   {
     icon: "✉️",
     label: "Correo electrónico",
-    value: "contacto@nutripet.cl",
-    href: "mailto:contacto@nutripet.cl",
+    value: "contacto@huellafit.cl",
+    href: "mailto:contacto@huellafit.cl",
   },
 ];
 

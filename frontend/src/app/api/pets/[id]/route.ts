@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import pool from "@/lib/db";
-import { verifySessionToken } from "@/lib/auth";
+import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 import { validatePetInput } from "@/lib/petValidation";
 
 export async function PATCH(
@@ -22,7 +22,7 @@ export async function PATCH(
 
     // 2. Obtener sesión
     const cookieStore = await cookies();
-    const token = cookieStore.get("nutripet_session")?.value;
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -133,7 +133,7 @@ export async function DELETE(
 
     // 2. Obtener sesión
     const cookieStore = await cookies();
-    const token = cookieStore.get("nutripet_session")?.value;
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!token) {
       return NextResponse.json(

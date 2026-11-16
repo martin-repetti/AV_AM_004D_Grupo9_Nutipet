@@ -1,18 +1,21 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { verifySessionToken } from "@/lib/auth";
+import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
+import pool from "@/lib/db";
+import { getPayments, getUserPlan } from "@/services/plans";
 import CuentaClient from "./CuentaClient";
 import styles from "./Cuenta.module.css";
 
-async function getSessionUser(): Promise<{ name: string; email: string } | null> {
+async function getSessionUser(): Promise<{ id: number; name: string; email: string } | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("nutripet_session")?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
 
   if (!token) return null;
 
   try {
     const session = await verifySessionToken(token);
     return {
+      id: Number(session.userId),
       name: session.name as string,
       email: session.email as string,
     };
@@ -40,5 +43,10 @@ export default async function CuentaPage() {
     );
   }
 
-  return <CuentaClient user={user} />;
+  const [plan, payments] = await Promise.all([
+    getUserPlan(pool, user.id),
+    getPayments(pool, user.id),
+  ]);
+
+  return <CuentaClient user={user} plan={plan} payments={payments} />;
 }

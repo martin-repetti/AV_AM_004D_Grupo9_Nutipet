@@ -83,6 +83,10 @@ export default function ProfileMenu({ user }: ProfileMenuProps) {
             Mi cuenta
           </Link>
 
+          <Link href="/planes" className={styles.accountLink} onClick={() => setOpen(false)}>
+            Planes
+          </Link>
+
           <button
             type="button"
             className={styles.logoutButton}

@@ -211,4 +211,30 @@ describe("compareFoods", () => {
 
     expect(result.bestWithinBudget?.food.id).toBe(2);
   });
+
+  it("ordena después a los alimentos sin tabla nutricional, aunque puntúen más", () => {
+    const pet = makePet({ bodyCondition: "Sobrepeso" });
+    const ranges = (["protein", "fat", "fiber"] as const).map((nutrient) => ({
+      species: "Gato" as const,
+      stage: "adulto",
+      nutrient,
+      minValue: 0,
+      idealMin: 0,
+      idealMax: 100,
+      maxValue: 100,
+    }));
+    const lightWithoutTable = makeFood({
+      id: 1,
+      name: "Gato Adulto Light",
+      proteinMs: null,
+      fatMs: null,
+      fiberMs: null,
+    });
+    const withTable = makeFood({ id: 2, name: "Gato Adulto" });
+
+    const result = compareFoods(pet, [lightWithoutTable, withTable], DEFAULT_WEIGHTS, null, ranges);
+
+    expect(result.eligible.map((f) => f.food.id)).toEqual([2, 1]);
+    expect(result.eligible[1].score).toBeGreaterThan(result.eligible[0].score);
+  });
 });

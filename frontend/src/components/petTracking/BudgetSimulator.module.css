@@ -1,0 +1,153 @@
+.simulator {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  color: var(--np-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.controls select,
+.controls input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+
+  border: 1px solid var(--np-border-strong);
+  border-radius: var(--np-radius-sm);
+  background: var(--np-bg);
+
+  color: var(--np-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.controls select:focus,
+.controls input:focus {
+  outline: 2px solid var(--np-primary);
+  outline-offset: 1px;
+  border-color: var(--np-primary);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.facts div {
+  padding: 14px 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  border-radius: var(--np-radius-sm);
+  background: var(--np-bg);
+}
+
+.facts span {
+  color: var(--np-muted);
+  font-size: 12px;
+}
+
+.facts strong {
+  font-family: var(--np-font-head);
+  font-size: 24px;
+  color: var(--np-ink);
+}
+
+.facts small {
+  color: var(--np-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--np-border);
+  border-radius: var(--np-radius-sm);
+}
+
+.tableWrap table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tableWrap th {
+  padding: 10px 12px;
+  background: var(--np-subtle);
+  color: var(--np-ink);
+  font-size: 13px;
+  text-align: left;
+}
+
+.tableWrap td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--np-border);
+  color: var(--np-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.tableWrap td a {
+  color: var(--np-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.over td {
+  color: var(--np-muted);
+}
+
+.tagOk,
+.tagOver {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tagOk {
+  color: var(--np-good);
+}
+
+.tagOver {
+  color: var(--np-low);
+}
+
+.note,
+.notice {
+  margin: 0;
+  color: var(--np-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.notice {
+  padding: 16px;
+  border-radius: var(--np-radius-sm);
+  background: var(--np-bg);
+  font-size: 14px;
+}
+
+@media (max-width: 760px) {
+  .controls,
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -3,22 +3,22 @@ import LegalPage from "@/components/legal/LegalPage";
 import styles from "@/components/legal/LegalPage.module.css";
 
 export const metadata: Metadata = {
-  title: "Sobre NutriPet",
+  title: "Sobre HuellaFit",
   description:
-    "Conoce qué es NutriPet, cómo funciona y qué buscamos ayudarte a lograr para la alimentación de tu mascota.",
+    "Conoce qué es HuellaFit, cómo funciona y qué buscamos ayudarte a lograr para la alimentación de tu mascota.",
 };
 
-export default function SobreNutriPetPage() {
+export default function SobreHuellaFitPage() {
   return (
     <LegalPage
       eyebrow="Información"
-      title="Sobre NutriPet"
+      title="Sobre HuellaFit"
       subtitle="Ayudamos a que elegir el alimento de tu mascota sea una decisión más simple, informada y transparente."
     >
       <section className={styles.section}>
-        <h2>¿Qué es NutriPet?</h2>
+        <h2>¿Qué es HuellaFit?</h2>
         <p>
-          NutriPet es una plataforma que te permite comparar alimentos para
+          HuellaFit es una plataforma que te permite comparar alimentos para
           mascotas a partir de su información nutricional, precio e
           historial de valores en el tiempo. Nuestro objetivo es que puedas
           tomar decisiones más informadas sobre lo que le das de comer a tu
@@ -54,7 +54,7 @@ export default function SobreNutriPetPage() {
           mascota.
         </p>
         <div className={styles.disclaimer}>
-          <strong>Importante:</strong> NutriPet entrega información
+          <strong>Importante:</strong> HuellaFit entrega información
           orientativa para apoyar la elección de alimentos. No reemplaza la
           evaluación ni las recomendaciones de un médico veterinario.
         </div>
@@ -63,7 +63,7 @@ export default function SobreNutriPetPage() {
       <section className={styles.section}>
         <h2>Un proyecto académico</h2>
         <p>
-          NutriPet nace como un proyecto académico, desarrollado con el
+          HuellaFit nace como un proyecto académico, desarrollado con el
           objetivo de explorar cómo la tecnología puede facilitar decisiones
           cotidianas relacionadas con el bienestar de las mascotas.
         </p>

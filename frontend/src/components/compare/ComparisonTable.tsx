@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
-import type { ScoredFood } from "@/lib/compatibility/types";
-import type { FoodRow } from "@/types/catalogFood";
+import { CRITERION_KEYS, CRITERION_LABELS, type ScoredFood } from "@/lib/compatibility/types";
+import { ALLERGEN_LABELS, type AllergenKey, type FoodRow } from "@/types/catalogFood";
+import PremiumLock from "@/components/premium/PremiumLock";
 import { formatDisplayName } from "@/utils/productName";
 import { scoreTier } from "@/utils/scoreTier";
 import {
@@ -30,6 +31,8 @@ type ComparisonTableProps = {
   onRemove: (foodId: number) => void;
   /** Rango de formato elegido arriba (ej. "5-15"), o null si no se eligió ninguno. */
   formatRange: FormatRangeKey | null;
+  /** Comparación avanzada (Premium): materia seca, energía, alérgenos y puntaje por criterio. */
+  detailed?: boolean;
 };
 
 type PerKgCell = {
@@ -225,6 +228,29 @@ function NutrientRow({
   );
 }
 
+function AllergenCell({ food }: { food: FoodRow }) {
+  const entries = Object.entries(food.allergens) as [AllergenKey, boolean | null][];
+  const present = entries.filter(([, value]) => value === true).map(([key]) => ALLERGEN_LABELS[key]);
+  const unknown = entries.filter(([, value]) => value === null).map(([key]) => ALLERGEN_LABELS[key]);
+
+  return (
+    <div className={styles.stack}>
+      {present.length > 0 ? (
+        <div className={styles.chips}>
+          {present.map((label) => (
+            <span key={label} className={styles.chipWarn}>{label}</span>
+          ))}
+        </div>
+      ) : (
+        <span>Ninguno detectado</span>
+      )}
+      {unknown.length > 0 && (
+        <span className={styles.note}>Sin confirmar: {unknown.join(", ")}</span>
+      )}
+    </div>
+  );
+}
+
 function GroupRow({ label, span }: { label: string; span: number }) {
   return (
     <tr className={styles.groupRow}>
@@ -233,7 +259,13 @@ function GroupRow({ label, span }: { label: string; span: number }) {
   );
 }
 
-export default function ComparisonTable({ title, items, onRemove, formatRange }: ComparisonTableProps) {
+export default function ComparisonTable({
+  title,
+  items,
+  onRemove,
+  formatRange,
+  detailed = false,
+}: ComparisonTableProps) {
   if (items.length === 0) return null;
 
   const span = items.length + 1;
@@ -340,6 +372,71 @@ export default function ComparisonTable({ title, items, onRemove, formatRange }:
             <NutrientRow label="Proteína" items={items} pick={(food) => food.protein} />
             <NutrientRow label="Grasa" items={items} pick={(food) => food.fat} />
             <NutrientRow label="Fibra" items={items} pick={(food) => food.fiber} />
+
+            {detailed ? (
+              <>
+                <GroupRow label="Detalle nutricional (materia seca)" span={span} />
+                <NutrientRow label="Proteína MS" items={items} pick={(food) => food.proteinMs} />
+                <NutrientRow label="Grasa MS" items={items} pick={(food) => food.fatMs} />
+                <NutrientRow label="Fibra MS" items={items} pick={(food) => food.fiberMs} />
+                <NutrientRow label="Humedad" items={items} pick={(food) => food.moisture} />
+
+                <tr>
+                  <th scope="row" className={styles.rowLabel}>
+                    Energía
+                    <span className={styles.rowHint}>kcal por kilo</span>
+                  </th>
+                  {items.map(({ food }) => (
+                    <td key={food.id}>
+                      {food.kcalKg === null ? (
+                        <span className={styles.empty}>Sin dato</span>
+                      ) : (
+                        <div className={styles.stack}>
+                          <span>{Math.round(food.kcalKg).toLocaleString("es-CL")} kcal/kg</span>
+                          {food.kcalKgEstimated && (
+                            <span className={styles.note}>Estimada con su composición</span>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+
+                <tr>
+                  <th scope="row" className={styles.rowLabel}>Alérgenos</th>
+                  {items.map(({ food }) => (
+                    <td key={food.id}>
+                      <AllergenCell food={food} />
+                    </td>
+                  ))}
+                </tr>
+
+                <GroupRow label="Puntaje por criterio" span={span} />
+                {CRITERION_KEYS.map((key) => (
+                  <tr key={key}>
+                    <th scope="row" className={styles.rowLabel}>{CRITERION_LABELS[key]}</th>
+                    {items.map(({ food, criteria }) => {
+                      const criterion = criteria.find((c) => c.key === key);
+                      return (
+                        <td key={food.id} title={criterion?.explanation}>
+                          {criterion?.score == null ? (
+                            <span className={styles.empty}>Sin datos</span>
+                          ) : (
+                            <span className={styles.nutrientValue}>{Math.round(criterion.score * 100)}%</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <tr>
+                <td colSpan={span} className={styles.lockedRow}>
+                  <PremiumLock feature="comparacion" compact />
+                </td>
+              </tr>
+            )}
 
             <GroupRow label="Producto" span={span} />
 

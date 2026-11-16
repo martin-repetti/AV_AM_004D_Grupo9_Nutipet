@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./Footer.module.css";
 
@@ -8,8 +9,10 @@ export default function Footer() {
         <div className={styles.top}>
           <div className={styles.brandBlock}>
             <Link href="/" className={styles.brand}>
-              <span className={styles.brandIcon}>🐾</span>
-              <span>NutriPet</span>
+              <span className={styles.brandIcon}>
+                <Image src="/brand/huellafit-icon.png" alt="" width={40} height={40} />
+              </span>
+              <span>HuellaFit</span>
             </Link>
 
             <p>
@@ -25,6 +28,7 @@ export default function Footer() {
             <Link href="/mascotas">Mis mascotas</Link>
             <Link href="/favoritos">Favoritos</Link>
             <Link href="/historial-precios">Historial de precios</Link>
+            <Link href="/planes">Planes</Link>
           </div>
 
           <div className={styles.linksGroup}>
@@ -37,7 +41,7 @@ export default function Footer() {
           <div className={styles.linksGroup}>
             <h3>Información</h3>
 
-            <Link href="/sobre-nutripet">Sobre NutriPet</Link>
+            <Link href="/sobre-huellafit">Sobre HuellaFit</Link>
             <Link href="/terminos">Términos y condiciones</Link>
             <Link href="/privacidad">Privacidad</Link>
             <Link href="/contacto">Contacto</Link>
@@ -45,13 +49,13 @@ export default function Footer() {
         </div>
 
         <div className={styles.disclaimer}>
-          <strong>Importante:</strong> NutriPet entrega información orientativa
+          <strong>Importante:</strong> HuellaFit entrega información orientativa
           para apoyar la elección de alimentos. No reemplaza la evaluación ni
           las recomendaciones de un médico veterinario.
         </div>
 
         <div className={styles.bottom}>
-          <span>© 2026 NutriPet. Todos los derechos reservados.</span>
+          <span>© 2026 HuellaFit. Todos los derechos reservados.</span>
 
           <span>Proyecto académico</span>
         </div>

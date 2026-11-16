@@ -1,12 +1,25 @@
 import { normalize } from "../normalize";
+import { hasWordStartingWith } from "../conditions";
 import type { CriterionEvaluator } from "../types";
 
 type SizeBucket = "pequeño" | "mediano" | "grande";
 
+// Menciones de tamaño en el nombre, incluidas razas cuyo alimento
+// específico solo sirve para ese tamaño ("Royal Canin Shih Tzu Puppy").
+// "small bites" no cuenta: es el tamaño de la croqueta, no de la raza.
 const SIZE_KEYWORDS: Record<SizeBucket, string[]> = {
-  pequeño: ["pequena", "pequeño", "mini", "toy"],
-  mediano: ["mediana", "mediano"],
-  grande: ["grande", "maxi"],
+  pequeño: [
+    "pequena", "pequeno", "mini", "toy", "small breed", "small dog", "x-small",
+    "chihuahua", "yorkshire", "yorkie", "shih tzu", "maltes", "maltese", "pomerania",
+    "pomeranian", "bichon", "dachshund", "teckel", "poodle", "caniche", "pug",
+    "bulldog frances", "french bulldog", "jack russell", "west highland", "westie",
+    "cavalier", "schnauzer mini",
+  ],
+  mediano: ["mediana", "mediano", "medium", "beagle", "cocker", "border collie"],
+  grande: [
+    "grande", "maxi", "large", "giant", "gigante", "labrador", "golden retriever",
+    "pastor aleman", "german shepherd", "rottweiler", "boxer", "doberman", "gran danes",
+  ],
 };
 
 function weightBucket(weightKg: number): SizeBucket {
@@ -15,15 +28,12 @@ function weightBucket(weightKg: number): SizeBucket {
   return "grande";
 }
 
-function nameBucket(name: string): SizeBucket | null {
+/** Tamaños que menciona el nombre; "Large/Medium breed" menciona dos. */
+function nameBuckets(name: string): SizeBucket[] {
   const normalized = normalize(name);
-  for (const [bucket, keywords] of Object.entries(SIZE_KEYWORDS) as [
-    SizeBucket,
-    string[]
-  ][]) {
-    if (keywords.some((kw) => normalized.includes(kw))) return bucket;
-  }
-  return null;
+  return (Object.entries(SIZE_KEYWORDS) as [SizeBucket, string[]][])
+    .filter(([, keywords]) => keywords.some((kw) => hasWordStartingWith(normalized, kw)))
+    .map(([bucket]) => bucket);
 }
 
 /**
@@ -89,8 +99,8 @@ export const evaluateSizeWeight: CriterionEvaluator = (pet, food) => {
 
   // Respaldo: el catálogo no trae el dato estructurado para este
   // producto, se busca una mención de tamaño en su nombre.
-  const foodBucket = nameBucket(food.name);
-  if (!foodBucket) {
+  const foodBuckets = nameBuckets(food.name);
+  if (foodBuckets.length === 0) {
     return {
       key: "tamano_peso",
       score: null,
@@ -98,17 +108,18 @@ export const evaluateSizeWeight: CriterionEvaluator = (pet, food) => {
     };
   }
 
-  if (foodBucket === petBucket) {
+  const foodLabel = foodBuckets.join(" y ");
+  if (foodBuckets.includes(petBucket)) {
     return {
       key: "tamano_peso",
       score: 1,
-      explanation: `Pensado para perros de tamaño ${foodBucket}, como el tuyo.`,
+      explanation: `Pensado para perros de tamaño ${foodLabel}, como el tuyo.`,
     };
   }
 
   return {
     key: "tamano_peso",
     score: 0.3,
-    explanation: `Pensado para perros de tamaño ${foodBucket}, tu mascota es ${petBucket}.`,
+    explanation: `Pensado para perros de tamaño ${foodLabel}, tu mascota es ${petBucket}.`,
   };
 };

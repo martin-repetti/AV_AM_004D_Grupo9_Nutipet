@@ -65,3 +65,38 @@ a {
 a:hover {
   color: var(--np-primary-hover);
 }
+
+/*
+ * Pantallas muy anchas (monitores 4K sin escalado): el diseño usa anchos
+ * fijos pensados para ~1.920 px y quedaba pequeño, con mucho espacio a los
+ * lados. zoom agranda toda la página en la misma proporción.
+ */
+@media (min-width: 2200px) {
+  html {
+    zoom: 1.25;
+  }
+}
+
+@media (min-width: 2800px) {
+  html {
+    zoom: 1.5;
+  }
+}
+
+@media (min-width: 3400px) {
+  html {
+    zoom: 1.8;
+  }
+}
+
+/* Al imprimir (por ejemplo, el reporte de una mascota como PDF) no salen el navbar ni el footer. */
+@media print {
+  body > header,
+  body > footer {
+    display: none !important;
+  }
+
+  html {
+    zoom: 1;
+  }
+}

@@ -67,20 +67,10 @@
 }
 
 .icon {
-  width: 54px;
-  height: 54px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 22px;
-
-  border-radius: 14px;
-
-  background: var(--np-primary-soft);
-
-  font-size: 26px;
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
 }
 
 .card h3 {

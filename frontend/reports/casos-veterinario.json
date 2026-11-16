@@ -1,0 +1,2945 @@
+{
+  "generatedAt": "2026-11-14T16:13:46.993Z",
+  "catalogSize": 3382,
+  "weights": {
+    "edad": 0.2,
+    "tamano_peso": 0.1,
+    "actividad": 0.1,
+    "condicion": 0.25,
+    "nutricion": 0.25,
+    "presupuesto": 0.1
+  },
+  "cases": [
+    {
+      "id": "gato-cachorro-baja",
+      "title": "Gatito de 6 meses, poca actividad",
+      "species": "Gato",
+      "ageMonths": 6,
+      "weightKg": 2.5,
+      "activityLevel": "Baja",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": null,
+      "allergies": null,
+      "foodPreference": null,
+      "budget": null,
+      "whatToCheck": "Alimento de crecimiento (kitten). ¿La baja actividad debería bajar la energía en un gatito, o prima la etapa de crecimiento?",
+      "birthDate": "2026-05-14",
+      "stage": "cachorro",
+      "candidates": 1445,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 6519,
+          "brand": "Acana",
+          "name": "Acana Alimento Natural Seco para Gato First Feast Kitten",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [],
+          "protein": 36,
+          "fat": 18,
+          "fiber": 4,
+          "moisture": 10,
+          "proteinMs": 40,
+          "fatMs": 20,
+          "fiberMs": 4.4,
+          "kcalKg": 4340,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Pollo deshuesado",
+          "priceMin": 28990,
+          "priceStore": "petco.cl",
+          "priceUrl": "https://www.petco.cl/Mascotas/Gato/Acana-Alimento-Natural-Seco-para-Gato-First-Feast-Kitten%2C-1-8-kg/p/601240",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 15494,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6546,
+          "brand": "Whole Hearted",
+          "name": "WholeHearted Libre de Granos Alimento Natural para Gatito Receta Salmón",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [
+            "grain_free"
+          ],
+          "protein": 34,
+          "fat": 16,
+          "fiber": 3.5,
+          "moisture": 10,
+          "proteinMs": 37.8,
+          "fatMs": 17.8,
+          "fiberMs": 3.9,
+          "kcalKg": 4260,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Salmón",
+          "priceMin": 18990,
+          "priceStore": "petco.cl",
+          "priceUrl": "https://www.petco.cl/App/Alimento/WholeHearted/WholeHearted-Libre-de-Granos-Alimento-Natural-para-Gatito-Receta-Salm%C3%B3n%2C-2-2-kg/p/136512",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 8460,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 7197,
+          "brand": "",
+          "name": "Agility Gato Kitten",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [],
+          "protein": 34,
+          "fat": null,
+          "fiber": 3,
+          "moisture": 10,
+          "proteinMs": 37.8,
+          "fatMs": null,
+          "fiberMs": 3.3,
+          "kcalKg": null,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Harina de subproducto de pollo",
+          "priceMin": 7990,
+          "priceStore": "razaspet.cl",
+          "priceUrl": "https://razaspet.cl/shop/gatos/alimentos-de-gatos/alimento-seco-de-gatos/agility-gato-kitten/",
+          "score": 85.7,
+          "coverage": 70,
+          "estimatedMonthlyCost": null,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: actividad y energía.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": null,
+              "explanation": "No hay suficiente información de energía para compararlo con el resto del catálogo."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gato-adulto-sobrepeso",
+      "title": "Gato adulto de interior con sobrepeso",
+      "species": "Gato",
+      "ageMonths": 60,
+      "weightKg": 6.5,
+      "activityLevel": "Baja",
+      "bodyCondition": "Sobrepeso",
+      "specialCondition": "Control de peso",
+      "allergies": null,
+      "foodPreference": "Seco",
+      "budget": null,
+      "whatToCheck": "Alimentos light o de control de peso, menor densidad energética y grasa moderada.",
+      "birthDate": "2021-11-14",
+      "stage": "adulto",
+      "candidates": 820,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 5956,
+          "brand": "Leonardo",
+          "name": "Leonardo Adult Light Sterilised",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "esterilizado",
+            "control_peso"
+          ],
+          "protein": 35,
+          "fat": 12.5,
+          "fiber": 3.5,
+          "moisture": 10,
+          "proteinMs": 38.9,
+          "fatMs": 13.9,
+          "fiberMs": 3.9,
+          "kcalKg": 3773,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carne de ave fresca",
+          "priceMin": 27000,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/leonardo-adult-light-sterilised-1-8kg/",
+          "score": 98.9,
+          "coverage": 80,
+          "estimatedMonthlyCost": 33987,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9657142857142859,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 5913,
+          "brand": "Brit Care",
+          "name": "Brit care gato Premium By Nature Adult Pollo",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": null,
+          "fat": 16,
+          "fiber": 3.1,
+          "moisture": 10,
+          "proteinMs": null,
+          "fatMs": 17.8,
+          "fiberMs": 3.4,
+          "kcalKg": 3800,
+          "kcalKgEstimated": false,
+          "firstIngredient": "pollo deshidratado 40%",
+          "priceMin": 14500,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/brit-care-gato-premium-by-nature-adult-pollo-1-5-kg/",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 21748,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 6547,
+          "brand": "Whole Hearted",
+          "name": "WholeHearted Healthy Benefits Alimento Natural para Gato Adulto Control de Peso Receta Pollo y Chícharo",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "control_peso"
+          ],
+          "protein": 32,
+          "fat": null,
+          "fiber": 9,
+          "moisture": 10,
+          "proteinMs": 35.6,
+          "fatMs": null,
+          "fiberMs": 10,
+          "kcalKg": 3083,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Pollo",
+          "priceMin": 19990,
+          "priceStore": "petco.cl",
+          "priceUrl": "https://www.petco.cl/App/Alimento/WholeHearted/Wholehearted-Healthy-Benefits-Alimento-Natural-para-Gato-Adulto-Control-de-Peso-Receta-Pollo-y-Ch%C3%ADcharo%2C-1-1-Kg/p/125335",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 25194,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.6,
+              "explanation": "Algunos valores nutricionales se alejan del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gato-senior-urinario",
+      "title": "Gato senior de 12 años con cuidado urinario",
+      "species": "Gato",
+      "ageMonths": 144,
+      "weightKg": 4.2,
+      "activityLevel": "Baja",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": "Cuidado urinario",
+      "allergies": null,
+      "foodPreference": null,
+      "budget": null,
+      "whatToCheck": "Alimento senior o urinario. ¿Faltan alimentos que deberían aparecer?",
+      "birthDate": "2014-11-14",
+      "stage": "senior",
+      "candidates": 1445,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 5918,
+          "brand": "Brit Care",
+          "name": "Brit care gato sterilized urinary",
+          "type": "seco",
+          "stage": "",
+          "size": "",
+          "conditions": [
+            "esterilizado"
+          ],
+          "protein": 32,
+          "fat": 13,
+          "fiber": 3.5,
+          "moisture": 10,
+          "proteinMs": 35.6,
+          "fatMs": 14.4,
+          "fiberMs": 3.9,
+          "kcalKg": 3750,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carne de pollo fresca",
+          "priceMin": 18900,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/brit-care-gato-sterilized-urinary-2kg/",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 14059,
+          "positives": [
+            "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Alimento coincide con la necesidad especial \"Cuidado urinario\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 0.5,
+              "explanation": "El alimento no especifica etapa de vida."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento coincide con la necesidad especial \"Cuidado urinario\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 12264,
+          "brand": "Agility",
+          "name": "Alimento Agility Cats Premium Urinary",
+          "type": "seco",
+          "stage": "",
+          "size": "",
+          "conditions": [],
+          "protein": 30,
+          "fat": 10,
+          "fiber": 3,
+          "moisture": 10,
+          "proteinMs": 33.3,
+          "fatMs": 11.1,
+          "fiberMs": 3.3,
+          "kcalKg": 3690,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Harina de subproductos de pollo",
+          "priceMin": 8990,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/cats/36517-alimento-agility-cats-premium-urinary-15-kg-7798075341342.html",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 7512,
+          "positives": [
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Alimento coincide con la necesidad especial \"Cuidado urinario\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 0.5,
+              "explanation": "El alimento no especifica etapa de vida."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento coincide con la necesidad especial \"Cuidado urinario\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 5879,
+          "brand": "Leonardo",
+          "name": "Alimento Leonardo Gato Adulto Senior",
+          "type": "seco",
+          "stage": "senior",
+          "size": "",
+          "conditions": [],
+          "protein": 28,
+          "fat": 15,
+          "fiber": 2.8,
+          "moisture": 10,
+          "proteinMs": 31.1,
+          "fatMs": 16.7,
+          "fiberMs": 3.1,
+          "kcalKg": 3638,
+          "kcalKgEstimated": true,
+          "firstIngredient": "carne de ave fresca",
+          "priceMin": 68000,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/alimento-leonardo-gato-adulto-senior/",
+          "score": 86,
+          "coverage": 80,
+          "estimatedMonthlyCost": null,
+          "positives": [
+            "Formulado para la etapa \"senior\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"senior\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9533333333333335,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gato-adulto-alergia-pollo",
+      "title": "Gato adulto alérgico al pollo",
+      "species": "Gato",
+      "ageMonths": 36,
+      "weightKg": 4.5,
+      "activityLevel": "Moderada",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": "Sensibilidad digestiva",
+      "allergies": "pollo",
+      "foodPreference": null,
+      "budget": null,
+      "whatToCheck": "Ninguno debe contener pollo. Proteína alternativa (pescado, cordero, pavo).",
+      "birthDate": "2023-11-14",
+      "stage": "adulto",
+      "candidates": 298,
+      "excludedByAllergy": 1147,
+      "top": [
+        {
+          "rank": 1,
+          "id": 5880,
+          "brand": "Leonardo",
+          "name": "Alimento Leonardo Gatos Adulto Maxi Grain Free",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "grande",
+          "conditions": [
+            "sensible",
+            "grain_free"
+          ],
+          "protein": 32,
+          "fat": 18,
+          "fiber": 2.8,
+          "moisture": 10,
+          "proteinMs": 35.6,
+          "fatMs": 20,
+          "fiberMs": 3.1,
+          "kcalKg": 4060,
+          "kcalKgEstimated": true,
+          "firstIngredient": "carne de ave fresca",
+          "priceMin": 28500,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/alimento-leonardo-gatos-adulto-maxi-grain-free/",
+          "score": 97.6,
+          "coverage": 80,
+          "estimatedMonthlyCost": null,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Alimento coincide con la necesidad especial \"Sensibilidad digestiva\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento coincide con la necesidad especial \"Sensibilidad digestiva\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9238095238095237,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 5871,
+          "brand": "Leonardo",
+          "name": "Alimento grain free gato adulto Leonardo",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "sensible",
+            "grain_free"
+          ],
+          "protein": 32,
+          "fat": 20,
+          "fiber": 2.8,
+          "moisture": 10,
+          "proteinMs": 35.6,
+          "fatMs": 22.2,
+          "fiberMs": 3.1,
+          "kcalKg": 4152,
+          "kcalKgEstimated": true,
+          "firstIngredient": "salmón fresco",
+          "priceMin": 28500,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/alimento-grain-free-gato-adulto-leonardo/",
+          "score": 95,
+          "coverage": 80,
+          "estimatedMonthlyCost": null,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Alimento coincide con la necesidad especial \"Sensibilidad digestiva\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento coincide con la necesidad especial \"Sensibilidad digestiva\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.84,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 5892,
+          "brand": "Bravery",
+          "name": "bravery adult cat salmon",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 32,
+          "fat": 16,
+          "fiber": 3.7,
+          "moisture": 8,
+          "proteinMs": 34.8,
+          "fatMs": 17.4,
+          "fiberMs": 4,
+          "kcalKg": 4004,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Salmón deshidratado",
+          "priceMin": 20000,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/bravery-adult-cat-salmon-2kg/",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 16204,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gato-adulto-bajo-peso",
+      "title": "Gata adulta con bajo peso, preferencia húmedo",
+      "species": "Gato",
+      "ageMonths": 30,
+      "weightKg": 3,
+      "activityLevel": "Moderada",
+      "bodyCondition": "Bajo peso",
+      "specialCondition": null,
+      "allergies": null,
+      "foodPreference": "Húmedo",
+      "budget": null,
+      "whatToCheck": "Alimento húmedo con buena densidad energética y proteína.",
+      "birthDate": "2024-05-14",
+      "stage": "adulto",
+      "candidates": 625,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 6121,
+          "brand": "Hill's",
+          "name": "Hill lata gato adulto salmon",
+          "type": "humedo",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 9.8,
+          "fat": 6.9,
+          "fiber": 1.1,
+          "moisture": 73.4,
+          "proteinMs": 36.8,
+          "fatMs": 25.9,
+          "fiberMs": 4.1,
+          "kcalKg": 1301,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carnes y subproductos animales",
+          "priceMin": 3600,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/hill-lata-gato-adulto-salmon-156gr/",
+          "score": 86.7,
+          "coverage": 80,
+          "estimatedMonthlyCost": 84911,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Alimento energía elevada, adecuado para recuperar peso."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 0.6,
+              "explanation": "Densidad energética alta, se esperaba media (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento energía elevada, adecuado para recuperar peso."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.7333333333333334,
+              "explanation": "Algunos valores nutricionales se alejan del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6153,
+          "brand": "Farmina N&D",
+          "name": "latas n&d gato Adulto Jabali ]Manzana",
+          "type": "humedo",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 13,
+          "fat": 5,
+          "fiber": 0.7,
+          "moisture": 75,
+          "proteinMs": 52,
+          "fatMs": 20,
+          "fiberMs": 2.8,
+          "kcalKg": 1122,
+          "kcalKgEstimated": true,
+          "firstIngredient": "del n&d Prime Lata Jabalí y Manzana para Gatos:",
+          "priceMin": 2200,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/latas-nd-gato-adulto-jabali-manzana-80gr/",
+          "score": 84.3,
+          "coverage": 80,
+          "estimatedMonthlyCost": 117328,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Alimento energía elevada, adecuado para recuperar peso."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 0.6,
+              "explanation": "Densidad energética alta, se esperaba media (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento energía elevada, adecuado para recuperar peso."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.6571428571428571,
+              "explanation": "Algunos valores nutricionales se alejan del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 12060,
+          "brand": "Feral",
+          "name": "Feral Alimento Humedo Gato Adulto Monoproteina Cerdo",
+          "type": "humedo",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 10.5,
+          "fat": 4.5,
+          "fiber": 0.4,
+          "moisture": 79,
+          "proteinMs": 50,
+          "fatMs": 21.4,
+          "fiberMs": 1.9,
+          "kcalKg": 1049,
+          "kcalKgEstimated": true,
+          "firstIngredient": "destacados",
+          "priceMin": 2490,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/inicio/43139-feral-alimento-humedo-gato-adulto-monoproteina-cerdo-200-grs-726529136746.html",
+          "score": 82.2,
+          "coverage": 80,
+          "estimatedMonthlyCost": null,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Alimento energía elevada, adecuado para recuperar peso."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El tamaño varía poco entre gatos; no se evalúa por ahora."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 0.6,
+              "explanation": "Densidad energética alta, se esperaba media (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento energía elevada, adecuado para recuperar peso."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.5904761904761905,
+              "explanation": "Algunos valores nutricionales se alejan del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-cachorro-pequeno",
+      "title": "Cachorro de raza pequeña, 4 meses",
+      "species": "Perro",
+      "ageMonths": 4,
+      "weightKg": 3,
+      "activityLevel": "Alta",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": null,
+      "allergies": null,
+      "foodPreference": "Seco",
+      "budget": null,
+      "whatToCheck": "Alimento puppy para razas pequeñas, croqueta chica, alta energía.",
+      "birthDate": "2026-07-14",
+      "stage": "cachorro",
+      "candidates": 1458,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 5654,
+          "brand": "Royal Canin",
+          "name": "Royal canin perro Shih Tzu Puppy",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [],
+          "protein": 26,
+          "fat": 16,
+          "fiber": 3.6,
+          "moisture": 10,
+          "proteinMs": 28.9,
+          "fatMs": 17.8,
+          "fiberMs": 4,
+          "kcalKg": 4256,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Harina de pollo.",
+          "priceMin": 22000,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/royal-canin-perro-shih-tzu-puppy-2-5kg/",
+          "score": 88.9,
+          "coverage": 90,
+          "estimatedMonthlyCost": 9898,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Pensado para perros de tamaño pequeño, como el tuyo.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para perros de tamaño pequeño, como el tuyo."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6339,
+          "brand": "Focus",
+          "name": "Drools Focus Puppy",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [],
+          "protein": 28,
+          "fat": 16,
+          "fiber": 2.5,
+          "moisture": 10,
+          "proteinMs": 31.1,
+          "fatMs": 17.8,
+          "fiberMs": 2.8,
+          "kcalKg": 4300,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Pollo real",
+          "priceMin": 8990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/drools-focus-puppy/",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 4081,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 6296,
+          "brand": "Bravery",
+          "name": "Bravery Chicken Mini Puppy Small breed",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "pequeno",
+          "conditions": [],
+          "protein": null,
+          "fat": 15,
+          "fiber": 5,
+          "moisture": 10,
+          "proteinMs": null,
+          "fatMs": 16.7,
+          "fiberMs": 5.6,
+          "kcalKg": null,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Carne de pollo deshidratada",
+          "priceMin": 17990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/bravery-chicken-mini-puppy-small-breed/",
+          "score": 85,
+          "coverage": 80,
+          "estimatedMonthlyCost": null,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Pensado para razas de tamaño pequeno, como la tuya.",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: actividad y energía.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño pequeno, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": null,
+              "explanation": "No hay suficiente información de energía para compararlo con el resto del catálogo."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.92,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-cachorro-grande",
+      "title": "Cachorro de raza grande, 10 meses",
+      "species": "Perro",
+      "ageMonths": 10,
+      "weightKg": 28,
+      "activityLevel": "Alta",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": "Articulaciones",
+      "allergies": null,
+      "foodPreference": "Seco",
+      "budget": null,
+      "whatToCheck": "Puppy para razas grandes (calcio y energía controlados para el crecimiento). ¿Es correcto priorizar alta energía aquí?",
+      "birthDate": "2026-01-14",
+      "stage": "cachorro",
+      "candidates": 1458,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 6339,
+          "brand": "Focus",
+          "name": "Drools Focus Puppy",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [],
+          "protein": 28,
+          "fat": 16,
+          "fiber": 2.5,
+          "moisture": 10,
+          "proteinMs": 31.1,
+          "fatMs": 17.8,
+          "fiberMs": 2.8,
+          "kcalKg": 4300,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Pollo real",
+          "priceMin": 8990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/drools-focus-puppy/",
+          "score": 87.5,
+          "coverage": 80,
+          "estimatedMonthlyCost": 21793,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6305,
+          "brand": "Bravery",
+          "name": "Bravery Salmon Puppy Large/Medium breed",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "grande",
+          "conditions": [],
+          "protein": 30,
+          "fat": 18,
+          "fiber": 2.4,
+          "moisture": 9,
+          "proteinMs": 33,
+          "fatMs": 19.8,
+          "fiberMs": 2.6,
+          "kcalKg": 4444,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Salmón deshidratado",
+          "priceMin": 24990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/bravery-salmon-puppy-large-medium-breed/",
+          "score": 85.7,
+          "coverage": 90,
+          "estimatedMonthlyCost": 30675,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Pensado para razas de tamaño grande, como la tuya.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño grande, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.8869841269841269,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 6412,
+          "brand": "Taste Of the wild",
+          "name": "Taste of the Wild High Prairie Puppy Bisonte",
+          "type": "seco",
+          "stage": "cachorro",
+          "size": "",
+          "conditions": [],
+          "protein": 28,
+          "fat": 17,
+          "fiber": 5,
+          "moisture": 10,
+          "proteinMs": 31.1,
+          "fatMs": 18.9,
+          "fiberMs": 5.6,
+          "kcalKg": 4250,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Búfalo de agua",
+          "priceMin": 19990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/taste-of-the-wild-high-prairie-puppy-bisonte/",
+          "score": 84.8,
+          "coverage": 80,
+          "estimatedMonthlyCost": 34012,
+          "positives": [
+            "Formulado para la etapa \"cachorro\" de tu mascota.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"cachorro\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9123809523809525,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-adulto-mediano",
+      "title": "Perro adulto mediano, actividad moderada, presupuesto acotado",
+      "species": "Perro",
+      "ageMonths": 48,
+      "weightKg": 18,
+      "activityLevel": "Moderada",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": null,
+      "allergies": null,
+      "foodPreference": "Seco",
+      "budget": 30000,
+      "whatToCheck": "Alimento adulto para razas medianas dentro de $30.000 al mes.",
+      "birthDate": "2022-11-14",
+      "stage": "adulto",
+      "candidates": 1458,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 6601,
+          "brand": "",
+          "name": "Ancestral Perro Adulto Raza Mediana",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 24,
+          "fat": 9,
+          "fiber": 4,
+          "moisture": 10,
+          "proteinMs": 26.7,
+          "fatMs": 10,
+          "fiberMs": 4.4,
+          "kcalKg": 3890,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carne deshidratada",
+          "priceMin": 38490,
+          "priceStore": "razaspet.cl",
+          "priceUrl": "https://razaspet.cl/shop/perros/alimentos-perros/alimento-seco-alimentos-perros/ancestral-perro-adulto-raza-mediana-20kg/",
+          "score": 90,
+          "coverage": 100,
+          "estimatedMonthlyCost": 9081,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para perros de tamaño mediano, como el tuyo.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa.",
+            "Bien dentro de tu presupuesto mensual."
+          ],
+          "considerations": [],
+          "warnings": [],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para perros de tamaño mediano, como el tuyo."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": 1,
+              "explanation": "Bien dentro de tu presupuesto mensual."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 11448,
+          "brand": "Excellent",
+          "name": "Purina Excellent Adult Razas Medianas y Grandes",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "mediano-grande",
+          "conditions": [],
+          "protein": 24,
+          "fat": 11,
+          "fiber": 4,
+          "moisture": 12,
+          "proteinMs": 27.3,
+          "fatMs": 12.5,
+          "fiberMs": 4.5,
+          "kcalKg": 3910,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Activos:",
+          "priceMin": 32990,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/dogs/41929-purina-excellent-adult-razas-medianas-y-grandes-12kg-8445291533257.html",
+          "score": 90,
+          "coverage": 100,
+          "estimatedMonthlyCost": 12902,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para razas de tamaño mediano y grande, como la tuya.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa.",
+            "Bien dentro de tu presupuesto mensual."
+          ],
+          "considerations": [],
+          "warnings": [],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño mediano y grande, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": 1,
+              "explanation": "Bien dentro de tu presupuesto mensual."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 7604,
+          "brand": "Salvaje",
+          "name": "Salvaje adulto con salmón alimento para perros",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 25,
+          "fat": 14,
+          "fiber": 2.75,
+          "moisture": 9,
+          "proteinMs": 27.5,
+          "fatMs": 15.4,
+          "fiberMs": 3,
+          "kcalKg": 3918,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Maíz",
+          "priceMin": 34990,
+          "priceStore": "superzoo.cl",
+          "priceUrl": "https://www.superzoo.cl/perro/alimentos/alimentos-seco/salvaje-adulto-con-salmon-alimento-para-perros-15kg/7205.html",
+          "score": 88.9,
+          "coverage": 90,
+          "estimatedMonthlyCost": 10928,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa.",
+            "Bien dentro de tu presupuesto mensual."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": 1,
+              "explanation": "Bien dentro de tu presupuesto mensual."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-adulto-grande-activo",
+      "title": "Perro adulto grande y muy activo",
+      "species": "Perro",
+      "ageMonths": 36,
+      "weightKg": 35,
+      "activityLevel": "Alta",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": null,
+      "allergies": null,
+      "foodPreference": "Seco",
+      "budget": null,
+      "whatToCheck": "Alimento adulto razas grandes, alta proteína y energía.",
+      "birthDate": "2023-11-14",
+      "stage": "adulto",
+      "candidates": 1458,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 6299,
+          "brand": "Bravery",
+          "name": "Bravery Iberian Pork Adult Large/Medium breed",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "grande",
+          "conditions": [],
+          "protein": 26,
+          "fat": 15,
+          "fiber": 2.5,
+          "moisture": 9,
+          "proteinMs": 28.6,
+          "fatMs": 16.5,
+          "fiberMs": 2.7,
+          "kcalKg": 4290,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carne de cerdo ibérico deshidratada",
+          "priceMin": 22990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/bravery-iberian-pork-adult-large-medium-breed/",
+          "score": 87.5,
+          "coverage": 90,
+          "estimatedMonthlyCost": 37565,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para razas de tamaño grande, como la tuya.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño grande, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9511111111111111,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6303,
+          "brand": "Bravery",
+          "name": "Bravery Salmon Adult Large/Medium breed",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "grande",
+          "conditions": [],
+          "protein": 26,
+          "fat": 15,
+          "fiber": 2.5,
+          "moisture": 9,
+          "proteinMs": 28.6,
+          "fatMs": 16.5,
+          "fiberMs": 2.7,
+          "kcalKg": 4290,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Salmón deshidratado",
+          "priceMin": 25990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/bravery-salmon-adult-large-medium-breed/",
+          "score": 87.5,
+          "coverage": 90,
+          "estimatedMonthlyCost": 35212,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para razas de tamaño grande, como la tuya.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño grande, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9511111111111111,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 6418,
+          "brand": "Bravery",
+          "name": "Bravery Chicken Adult Large/Medium breed",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "grande",
+          "conditions": [],
+          "protein": 26,
+          "fat": 15,
+          "fiber": 2.5,
+          "moisture": 9,
+          "proteinMs": 28.6,
+          "fatMs": 16.5,
+          "fiberMs": 2.7,
+          "kcalKg": 4290,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carne de pollo deshidratada",
+          "priceMin": 20990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/bravery-chicken-adult-large-medium-breed/",
+          "score": 87.5,
+          "coverage": 90,
+          "estimatedMonthlyCost": 34043,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para razas de tamaño grande, como la tuya.",
+            "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño grande, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética alta acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9511111111111111,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-adulto-sobrepeso",
+      "title": "Perro adulto mediano (12 kg) con sobrepeso y poca actividad",
+      "species": "Perro",
+      "ageMonths": 72,
+      "weightKg": 12,
+      "activityLevel": "Baja",
+      "bodyCondition": "Sobrepeso",
+      "specialCondition": "Control de peso",
+      "allergies": null,
+      "foodPreference": null,
+      "budget": null,
+      "whatToCheck": "Alimento light / control de peso, baja grasa, más fibra.",
+      "birthDate": "2020-11-14",
+      "stage": "adulto",
+      "candidates": 1937,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 11569,
+          "brand": "Monge",
+          "name": "Monge Perro Adulto Todas las Razas Light",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "todos",
+          "conditions": [
+            "control_peso"
+          ],
+          "protein": 24,
+          "fat": 12,
+          "fiber": 2.5,
+          "moisture": 12,
+          "proteinMs": 27.3,
+          "fatMs": 13.6,
+          "fiberMs": 2.8,
+          "kcalKg": 3950,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Salmón",
+          "priceMin": 20990,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/monge/41128-monge-adulto-all-breeds-light-25kg-8009470011228.html",
+          "score": 95.6,
+          "coverage": 90,
+          "estimatedMonthlyCost": 18565,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para razas de tamaño todos, como la tuya.",
+            "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño todos, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 0.6,
+              "explanation": "Densidad energética media, se esperaba baja."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 11540,
+          "brand": "Ownat",
+          "name": "Ownat Just Grain Free Perro Adulto Light",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "control_peso",
+            "sensible",
+            "grain_free"
+          ],
+          "protein": 40,
+          "fat": 11,
+          "fiber": 4,
+          "moisture": 8,
+          "proteinMs": 43.5,
+          "fatMs": 12,
+          "fiberMs": 4.3,
+          "kcalKg": 3580,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Pollo deshidratado",
+          "priceMin": 22990,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/inicio/42697-ownat-just-grain-free-perro-adulto-light-3-kg-8429037015115.html",
+          "score": 91.7,
+          "coverage": 80,
+          "estimatedMonthlyCost": 19988,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.7333333333333334,
+              "explanation": "Algunos valores nutricionales se alejan del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 11541,
+          "brand": "Ownat",
+          "name": "Ownat Classic Perro Adulto Light",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "control_peso"
+          ],
+          "protein": 27,
+          "fat": 1,
+          "fiber": 4,
+          "moisture": 8,
+          "proteinMs": 29.3,
+          "fatMs": 1.1,
+          "fiberMs": 4.3,
+          "kcalKg": 3350,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Carnes 35%",
+          "priceMin": 53990,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/inicio/42693-ownat-classic-perro-adulto-light-12-kg-8429037014736.html",
+          "score": 89.9,
+          "coverage": 80,
+          "estimatedMonthlyCost": 18183,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento formulado para control de peso; coincide con la necesidad especial \"Control de peso\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.6755555555555555,
+              "explanation": "Algunos valores nutricionales se alejan del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-senior-articulaciones",
+      "title": "Perro senior de 10 años con problemas articulares",
+      "species": "Perro",
+      "ageMonths": 120,
+      "weightKg": 24,
+      "activityLevel": "Baja",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": "Articulaciones",
+      "allergies": null,
+      "foodPreference": "Seco",
+      "budget": null,
+      "whatToCheck": "Alimento senior, idealmente con glucosamina/condroitina, energía moderada.",
+      "birthDate": "2016-11-14",
+      "stage": "senior",
+      "candidates": 1458,
+      "excludedByAllergy": 0,
+      "top": [
+        {
+          "rank": 1,
+          "id": 5396,
+          "brand": "Biofresh",
+          "name": "Biofresh Perro Senior Raza Mediana",
+          "type": "seco",
+          "stage": "senior",
+          "size": "",
+          "conditions": [],
+          "protein": 26,
+          "fat": 12.5,
+          "fiber": 3.5,
+          "moisture": 10,
+          "proteinMs": 28.9,
+          "fatMs": 13.9,
+          "fiberMs": 3.9,
+          "kcalKg": 3700,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Selección de ingredientes frescos de origen animal",
+          "priceMin": 24600,
+          "priceStore": "happymascota.cl",
+          "priceUrl": "https://happymascota.cl/producto/biofresh-perro-senior-raza-mediana-3kg/",
+          "score": 85.3,
+          "coverage": 90,
+          "estimatedMonthlyCost": 50465,
+          "positives": [
+            "Formulado para la etapa \"senior\" de tu mascota.",
+            "Pensado para perros de tamaño mediano, como el tuyo.",
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"senior\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para perros de tamaño mediano, como el tuyo."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.8711111111111111,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6321,
+          "brand": "Brit Care",
+          "name": "Brit Care Senior Cordero & Arroz",
+          "type": "seco",
+          "stage": "senior",
+          "size": "",
+          "conditions": [],
+          "protein": 25,
+          "fat": 12,
+          "fiber": 4.2,
+          "moisture": 10,
+          "proteinMs": 27.8,
+          "fatMs": 13.3,
+          "fiberMs": 4.7,
+          "kcalKg": 3752,
+          "kcalKgEstimated": true,
+          "firstIngredient": "carne de cordero deshidratada",
+          "priceMin": 66990,
+          "priceStore": "kamanpet.cl",
+          "priceUrl": "https://kamanpet.cl/producto/brit-care-senior-cordero-arroz/",
+          "score": 85,
+          "coverage": 80,
+          "estimatedMonthlyCost": 33883,
+          "positives": [
+            "Formulado para la etapa \"senior\" de tu mascota.",
+            "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"senior\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.9199999999999999,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 11769,
+          "brand": "GOSBI",
+          "name": "Gosbi Exclusive Senior Medium",
+          "type": "seco",
+          "stage": "senior",
+          "size": "mediano",
+          "conditions": [],
+          "protein": 27,
+          "fat": 13,
+          "fiber": 3,
+          "moisture": 8.5,
+          "proteinMs": 29.5,
+          "fatMs": 14.2,
+          "fiberMs": 3.3,
+          "kcalKg": 3670,
+          "kcalKgEstimated": false,
+          "firstIngredient": "Carne de pollo deshidratada",
+          "priceMin": 76990,
+          "priceStore": "puntomascotas.cl",
+          "priceUrl": "https://puntomascotas.cl/dogs/42491-gosbi-exclusive-senior-medium-12-kg-8437015611389.html",
+          "score": 84.2,
+          "coverage": 90,
+          "estimatedMonthlyCost": 39809,
+          "positives": [
+            "Formulado para la etapa \"senior\" de tu mascota.",
+            "Pensado para razas de tamaño mediano, como la tuya.",
+            "Densidad energética baja acorde a su etapa y actividad.",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"senior\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para razas de tamaño mediano, como la tuya."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética baja acorde a su etapa y actividad."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 0.8311111111111112,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perro-adulto-alergias",
+      "title": "Perro adulto alérgico a pollo y trigo, piel sensible",
+      "species": "Perro",
+      "ageMonths": 40,
+      "weightKg": 20,
+      "activityLevel": "Moderada",
+      "bodyCondition": "Peso adecuado",
+      "specialCondition": "Piel y pelaje",
+      "allergies": "pollo, trigo",
+      "foodPreference": null,
+      "budget": null,
+      "whatToCheck": "Sin pollo ni trigo. Proteína alternativa; ¿alimento hipoalergénico?",
+      "birthDate": "2023-07-14",
+      "stage": "adulto",
+      "candidates": 364,
+      "excludedByAllergy": 1573,
+      "top": [
+        {
+          "rank": 1,
+          "id": 6552,
+          "brand": "Whole Hearted",
+          "name": "WholeHearted Healthy Benefits Alimento Natural para Perro Adulto Cuidado de Piel/Pelo Receta Salmón y Chícharo",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "piel_pelaje"
+          ],
+          "protein": 22,
+          "fat": 12,
+          "fiber": 4.5,
+          "moisture": 10,
+          "proteinMs": 24.4,
+          "fatMs": 13.3,
+          "fiberMs": 5,
+          "kcalKg": 4020,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Chícharo",
+          "priceMin": 16990,
+          "priceStore": "petco.cl",
+          "priceUrl": "https://www.petco.cl/App/Alimento/WholeHearted/Wholehearted-Healthy-Benefits-Alimento-Natural-para-Perro-Adulto-Cuidado-de-Piel-Pelo-Receta-Salm%C3%B3n-y-Ch%C3%ADcharo%2C-2-2-kg/p/125356",
+          "score": 100,
+          "coverage": 80,
+          "estimatedMonthlyCost": 38155,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Alimento coincide con la necesidad especial \"Piel y pelaje\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento coincide con la necesidad especial \"Piel y pelaje\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "id": 6553,
+          "brand": "Whole Hearted",
+          "name": "WholeHearted Healthy Benefits Skin & Coat Alimento Natural para Perro Adulto Cuidado de Piel/Pelo Receta Salmón y Chícharo",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [
+            "piel_pelaje"
+          ],
+          "protein": 25,
+          "fat": 12,
+          "fiber": 4.5,
+          "moisture": 10,
+          "proteinMs": 27.8,
+          "fatMs": 13.3,
+          "fiberMs": 5,
+          "kcalKg": 4020,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Chícharo",
+          "priceMin": 59990,
+          "priceStore": "petco.cl",
+          "priceUrl": "https://www.petco.cl/App/Wholehearted-Lifelike/Wholehearted-Healthy-Benefits-Alimento-Natural-para-Perro-Adulto-Cuidado-de-Piel-Pelo-Receta-Salm%C3%B3n-y-Ch%C3%ADcharo%2C-11-4-kg/p/125343",
+          "score": 100,
+          "coverage": 80,
+          "estimatedMonthlyCost": 25997,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Alimento coincide con la necesidad especial \"Piel y pelaje\".",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: tamaño y peso.",
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": null,
+              "explanation": "El alimento no indica para qué tamaño de perro está pensado."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 1,
+              "explanation": "Alimento coincide con la necesidad especial \"Piel y pelaje\"."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "id": 6601,
+          "brand": "",
+          "name": "Ancestral Perro Adulto Raza Mediana",
+          "type": "seco",
+          "stage": "adulto",
+          "size": "",
+          "conditions": [],
+          "protein": 24,
+          "fat": 9,
+          "fiber": 4,
+          "moisture": 10,
+          "proteinMs": 26.7,
+          "fatMs": 10,
+          "fiberMs": 4.4,
+          "kcalKg": 3890,
+          "kcalKgEstimated": true,
+          "firstIngredient": "Carne deshidratada",
+          "priceMin": 38490,
+          "priceStore": "razaspet.cl",
+          "priceUrl": "https://razaspet.cl/shop/perros/alimentos-perros/alimento-seco-alimentos-perros/ancestral-perro-adulto-raza-mediana-20kg/",
+          "score": 88.9,
+          "coverage": 90,
+          "estimatedMonthlyCost": 9828,
+          "positives": [
+            "Formulado para la etapa \"adulto\" de tu mascota.",
+            "Pensado para perros de tamaño mediano, como el tuyo.",
+            "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante).",
+            "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+          ],
+          "considerations": [],
+          "warnings": [
+            "No pudimos verificar: presupuesto."
+          ],
+          "criteria": [
+            {
+              "key": "edad",
+              "label": "Edad / etapa de vida",
+              "score": 1,
+              "explanation": "Formulado para la etapa \"adulto\" de tu mascota."
+            },
+            {
+              "key": "tamano_peso",
+              "label": "Tamaño y peso",
+              "score": 1,
+              "explanation": "Pensado para perros de tamaño mediano, como el tuyo."
+            },
+            {
+              "key": "actividad",
+              "label": "Actividad y energía",
+              "score": 1,
+              "explanation": "Densidad energética media acorde a su etapa y actividad (energía estimada, no confirmada por el fabricante)."
+            },
+            {
+              "key": "condicion",
+              "label": "Condición corporal y necesidades especiales",
+              "score": 0.6,
+              "explanation": "Sin coincidencia ni contradicción con la condición registrada."
+            },
+            {
+              "key": "nutricion",
+              "label": "Adecuación nutricional",
+              "score": 1,
+              "explanation": "Proteína, grasa y fibra dentro del rango orientativo para su etapa."
+            },
+            {
+              "key": "presupuesto",
+              "label": "Presupuesto",
+              "score": null,
+              "explanation": "No ingresaste un presupuesto."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

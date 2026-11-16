@@ -1,0 +1,89 @@
+.figure {
+  margin: 0;
+}
+
+.figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.grid {
+  stroke: var(--np-border);
+  stroke-width: 1;
+}
+
+.axis {
+  fill: var(--np-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.line {
+  fill: none;
+  stroke: var(--np-primary);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.point {
+  fill: var(--np-surface);
+  stroke: var(--np-primary);
+  stroke-width: 2.5;
+}
+
+.foodLine {
+  stroke: var(--np-secondary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.foodDot {
+  fill: var(--np-secondary);
+}
+
+.foodNumber {
+  fill: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.legend {
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  color: var(--np-muted);
+  font-size: 13px;
+}
+
+.legend b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+
+  border-radius: 50%;
+  background: var(--np-secondary);
+  color: #ffffff;
+
+  font-size: 11px;
+}
+
+.empty {
+  margin: 0;
+  padding: 20px;
+
+  border-radius: var(--np-radius-sm);
+  background: var(--np-bg);
+
+  color: var(--np-muted);
+  font-size: 14px;
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import pool from "@/lib/db";
-import { createSessionToken } from "@/lib/auth";
+import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-    response.cookies.set("nutripet_session", token, {
+    response.cookies.set(SESSION_COOKIE, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

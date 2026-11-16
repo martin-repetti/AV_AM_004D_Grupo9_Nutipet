@@ -18,7 +18,7 @@ const nunitoSans = Nunito_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "NutriPet",
+  title: { default: "HuellaFit", template: "%s · HuellaFit" },
   description:
     "Plataforma de comparación y recomendación de alimentos para mascotas.",
 };

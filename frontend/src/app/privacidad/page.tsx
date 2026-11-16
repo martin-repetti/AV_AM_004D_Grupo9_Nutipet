@@ -5,7 +5,7 @@ import styles from "@/components/legal/LegalPage.module.css";
 export const metadata: Metadata = {
   title: "Política de privacidad",
   description:
-    "Cómo NutriPet recopila, utiliza y protege tus datos personales y los de tu mascota.",
+    "Cómo HuellaFit recopila, utiliza y protege tus datos personales y los de tu mascota.",
 };
 
 export default function PrivacidadPage() {
@@ -13,7 +13,7 @@ export default function PrivacidadPage() {
     <LegalPage
       eyebrow="Información"
       title="Política de privacidad"
-      subtitle="Queremos que sepas qué datos recopilamos y cómo los utilizamos dentro de NutriPet."
+      subtitle="Queremos que sepas qué datos recopilamos y cómo los utilizamos dentro de HuellaFit."
       updated="Última actualización: septiembre de 2026"
     >
       <section className={styles.section}>
@@ -85,7 +85,7 @@ export default function PrivacidadPage() {
         </ul>
         <p>
           Para ejercer estos derechos, escríbenos a{" "}
-          <a href="mailto:contacto@nutripet.cl">contacto@nutripet.cl</a>.
+          <a href="mailto:contacto@huellafit.cl">contacto@huellafit.cl</a>.
           Responderemos tu solicitud dentro de un plazo razonable.
         </p>
       </section>

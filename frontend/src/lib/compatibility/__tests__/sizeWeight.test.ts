@@ -121,6 +121,30 @@ describe("evaluateSizeWeight", () => {
     expect(result.score).toBeNull();
   });
 
+  it("reconoce alimentos de raza específica por el nombre", () => {
+    const food = makeFood({ size: "", name: "Royal canin perro Shih Tzu Puppy" });
+    const context = { catalog: [], budget: null, nutritionRanges: [] };
+
+    expect(evaluateSizeWeight(makePet({ weightKg: 28 }), food, context).score).toBe(0.3);
+    expect(evaluateSizeWeight(makePet({ weightKg: 4 }), food, context).score).toBe(1);
+  });
+
+  it('"Large/Medium breed" calza con perros medianos y grandes', () => {
+    const food = makeFood({ size: "", name: "Bravery Salmon Puppy Large/Medium breed" });
+    const context = { catalog: [], budget: null, nutritionRanges: [] };
+
+    expect(evaluateSizeWeight(makePet({ weightKg: 35 }), food, context).score).toBe(1);
+    expect(evaluateSizeWeight(makePet({ weightKg: 15 }), food, context).score).toBe(1);
+    expect(evaluateSizeWeight(makePet({ weightKg: 5 }), food, context).score).toBe(0.3);
+  });
+
+  it('"Small Bites" es el tamaño de la croqueta, no de la raza', () => {
+    const food = makeFood({ size: "", name: "Hills perro adulto 7+ Small Bites" });
+    const result = evaluateSizeWeight(makePet({ weightKg: 30 }), food, { catalog: [], budget: null, nutritionRanges: [] });
+
+    expect(result.score).toBeNull();
+  });
+
   it("no se evalúa para gatos", () => {
     const pet = makePet({ species: "Gato", weightKg: 4 });
     const food = makeFood({ species: "Gato", size: "grande" });

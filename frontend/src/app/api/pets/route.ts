@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import pool from "@/lib/db";
-import { verifySessionToken } from "@/lib/auth";
+import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 import { validatePetInput } from "@/lib/petValidation";
+import { getUserPlan, isPremium } from "@/services/plans";
 
 export async function GET() {
   try {
     // 1. Obtener sesión
     const cookieStore = await cookies();
-    const token = cookieStore.get("nutripet_session")?.value;
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
   try {
     // 1. Obtener sesión
     const cookieStore = await cookies();
-    const token = cookieStore.get("nutripet_session")?.value;
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -149,12 +150,15 @@ export async function POST(request: Request) {
 
     const totalPets = petCountResult.rows[0].total;
 
-    // Por ahora todos usan el límite del plan gratuito.
-    if (totalPets >= 2) {
+    // El límite depende del plan del usuario (Gratis 2, Premium 10).
+    const plan = await getUserPlan(pool, userId);
+    if (totalPets >= plan.maxPets) {
       return NextResponse.json(
         {
-          message:
-            "El plan gratuito permite registrar hasta 2 mascotas.",
+          message: isPremium(plan)
+            ? `Tu plan ${plan.name} permite registrar hasta ${plan.maxPets} mascotas.`
+            : `El plan ${plan.name} permite registrar hasta ${plan.maxPets} mascotas. Con Premium puedes registrar más.`,
+          upgradeUrl: isPremium(plan) ? undefined : "/planes",
         },
         { status: 403 }
       );

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./HowItWorks.module.css";
 
@@ -13,14 +14,17 @@ type HowItWorksProps = {
 
 const STEPS = [
   {
+    icon: "/images/home/icon-paso-perfil.png",
     title: "Cuéntanos de tu mascota",
     text: "Especie, edad, peso, nivel de actividad, condición corporal y alergias. Puedes guardarla en tu cuenta o probar como invitado.",
   },
   {
+    icon: "/images/home/icon-paso-motor.png",
     title: "El motor evalúa cada alimento",
     text: "Descarta los que no son de su especie o contienen un alérgeno, y pondera seis criterios para calcular qué tan compatible es cada uno.",
   },
   {
+    icon: "/images/home/icon-paso-decidir.png",
     title: "Compara y decide",
     text: "Ve las mejores opciones lado a lado, con el porqué de cada puntaje, el precio por formato y el mejor precio por kilo.",
   },
@@ -38,7 +42,10 @@ export default function HowItWorks({ stats }: HowItWorksProps) {
         <ol className={styles.steps}>
           {STEPS.map((step, index) => (
             <li key={step.title} className={styles.step}>
-              <span className={styles.stepNumber}>{index + 1}</span>
+              <div className={styles.stepHead}>
+                <Image src={step.icon} alt="" width={256} height={256} className={styles.stepIcon} />
+                <span className={styles.stepNumber}>Paso {index + 1}</span>
+              </div>
               <h3>{step.title}</h3>
               <p>{step.text}</p>
             </li>

@@ -1,7 +1,7 @@
 -- Rangos de referencia nutricional (base materia seca, %).
 -- Punto de partida: mínimos AAFCO 2023 para perro/gato (growth/
 -- maintenance), con una banda "ideal" por encima del mínimo estimada
--- para uso orientativo en NutriPet. NO es una fuente clínica definitiva
+-- para uso orientativo en HuellaFit. NO es una fuente clínica definitiva
 -- -- queda pendiente de revisión con la veterinaria del equipo (ver
 -- "Preguntas para la veterinaria" en el plan del motor de compatibilidad).
 -- La fibra no tiene mínimo regulado por AAFCO; el rango aquí es

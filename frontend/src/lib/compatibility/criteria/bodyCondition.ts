@@ -1,25 +1,6 @@
-import { normalize } from "../normalize";
 import { kcalTertile } from "../energy";
+import { codesForSpecialCondition, foodConditionCodes } from "../conditions";
 import type { CriterionEvaluator } from "../types";
-
-// El scraper casi no trae `conditions` todavía (hoy solo "control_peso"
-// aparece, en 1 de 43 productos), pero el mapeo queda listo para cuando
-// tenga más cobertura.
-const CONDITION_KEYWORDS: Record<string, string[]> = {
-  control_peso: ["control de peso", "sobrepeso", "peso"],
-};
-
-function matchesSpecialCondition(
-  specialCondition: string,
-  foodConditions: string[]
-): boolean {
-  const normalized = normalize(specialCondition);
-
-  return foodConditions.some((code) => {
-    const keywords = CONDITION_KEYWORDS[code] || [code];
-    return keywords.some((kw) => normalized.includes(normalize(kw)));
-  });
-}
 
 export const evaluateBodyCondition: CriterionEvaluator = (pet, food, context) => {
   if (!pet.bodyCondition && !pet.specialCondition) {
@@ -32,24 +13,26 @@ export const evaluateBodyCondition: CriterionEvaluator = (pet, food, context) =>
 
   let score = 0.6;
   const notes: string[] = [];
+  const foodCodes = foodConditionCodes(food);
 
   if (pet.bodyCondition === "Sobrepeso") {
-    if (food.conditions.includes("control_peso")) {
+    if (foodCodes.has("control_peso")) {
       score = Math.max(score, 1);
       notes.push("formulado para control de peso");
     }
   } else if (pet.bodyCondition === "Bajo peso") {
     const tertile = kcalTertile(food, context.catalog);
-    if (tertile === "alta") {
+    if (foodCodes.has("control_peso")) {
+      // La única contradicción clara: un alimento para bajar de peso.
+      score = 0.2;
+      notes.push("de control de peso, no recomendado para una mascota con bajo peso");
+    } else if (tertile === "alta") {
       score = Math.max(score, 1);
       notes.push("energía elevada, adecuado para recuperar peso");
     }
   }
 
-  if (
-    pet.specialCondition &&
-    matchesSpecialCondition(pet.specialCondition, food.conditions)
-  ) {
+  if (codesForSpecialCondition(pet.specialCondition).some((code) => foodCodes.has(code))) {
     score = Math.max(score, 1);
     notes.push(`coincide con la necesidad especial "${pet.specialCondition}"`);
   }

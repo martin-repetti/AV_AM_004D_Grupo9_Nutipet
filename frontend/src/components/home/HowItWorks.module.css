@@ -1,5 +1,5 @@
 .section {
-  padding: 80px 32px;
+  padding: 56px 32px 80px;
   background: var(--np-bg);
 }
 
@@ -49,21 +49,30 @@
   border-radius: var(--np-radius-card);
 }
 
-.stepNumber {
-  width: 40px;
-  height: 40px;
-
+.stepHead {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-  border-radius: 50%;
-  background: var(--np-primary);
-  color: #ffffff;
+.stepIcon {
+  display: block;
+  width: 72px;
+  height: 72px;
+}
 
-  font-family: var(--np-font-head);
-  font-size: 18px;
+.stepNumber {
+  padding: 4px 12px;
+
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary-soft);
+  color: var(--np-primary);
+
+  font-size: 12px;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .step h3 {

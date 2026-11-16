@@ -75,12 +75,23 @@ function scoreFood(
 }
 
 /**
+ * Un alimento sin tabla nutricional puede llegar al 100% solo por calzar
+ * en etapa y condición: sin el criterio con más peso, ese 100% no está
+ * respaldado. Por eso estos alimentos se ordenan después de los que sí
+ * la tienen (se muestran igual, con su cobertura baja a la vista).
+ */
+function hasNutritionData(scored: ScoredFood): boolean {
+  return scored.criteria.some((c) => c.key === "nutricion" && c.score != null);
+}
+
+/**
  * Compara el catálogo contra una mascota:
  * 1. Descarta alimentos de otra especie y alimentos con un alérgeno de
  *    la mascota (incluye los que el scraper no pudo verificar: `null`
  *    se trata como no seguro, no como "sin alérgeno").
  * 2. Puntúa el resto con los criterios ponderados configurables.
- * 3. Ordena por compatibilidad, cobertura como desempate.
+ * 3. Ordena primero los que tienen tabla nutricional, luego por
+ *    compatibilidad, con la cobertura como desempate.
  * 4. Si hay presupuesto, separa la mejor opción dentro de ese
  *    presupuesto de la mejor opción general.
  */
@@ -113,7 +124,12 @@ export function compareFoods(
     eligible.push(scoreFood(pet, food, weights, candidates, budget, nutritionRanges));
   }
 
-  eligible.sort((a, b) => b.score - a.score || b.coverage - a.coverage);
+  eligible.sort(
+    (a, b) =>
+      Number(hasNutritionData(b)) - Number(hasNutritionData(a)) ||
+      b.score - a.score ||
+      b.coverage - a.coverage
+  );
 
   const best = eligible[0] ?? null;
   const bestWithinBudget = pickBestWithinBudget(eligible, pet.weightKg, budget);

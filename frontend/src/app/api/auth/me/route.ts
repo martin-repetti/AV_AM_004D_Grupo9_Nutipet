@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcrypt";
 import pool from "@/lib/db";
-import { verifySessionToken } from "@/lib/auth";
+import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("nutripet_session")?.value;
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -38,14 +38,14 @@ export async function GET() {
 
 /**
  * Elimina la cuenta del usuario autenticado y todos sus datos asociados
- * (mascotas, suscripción: ambas tienen ON DELETE CASCADE hacia users).
+ * (mascotas, favoritos, suscripción: todas tienen ON DELETE CASCADE hacia users).
  * Pide la contraseña actual para confirmar: una sesión robada no basta
  * para borrar la cuenta sin probar que se conoce la contraseña.
  */
 export async function DELETE(request: Request) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("nutripet_session")?.value;
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -97,7 +97,7 @@ export async function DELETE(request: Request) {
       message: "Cuenta eliminada correctamente.",
     });
 
-    response.cookies.set("nutripet_session", "", {
+    response.cookies.set(SESSION_COOKIE, "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

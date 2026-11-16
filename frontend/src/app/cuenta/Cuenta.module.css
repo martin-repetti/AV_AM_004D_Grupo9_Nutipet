@@ -229,3 +229,136 @@
 .emptyButton:hover {
     background: var(--np-primary-hover);
 }
+
+/* ---------- Plan ---------- */
+
+.planHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.planHeader h2 {
+  margin: 0;
+}
+
+.planFree,
+.planPremium {
+  padding: 4px 12px;
+
+  border-radius: var(--np-radius-pill);
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.planFree {
+  background: var(--np-subtle);
+  color: var(--np-ink);
+}
+
+.planPremium {
+  background: var(--np-secondary);
+  color: #ffffff;
+}
+
+.planText {
+  margin: 14px 0 18px;
+  color: var(--np-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.planButton {
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 0 20px;
+
+  display: inline-flex;
+  align-items: center;
+
+  border-radius: var(--np-radius-pill);
+  background: var(--np-primary);
+  color: #ffffff;
+
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.planButton:hover {
+  background: var(--np-primary-hover);
+}
+
+.planLinkButton {
+  margin-top: 14px;
+  padding: 0;
+
+  border: none;
+  background: none;
+  color: var(--np-muted);
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.planLinkButton:hover {
+  color: var(--np-low);
+}
+
+.cancelBox {
+  margin-top: 16px;
+  padding: 14px 16px;
+
+  border-radius: var(--np-radius-sm);
+  background: var(--np-low-soft);
+}
+
+.cancelBox p {
+  margin: 0 0 12px;
+  color: var(--np-ink);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.payments {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--np-border);
+}
+
+.payments h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: var(--np-ink);
+}
+
+.payments ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payments li {
+  padding: 8px 0;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+
+  color: var(--np-ink);
+  font-size: 14px;
+}
+
+.paymentRef {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--np-muted);
+  font-size: 13px;
+}

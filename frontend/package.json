@@ -1,5 +1,5 @@
 {
-  "name": "nutripet-frontend",
+  "name": "huellafit-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "vet-cases": "vitest run --config vitest.vet.config.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
